@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../resources/css/style_registro.css">
+    <title>Formulario_empresa</title>
+</head>
+<body>
+
+    <div class="registro">
+        <h1>Formulario</h1>
+            <form action="registro_empresa" method="POST">
+
+                <div class="div">
+                    <input type="text" name="user" required id="usuario_input">
+                    <label for="user" id="usuario_label">Empresa</label>
+                </div>
+
+                <div class="div">
+                    <input type="password" name="pass" required id="password_input">
+                    <label for="pass" id="password_label">Contraseña</label>
+                </div>
+
+
+                <div class="div">
+                    <input type="password" name="pass2" required id="password_input2">
+                    <label for="pass" id="password_label2">Contraseña</label>
+                </div>
+
+                <div class="div">
+                    <input type="email" name="email" required id="email_input">
+                    <label for="email" id="email_label">Correo</label>
+                </div>
+
+                <div class="div">
+                    <input type="text" name="nif" required id="nif_input">
+                    <label for="nif" id="nif_label">NIF</label>
+                </div>
+
+                <div class="div">
+                    <input type="text" name="contacto" required id="contacto_input">
+                    <label for="contacto" id="contacto_label">Contacto</label>
+                </div>
+
+
+                <input type="submit" class="btn-save" value="CONFIRMAR">
+
+            </form>
+    </div>
+
+    <script src="../resources/javascript/registros_ajustes.js"></script>
+    
+</body>
+</html>

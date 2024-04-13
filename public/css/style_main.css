@@ -1,0 +1,143 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom right, rgb(157, 188, 245), rgb(73, 73, 255));
+    height: 100vh;
+    overflow-y: hidden; /*Quita la barra de windows*/
+}
+
+
+.titulo h1{
+    text-align: center;
+    font-size: 38pt;
+    background-color: aliceblue;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    margin-left: 90px;
+    margin-right: 90px;
+}
+
+.border{
+    text-align: center;
+}
+
+
+.navbar {
+    background-color: none;
+    overflow: hidden;
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar ul li {
+    float: left;
+}
+
+.navbar ul li a {
+    display: block;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    padding: 20px 20px;
+    text-decoration: none;
+}
+
+.navbar ul li a:hover {
+    background-color: #dddddd;
+    color: black;
+}
+
+.mov {
+    display: flex;
+    justify-content: space-evenly; /* Ajusta el espaciado horizontal */
+    align-items: center; /* Centra verticalmente */
+    margin-top: 100px; /* Agrega espacio desde la parte superior */
+}
+
+.carta {
+    width: 450px;
+    height: 450px;
+    padding: 4rem 2rem;
+    margin-bottom: 10px; /* Agrega espacio entre las cartas */
+    background: greenyellow;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    box-shadow: 0px 7px 10px rgba(0,0,0,0.5);
+    transition: 0.5s ease-in-out;
+}
+
+.carta:hover {
+    transform: translateY(20px);
+}
+
+.carta:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,176,155,0.5), rgba(150,201,61,0.5));
+    z-index: 2;
+    transition: 0.5s all;
+    opacity: 0;
+}
+
+.carta:hover:before {
+    opacity: 1;
+}
+
+.carta img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left:0 ;
+}
+
+.carta .info {
+    position: relative;
+    z-index: 3;
+    color: #fff;
+    opacity: 1;
+    transform: translateY(30px);
+    transition: 0.5s all;
+}
+
+.carta:hover .info {
+    opacity: 1;
+    transform: translateY(0px);
+}
+
+.carta .info h1 {
+    margin: 0;
+}
+
+.carta .info p {
+    letter-spacing: 1px;
+    font-size: 15px;
+    margin-top: 8px;
+    margin-bottom: 20px;
+}
+
+.carta .info .btn {
+    text-decoration: none;
+    padding:  0.5rem 1rem;
+    background: #fff;
+    color: #000;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.4s ease-in-out;
+}
+
+.carta .info .btn:hover {
+    box-shadow: 0px 7px 10px rgba(0,0,0,0.5);
+}
+
+

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../resources/css/style.css">
+    <title>Inicio_Sesion_Visitantes</title>
+</head>
+<body>
+
+    <div class="nombre">
+        <h1>PLAYEVENT</h1>
+    </div>
+    
+    <div class="formulario">
+        <h1>Inicio de sesión</h1>
+        <div class="form">
+            <form action="/auth" method="POST">
+                <div class="user">
+                    <input type="text" name="user" required id="usuario_input">
+                    <label for="user" id="usuario_label">USUARIO</label>
+                </div>
+
+                <div class="password">
+                    <input type="password" name="pass" required id="password_input">
+                    <label for="pass" id="password_label">CONTRASEÑA</label>
+                </div>
+                
+                <div class="recordatorio">
+                    <a href="principal.html">¿Olvidó su contraseña?</a>
+                </div>
+                
+                <input type="submit" value="INICIAR SESIÓN">
+
+                <div class="Registrarse_como_usuario">
+                    Pulse <a href="registro_usuario">aquí</a> para registrarse como usuario
+                </div>
+
+                <div class="Registrarse_como_empresa">
+                    Pulse <a href="registro_empresa">aquí</a> para registrarse como empresa
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="../resources/javascript/registros_ajustes.js"></script>
+</body>
+</html>

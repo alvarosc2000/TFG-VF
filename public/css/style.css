@@ -1,0 +1,122 @@
+body {
+    margin: 0%;
+    padding: 0%;
+    font-family: 'Times New Roman', Times, serif;
+    height: 90vh;
+    background-image: url("gente-caminando-juntos-al-aire-libre-plano-medio.jpg");
+    background-attachment: initial;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center ;
+}
+
+
+.formulario {
+   top: 50%;
+   right: 0.5px;
+   position: absolute; 
+   background-color: aliceblue;
+   text-align: left;
+   width: 500px;
+   transform: translate(-50%, -50%);
+   border-radius: 17px;
+   border-color: black;
+   font-size: 15pt;
+   height: 450px;
+   padding: 20px;
+}
+
+.formulario h1 {
+    text-align: center;
+    padding-block: 10px 20px ;
+    border-bottom: #AEB6BF solid;
+}
+
+form .user {
+    position: relative;
+    border-bottom: 2px solid #AEB6BF;
+    margin: 25px;
+}
+
+.user input {
+    background: none;
+    padding: 0 5px;
+    height: 40px;
+    border: none;
+    outline: none;
+}
+
+.user label {
+    position: absolute;
+    top: 50%;
+    left: 4px;
+    color: #AEB6BF;
+    transform: translateY(-50%);
+    font-size: 15px;
+    pointer-events: none;
+}
+
+
+
+form .password {
+    position: relative;
+    border-bottom: 2px solid #AEB6BF;
+    margin: 25px;
+}
+
+
+.password input {
+    background: none;
+    padding: 0 5px;
+    height: 40px;
+    border: none;
+    outline: none;
+}
+
+.password label {
+    position: absolute;
+    top: 50%;
+    left: 4px;
+    color: #AEB6BF;
+    transform: translateY(-50%);
+    font-size: 15px;
+    pointer-events: none;
+}
+
+form .recordatorio {
+    margin: -5px 0 20px 5px;
+}
+
+form .Registrarse_como_usuario {
+    position: relative;
+    margin: 10px;
+}
+
+form .Registrarse_como_empresa {
+    position: relative;
+    margin: 10px;
+}
+
+input[type="submit"] {
+    width: 50%;
+    height: 45px;
+    border: 1px, solid;
+    background-color: #D7DBDD;
+    border-radius: 20px;
+    margin: 0 auto;
+    display: block;
+}
+
+input[type="submit"]:hover {
+    border-color:brown;
+    transition: .5s;
+}
+
+.nombre h1 {
+    text-align: center;
+    font-style: italic;
+    margin-block: 50px;
+    font-size: 35pt;
+    color: black;
+    background-color: aliceblue;
+}

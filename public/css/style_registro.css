@@ -1,0 +1,115 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Times New Roman', Times, serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+   background-image: url("gente-caminando-juntos-al-aire-libre-plano-medio.jpg"); 
+   /*background: linear-gradient(to bottom right, rgb(157, 188, 245), rgb(73, 73, 255));*/
+    background-attachment: initial;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.registro {
+    background-color: aliceblue;
+    text-align: left;
+    width: 500px;
+    border-radius: 17px;
+    border-color: black;
+    font-size: 15pt;
+    padding: 20px;
+}
+
+.registro h1 {
+    text-align: center;
+    padding-block: 10px 20px ;
+    border-bottom: #AEB6BF solid;
+}
+
+.div {
+    position: relative;
+    margin: 45px; /* Aumenta la separación entre los cuadros */
+    border-bottom: #AEB6BF solid;
+}
+
+.div input {
+    background: none;
+    padding: 0 5px;
+    height: 40px;
+    border: none;
+    outline: none;
+    width: calc(100% - 10px); /* Ajusta el ancho del input */
+}
+
+.div label {
+    position: absolute;
+    top: 50%;
+    left: 8px; /* Ajusta el espacio entre la etiqueta y el borde */
+    transform: translateY(-50%);
+    color: #AEB6BF;
+    pointer-events: none;
+}
+
+
+input[type="submit"] {
+    width: 50%;
+    height: 35px;
+    border: 1px, solid;
+    background-color: #D7DBDD;
+    border-radius: 20px;
+    margin: 0 auto;
+    display: block;
+}
+
+input[type="button"]:hover {
+    border-color:brown;
+    transition: .5s;
+}
+
+#registro-usuario{
+    background-color: aliceblue;
+    text-align: left;
+    width: 500px;
+    border-radius: 17px;
+    border-color: black;
+    font-size: 15pt;
+    padding: 20px;}
+
+#registro-empresa{
+    background-color: aliceblue;
+    text-align: left;
+    width: 500px;
+    border-radius: 17px;
+    border-color: black;
+    font-size: 15pt;
+    padding: 20px;
+}
+
+/* Ajustes para los botones dentro de los formularios */
+.div:last-child {
+    display: flex; /* Usa flexbox para alinear los botones */
+    justify-content: space-between; /* Separa los botones */
+    margin: 45px 0;
+    text-align: center;
+}
+
+
+.btn-change {
+    width: 50%;
+    height: 35px;
+    border: 1px, solid;
+    background-color: #D7DBDD;
+    border-radius: 20px;
+    margin: 0 auto;
+    display: block;
+    margin-top: 10px;
+}
+
+#registro-usuario #registro-empresa h2{
+    text-align: center;
+    font: oblique bold 150% cursive;
+}
