@@ -53,7 +53,7 @@ app.get('/registro_usuario', (req, res) => {
 });
 
 app.get('/index', (req, res) => {
-    console.log('Se recibió una solicitud REGISTRO USUARIO');
+    console.log('Se recibió una solicitud INDEX');
     res.render('index.ejs');
 });
 
