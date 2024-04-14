@@ -4,37 +4,28 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .contenedor {
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
-    padding: 20px;
-    margin: 30px;
+    margin: 0 -20px; /* Reducir el margen horizontal */
+    margin: -20px 0; /* Reducir el margen vertical */
 }
 
 .contenido {
     width: 45%;
-    margin-bottom: 20px;
+    margin-bottom: 0px; /* Reducir el margen inferior del contenedor */
     background-color: aliceblue;
-    border-radius: 20px;
+    border-radius: 60px;
     overflow: hidden;
     display: flex;
-}
-
-.imagen {
-    width: 40%;
-    overflow: hidden;
-}
-
-.imagen img {
-    width: 100%;
-    border-radius: 20px 0 0 20px;
+    margin: 0 50px; /* Ajustar el margen horizontal */
 }
 
 .texto {
-    width: 60%;
+    width: 100%;
     padding: 20px;
 }
 
@@ -48,8 +39,19 @@ h1 {
     color: rgb(0, 7, 5);
     font-size: 50px;
     border-bottom: 2px solid #1e1a1a;
-    background-color: aliceblue;
 }
+
+.cab h1 {
+    text-align: center;
+    color: rgb(0, 7, 5);
+    font-size: 50px;
+    border-bottom: 2px solid #1e1a1a;
+    background-color: aliceblue;
+    margin: 30px; /* Agregar margen superior e inferior */
+    margin-bottom: 60px; /* Ajustar margen inferior para crear separación */
+}
+
+
 
 .menu-icon {
     cursor: pointer;
@@ -79,7 +81,6 @@ h1 {
     opacity: 0; /* Comienza con opacidad 0 para que el menú sea invisible inicialmente */
 }
 
-
 .menu-items li {
     margin-bottom: 10px;
     text-align: left;
@@ -91,9 +92,24 @@ h1 {
     display: block;
     margin: 30px;
     font-size: large;
-
 }
 
 .menu-items li a:hover {
     background-color: #bbf6ab;
 }
+
+.imagen-container {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Centra horizontalmente la imagen */
+    margin-bottom: 5px; /* Reducir el margen inferior del contenedor de la imagen */
+    margin-top: 5px; /* Reducir el margen superior del contenedor de la imagen */
+    border-radius: 20px;
+}
+
+
+.imagen-container img {
+    width: 10%; /* Ajustar el ancho de la imagen */
+    border-radius: 50px;
+}
+
