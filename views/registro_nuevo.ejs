@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../resources/css/style_registro.css">
+    <title>Formulario de Registro</title>
+</head>
+<body>
+
+    <div class="registro">
+        <h1>Formulario de Registro</h1>
+        <form action="registro_nuevo" method="POST">
+            <div class="div">
+                <input type="text" name="user" required id="usuario_input">
+                <label for="user" id="usuario_label">Usuario</label>
+            </div>
+
+            <div class="div">
+                <input type="password" name="pass" required id="password_input">
+                <label for="pass" id="password_label">Contraseña</label>
+            </div>
+
+            <div class="div">
+                <input type="password" name="pass2" required id="password_confirm_input">
+                <label for="pass2" id="password_confirm_label">Confirmar Contraseña</label>
+            </div>
+
+            <div class="div">
+                <select name="role" id="rol_select" required onchange="mostrarCampos()">
+                    <option value="">Seleccionar Rol</option>
+                    <option value="user">Usuario</option>
+                    <option value="company">Empresa</option>
+                </select>                
+            </div>
+
+            <div class="div" id="email_container" style="display: none;">
+                <input type="email" name="email" id="email_input">
+                <label for="email" id="email_label">Correo Electrónico</label>
+            </div>
+
+            <div class="div" id="nif_container" style="display: none;">
+                <input type="text" name="nif" id="nif_input">
+                <label for="nif" id="nif_label">NIF</label>
+            </div>
+
+            <div class="div" id="contacto_container" style="display: none;">
+                <input type="text" name="contacto" id="contacto_input">
+                <label for="contacto" id="contacto_label">Contacto</label>
+            </div>
+
+            <input type="submit" class="btn-save" value="CONFIRMAR">
+        </form>
+    </div>
+
+    <script>
+        function mostrarCampos() {
+            var rolSelect = document.getElementById("rol_select");
+            var emailContainer = document.getElementById("email_container");
+            var nifContainer = document.getElementById("nif_container");
+            var contactoContainer = document.getElementById("contacto_container");
+
+            if (rolSelect.value === "company") {
+                emailContainer.style.display = "block";
+                nifContainer.style.display = "block";
+                contactoContainer.style.display = "block";
+            } else {
+                emailContainer.style.display = "none";
+                nifContainer.style.display = "none";
+                contactoContainer.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

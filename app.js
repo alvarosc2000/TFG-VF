@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const session = require('express-session');
 const dotenv = require('dotenv');
-const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 
 dotenv.config({ path: './env/.env' });
@@ -11,10 +10,9 @@ dotenv.config({ path: './env/.env' });
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use('/resources', express.static('public'));
-app.use('/resources', express.static(__dirname + 'public'));
+app.use('/resources', express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
-
 app.use(cookieParser());
 
 // Controladores
@@ -22,14 +20,11 @@ const authController = require('./public/controladores/authController');
 const userController = require('./public/controladores/userController');
 const companyController = require('./public/controladores/companyController');
 const verificacionToken_jwt = require('./public/controladores/jwtMiddleware');
-const jwtMiddleware = require('./public/controladores/jwtMiddleware');
-
 
 // Rutas
-app.post('/registro_usuario', userController.registro_usuario);
-app.post('/registro_empresa', companyController.registro_empresa);
-app.post('/auth', authController.login);
-app.post('/inicio_sesion', jwtMiddleware, authController.login);
+app.post('/registro_nuevo', userController.registro_usuario);
+app.post('/registro_nuevo', companyController.registroEmpresa);
+app.post('/login', authController.login);
 
 // Vistas/Páginas públicas
 app.get('/', (req, res) => {
@@ -62,9 +57,9 @@ app.get('/registros_unificados', (req, res) => {
     res.render('registros_unificados.ejs');
 });
 
-app.get('/registro', (req, res) => {
+app.get('/registro_nuevo', (req, res) => {
     console.log('Se recibió una solicitud REGISTRO USUARIO');
-    res.render('registros_unificados.ejs');
+    res.render('registro_nuevo.ejs');
 });
 
 app.get('/verificar/:token', userController.verificacionCuenta);
@@ -86,28 +81,26 @@ app.use((err, req, res, next) => {
     res.status(500).send('Hubo un error en el servidor');
 });
 
-
-
 // Rutas privadas para usuarios y empresas
-
 app.get('/prueba', verificacionToken_jwt('user'), (req, res) => {
     console.log('Accediendo un usuario');
     res.render('prueba.ejs'); 
 });
-
 
 app.get('/acercaDeE', verificacionToken_jwt('company'), (req, res) => {
     console.log('Accediendo una empresa');
     res.render('acercaDeE.ejs'); 
 });
 
-
 app.get('/eventos', verificacionToken_jwt(['user', 'company']), (req, res) => {
     console.log('Accediendo una empresa y usuario');
-    res.render('eventos.ejs'); });
+    res.render('eventos.ejs');
+});
 
 // Configuracion del servidor
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
     console.log(`Servidor en funcionamiento en http://localhost:${PORT}`);
 });
+
+module.exports = app;
