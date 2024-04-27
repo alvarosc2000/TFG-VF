@@ -4,7 +4,7 @@ const { sendVerificationEmail } = require('../javascript/mail');
 const uuid = require('uuid');
 
 async function registro_usuario(req, res) {
-    const { user, pass, pass2, role, email, nif, contacto } = req.body;
+    const { user, pass, pass2, role, email, nif, contacto, nombre, apellido } = req.body;
 
     // Validar que las contraseñas coincidan
     if (pass !== pass2) {
@@ -28,6 +28,12 @@ async function registro_usuario(req, res) {
             return res.status(400).send('El nombre de usuario ya está en uso');
         }
 
+        // Verificar si ya existe un usuario con el mismo correo electrónico
+        const existingEmail = await comprobacionEmail(email);
+        if (existingEmail) {
+            return res.status(400).send('El correo electrónico ya está en uso');
+        }
+
         const passwordHash = await bcryptjs.hash(pass, 8);
         const token = generateUniqueToken();
 
@@ -45,6 +51,8 @@ async function registro_usuario(req, res) {
                 // Insertar los datos de la empresa en la tabla Compania si el rol es "company"
                 if (role === 'company') {
                     await insertarEmpresa(userId, email, nif, contacto);
+                } else if (role === 'user') {
+                    await insertarPersona(userId, email, nombre, apellido);
                 }
 
                 // Enviar correo de verificación
@@ -62,6 +70,32 @@ async function registro_usuario(req, res) {
     }
 }
 
+// Función para verificar si ya existe un usuario con el mismo nombre de usuario
+async function comprobacionUsuario(username) {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * FROM Usuario WHERE user = ?', [username], (error, results) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(results.length > 0);
+            }
+        });
+    });
+}
+
+// Función para verificar si ya existe un usuario con el mismo correo electrónico
+async function comprobacionEmail(email) {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * FROM Usuario WHERE email = ?', [email], (error, results) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(results.length > 0);
+            }
+        });
+    });
+}
+
 async function insertarEmpresa(userId, email, nif, contacto) {
     return new Promise((resolve, reject) => {
         // Insertar los datos de la empresa en la tabla Compania
@@ -69,18 +103,45 @@ async function insertarEmpresa(userId, email, nif, contacto) {
             if (error) {
                 reject(error);
             } else {
+                // Obtener el ID de la empresa recién creada
+                const companyId = results.insertId;
                 // Actualizar el campo de id_compania en la tabla Usuario con el ID de la empresa recién creada
-                connection.query('UPDATE Usuario SET compania_id = ? WHERE id_usuario = ?', [results.insertId, userId], (error, results) => {
+                connection.query('UPDATE Usuario SET compania_id = ? WHERE id_usuario = ?', [companyId, userId], (error, results) => {
                     if (error) {
                         reject(error);
                     } else {
-                        resolve();
+                        resolve(companyId); // Resuelve la promesa con el ID de la empresa
                     }
                 });
             }
         });
     });
 }
+
+async function insertarPersona(userId, email, nombre, apellido) {
+    return new Promise((resolve, reject) => {
+        // Insertar los datos de la persona en la tabla Persona
+        connection.query('INSERT INTO Persona (nombre, apellido, email) VALUES (?, ?, ?)', [nombre, apellido, email], (error, results) => {
+            if (error) {
+                reject(error);
+            } else {
+                // Obtener el ID de la persona recién creada
+                const personaId = results.insertId;
+                // Actualizar el campo de id_persona en la tabla Usuario con el ID de la persona recién creada
+                connection.query('UPDATE Usuario SET persona_id = ? WHERE id_usuario = ?', [personaId, userId], (error, results) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(personaId); // Resuelve la promesa con el ID de la persona
+                    }
+                });
+            }
+        });
+    });
+}
+
+
+/*
 async function insertarEmailEnTablaCorrespondiente(userId, email, role) {
     const tablaCorrespondiente = role === 'company' ? 'Compania' : 'Persona';
     const columnId = role === 'company' ? 'id_compania' : 'persona_id';
@@ -95,6 +156,8 @@ async function insertarEmailEnTablaCorrespondiente(userId, email, role) {
         });
     });
 }
+
+*/
 
 // Verificar una cuenta de usuario
 const verificacionCuenta = (req, res) => {

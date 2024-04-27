@@ -50,6 +50,16 @@
                 <label for="contacto" id="contacto_label">Contacto</label>
             </div>
 
+            <div class="div" id="nombre_container" style="display: none;">
+                <input type="text" name="nombre" id="nombre_input">
+                <label for="nombre" id="nombre_label">Nombre</label>
+            </div>
+
+            <div class="div" id="apellido_container" style="display: none;">
+                <input type="text" name="apellido" id="apellido_input">
+                <label for="apellido" id="apellido_label">Apellido</label>
+            </div>
+
             <input type="submit" class="btn-save" value="CONFIRMAR">
         </form>
     </div>
@@ -60,15 +70,28 @@
             var emailContainer = document.getElementById("email_container");
             var nifContainer = document.getElementById("nif_container");
             var contactoContainer = document.getElementById("contacto_container");
+            var nombreContainer = document.getElementById("nombre_container");
+            var apellidoContainer = document.getElementById("apellido_container");
+
 
             if (rolSelect.value === "company") {
                 emailContainer.style.display = "block";
                 nifContainer.style.display = "block";
                 contactoContainer.style.display = "block";
-            } else {
+                nombreContainer.style.display = "none";
+                apellidoContainer.style.display = "none";
+            } else if(rolSelect.value == "user"){
+                nombreContainer.style.display = "block";
+                apellidoContainer.style.display = "block";
+                emailContainer.style.display = "block";
+                nifContainer.style.display = "none";
+                contactoContainer.style.display = "none";
+            }else {
                 emailContainer.style.display = "none";
                 nifContainer.style.display = "none";
                 contactoContainer.style.display = "none";
+                nombreContainer.style.display = "none";
+                apellidoContainer.style.display = "none";
             }
         }
     </script>
