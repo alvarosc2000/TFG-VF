@@ -6,8 +6,8 @@ async function login(req, res) {
     const { user, pass } = req.body;
 
     try {
-        // Buscamos el usuario en las tablas
-        let query = 'SELECT id, user, pass, email, verified, role FROM Usuario WHERE user = ? AND verified = true UNION SELECT id, user, pass, email, NULL as verified, role FROM Empresa WHERE user = ?';
+        // Buscar el usuario en la tabla Usuario
+        const query = 'SELECT id_usuario, user, pass, email, verified, role, persona_id, compania_id, admin_id FROM Usuario WHERE user = ? AND verified = true';
         
         connection.query(query, [user, user], async (error, results) => {
             if (error) {
@@ -19,35 +19,39 @@ async function login(req, res) {
                 return res.status(401).send('Usuario y/o contraseña incorrectos');
             }
 
-            // Primera aparicion
+            // Comparar la contraseña proporcionada con la almacenada en la base de datos
             const usuario_encontrado = results[0];
-            const encontrado = await bcryptjs.compare(pass, usuario_encontrado.pass);
+            const contrasena_valida = await bcryptjs.compare(pass, usuario_encontrado.pass);
 
-            if (!encontrado) {
+            if (!contrasena_valida) {
                 return res.status(401).send('Usuario y/o contraseña incorrectos');
             }
 
-            // Usuario encontrado y contraseña correcta, generamos el JWT
-            // Genero el token
+            // Generar un token JWT
             const token = jwt.sign({
-                id: usuario_encontrado.id,
+                id: usuario_encontrado.id_usuario,
                 user: usuario_encontrado.user,
-                role: usuario_encontrado.role 
+                role: usuario_encontrado.role,
+                persona_id: usuario_encontrado.persona_id,
+                compania_id: usuario_encontrado.compania_id
             }, process.env.JWT_SECRET, { expiresIn: '2h' });
 
-            // Guardamos el token en la sesión del usuario
+            // Almacenar el token en la sesión del usuario
             req.session.user = {
                 token: token,
                 user: usuario_encontrado.user
             };
 
-            // Redireccionamos al usuario según su rol
-            if (usuario_encontrado.role === 'user') {
-                res.render('espacioUs1', { user: usuario_encontrado.user }); // Pasamos el nombre de usuario a la vista
-            } else if (usuario_encontrado.role === 'company') {
-                res.render('acercaDeE');
-            } else {
-                res.status(500).send('El rol del usuario no está definido correctamente');
+            // Redirigir al usuario según su rol
+            switch (usuario_encontrado.role) {
+                case 'user':
+                    res.render('espacioUs1', { user: usuario_encontrado.user });
+                    break;
+                case 'company':
+                    res.render('acercaDeE');
+                    break;
+                default:
+                    res.status(500).send('El rol del usuario no está definido correctamente');
             }
         });
     } catch (error) {

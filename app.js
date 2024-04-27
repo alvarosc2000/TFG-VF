@@ -25,6 +25,7 @@ const verificacionToken_jwt = require('./public/controladores/jwtMiddleware');
 app.post('/registro_nuevo', userController.registro_usuario);
 app.post('/registro_nuevo', companyController.registroEmpresa);
 app.post('/login', authController.login);
+app.post('/auth', authController.login); 
 
 // Vistas/Páginas públicas
 app.get('/', (req, res) => {
