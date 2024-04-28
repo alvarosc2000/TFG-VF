@@ -68,7 +68,7 @@ h2{
 .carta {
     width: 300px;
     height: 300px;
-    padding: 4rem 2rem;
+    padding: 2rem 2rem;
     margin-bottom: 5px; /* Agrega espacio entre las cartas */
     position: relative;
     display: flex;
@@ -89,7 +89,7 @@ h2{
     display: block;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, rgba(0,176,155,0.5), rgba(150,201,61,0.5));
+    background: linear-gradient(to bottom, rgba(237, 152, 123, 0.5), rgba(245, 41, 41, 0.5));
     z-index: 2;
     transition: 0.5s all;
     opacity: 0;
@@ -177,4 +177,6 @@ h2{
 
 .texto {
     flex: 2;
+    background-color: aliceblue;
+    width: 90%;
 }
