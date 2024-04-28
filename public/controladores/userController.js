@@ -23,14 +23,14 @@ async function registro_usuario(req, res) {
 
     try {
         // Verificar si ya existe un usuario con el mismo nombre de usuario
-        const existingUser = await comprobacionUsuario(user);
-        if (existingUser) {
+        const usuarioExistente = await comprobacionUsuario(user);
+        if (usuarioExistente) {
             return res.status(400).send('El nombre de usuario ya está en uso');
         }
 
         // Verificar si ya existe un usuario con el mismo correo electrónico
-        const existingEmail = await comprobacionEmail(email);
-        if (existingEmail) {
+        const emailExistente = await comprobacionEmail(email);
+        if (emailExistente) {
             return res.status(400).send('El correo electrónico ya está en uso');
         }
 
