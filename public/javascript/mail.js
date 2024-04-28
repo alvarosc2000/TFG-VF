@@ -2,19 +2,19 @@ const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
-    host: 'smtp.gmail.com',
+    host: process.env.EMAIL_HOST,
     port: 465,
     secure: true,
     auth: {
-        user: 'alvaroinvest77@gmail.com',
-        pass: 'hhxicaovfvqgrdkh'
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD
     }
 });
 
 const sendVerificationEmail = async (email, token) => {
     try {
         return await transporter.sendMail({
-            from: 'alvaroinvest77@gmail.com',
+            from: process.env.EMAIL_USER,
             to: email,
             subject: "Activación de cuenta en ALLSPORT",
             html: getTemplate(token), // Usamos el token como contenido HTML del correo
