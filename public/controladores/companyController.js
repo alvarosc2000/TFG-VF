@@ -1,4 +1,4 @@
-const connection = require('../../database/db');
+const { Usuario, Compania, Persona } = require('../../database/sequelize-config');
 const { registro_usuario } = require('./userController');
 
 async function registroEmpresa(user, pass, email) {

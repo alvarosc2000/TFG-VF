@@ -83,9 +83,9 @@ app.use((err, req, res, next) => {
 });
 
 // Rutas privadas para usuarios y empresas
-app.get('/prueba', verificacionToken_jwt('user'), (req, res) => {
+app.get('/espacioUs1', verificacionToken_jwt('user'), (req, res) => {
     console.log('Accediendo un usuario');
-    res.render('prueba.ejs'); 
+    res.render('espacioUs1.ejs'); 
 });
 
 app.get('/acercaDeE', verificacionToken_jwt('company'), (req, res) => {
