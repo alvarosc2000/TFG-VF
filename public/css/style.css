@@ -22,7 +22,7 @@ body {
    border-radius: 17px;
    border-color: black;
    font-size: 15pt;
-   height: 450px;
+   height: 400px;
    padding: 20px;
 }
 
@@ -119,4 +119,8 @@ input[type="submit"]:hover {
     font-size: 35pt;
     color: black;
     background-color: aliceblue;
+}
+
+.registro_comun{
+    padding: 20px;
 }

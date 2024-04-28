@@ -3,28 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../resources/css/style_main.css">
+    <link rel="stylesheet" href="../resources/css/styleUs1.css">
     <title>ALLSPORT MALAGA</title>
 </head>
 <body>
 
     <nav class="navbar">
         <ul>
+            <li><a>Bienvenido, <%= user %>!</a></li>
             <li><a href="/">Inicio</a></li>
-            <li><a href="eventos">Eventos</a></li>
-            <li><a href="registro_usuario">Calendario</a></li>
+            <li><a href="registros_unificados">Registro</a></li>
+            <li><a href="eventos">Calendario</a></li>
+            <li><a href="eventos">Eventos Destacados</a></li>
             <li><a href="/logout">Cerrar sesión</a></li>
         </ul>
     </nav>
 
-    <h1>Bienvenido, <%= user %>!</h1>
+    <h1>CATEGORIAS</h1>
 
+    <div class="mov">
+        <div class="carta">
+            <img src="../resources/css/trato.jpg">
+            <div class="info">
+                <a href="registro_nuevo" class="btn">Partidos</a>
+            </div>
+        </div>
     
-    <H1> ESPACIO USUARIO PRINCIPAL </H1>
+        <div class="carta">
+            <img src="../resources/css/gente-caminando-juntos-al-aire-libre-plano-medio.jpg">
+            <div class="info">
+                <a href="index" class="btn">Clases</a>
+            </div>
+        </div>
+    
+        <div class="carta">
+            <img src="../resources/css/im1.jpg">
+            <div class="info">
+                <a href="inicio_sesion" class="btn">Eventos</a>
+            </div>
+        </div>
+    
 
+        <div class="carta">
+            <img src="../resources/css/im1.jpg">
+            <div class="info">
+                <a href="inicio_sesion" class="btn">Campamentos</a>
+            </div>
+        </div>
 
+        </div>
 
-    Pulse <a href="prueba">aquí</a> prueba
+        <h1>EVENTOS DESTACADOS</h1>
 
+        <div class="destacado">
+            <div class="imagen">
+                <img src="../resources/css/trato.jpg">
+            </div>
+            <div class="texto">
+                <p>EventoEventoEventoEventoEventoEventoEventoEventoEventoEventoEventoEventoEventoEvento</p>
+                <a href="registro_nuevo" class="btn">Ver detalles</a>
+            </div>
+        </div>
+        
+           
+    
+        <h1>CALENDARIO</h1>
+        <div class="mov">
+            <div class="carta">
+                <img src="../resources/css/trato.jpg">
+                <div class="info">
+                    <a href="registro_nuevo" class="btn">Partidos</a>
+                </div>
+            </div>
+        
+            <div class="carta">
+                <img src="../resources/css/gente-caminando-juntos-al-aire-libre-plano-medio.jpg">
+                <div class="info">
+                    <a href="index" class="btn">Clases</a>
+                </div>
+            </div>
+        
+            <div class="carta">
+                <img src="../resources/css/im1.jpg">
+                <div class="info">
+                    <a href="inicio_sesion" class="btn">Eventos</a>
+                </div>
+            </div>
+        
+    
+            <div class="carta">
+                <img src="../resources/css/im1.jpg">
+                <div class="info">
+                    <a href="inicio_sesion" class="btn">Campamentos</a>
+                </div>
+            </div>
+    
+            </div>
+    
+    <h3>
+        Pulse <a href="prueba">aquí</a> prueba
+    </h3>   
 </body>
 </html>
