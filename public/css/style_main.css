@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(to bottom right, rgb(157, 188, 245), rgb(73, 73, 255));
+    background-color: #f2f2f2;
     height: 100vh;
     overflow-y: hidden; /*Quita la barra de windows*/
 }
@@ -10,7 +10,7 @@ body {
 .titulo h1{
     text-align: center;
     font-size: 38pt;
-    background-color: aliceblue;
+    background-color:none;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     margin-left: 90px;
     margin-right: 90px;

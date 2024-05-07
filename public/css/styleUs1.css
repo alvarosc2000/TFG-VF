@@ -1,37 +1,6 @@
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to bottom right, rgb(157, 188, 245), rgb(73, 73, 255));
-    height: 1000vh;
-    overflow-y: auto; /*Quita la barra de windows*/
-}
-
-
-h1{
-    text-align: center;
-    font-size: 24pt;
-    background-color: aliceblue;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    margin-left: 90px;
-    margin-right: 90px;
-    padding: 10px;
-}
-
-h2{
-    text-align: left;
-    font-size: 22pt;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    margin-left: 90px;
-    margin-right: 90px;
-}
-
-.border{
-    text-align: center;
-}
-
-
+/* Estilo para la barra de navegación */
 .navbar {
-    background-color: none;
+    background-color: #f2f2f2;
     overflow: hidden;
 }
 
@@ -47,7 +16,7 @@ h2{
 
 .navbar ul li a {
     display: block;
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     text-align: center;
     padding: 20px 20px;
     text-decoration: none;
@@ -58,125 +27,94 @@ h2{
     color: black;
 }
 
-.mov {
-    display: flex;
-    justify-content: space-evenly; /* Ajusta el espaciado horizontal */
+
+/* Ajustes para la imagen del evento destacado */
+.destacado .imagen {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+    overflow: hidden;
+    display: flex; /* Añade display flex para centrar vertical y horizontalmente */
+    justify-content: center; /* Centra horizontalmente */
     align-items: center; /* Centra verticalmente */
-    margin-top: 100px; /* Agrega espacio desde la parte superior */
 }
 
-.carta {
-    width: 300px;
-    height: 300px;
-    padding: 2rem 2rem;
-    margin-bottom: 5px; /* Agrega espacio entre las cartas */
-    position: relative;
-    display: flex;
-    align-items: flex-end;
-    box-shadow: 0px 7px 10px rgba(0,0,0,0.5);
-    transition: 0.5s ease-in-out;
-}
-
-.carta:hover {
-    transform: translateY(20px);
-}
-
-.carta:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: block;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to bottom, rgba(237, 152, 123, 0.5), rgba(245, 41, 41, 0.5));
-    z-index: 2;
-    transition: 0.5s all;
-    opacity: 0;
-}
-
-.carta:hover:before {
-    opacity: 1;
-}
-
-.carta img {
-    width: 100%;
-    height: 100%;
+.destacado .imagen img {
+    width: 80%;
+    height: 80%;
     object-fit: cover;
+    border-radius: 40px;
+}
+
+.destacado .texto {
     position: absolute;
-    top: 0;
-    left:0 ;
-}
-
-.carta .info {
-    position: relative;
-    z-index: 3;
-    color: #b2f38d;
-    opacity: 1;
-    transform: translateY(30px);
-    transition: 0.5s all;
-    font-size: 10pt;
-    padding: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-.carta:hover .info {
-    opacity: 1;
-    transform: translateY(0px);
-    padding: 10px;
-
-}
-
-.carta .info h1 {
-    margin: 0;
-}
-
-.carta .info {
-    font-size: 15px;
-    margin-top: 8px;
-    margin-bottom: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     text-align: center;
-    width: 1000vh;
+    color: white;
+    z-index: 1;
 }
 
-.carta .info .btn {
-    text-decoration: dashed;
-    padding:  0.5rem 5rem;
-    background: #fff;
-    color: #000;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.4s ease-in-out;
+.destacado .texto h1 {
+    font-size: 36px;
 }
 
-.carta .info .btn:hover {
-    box-shadow: 0px 7px 10px rgba(0,0,0,0.5);
+.destacado .texto p {
+    font-size: 18px;
+    margin-bottom: 20px;
 }
 
+/* Ajustes para la sección de los eventos */
+.eventos {
+    background-color: #f2f2f2;
+    padding: 20px;
+}
 
+.eventos h1 {
+    text-align: center;
+}
 
-.destacado {
+.eventos .mov {
     display: flex;
-    align-items: center;
-    margin-left: 90px;
-    margin-right: 90px;
-    padding: 10px;}
-
-.imagen {
-    flex: 1;
-    margin-left: 90px;
-    margin-right: 90px;
-    padding: 10px;}
-
-.imagen img {
-    width: 50%;
-    height: 50%;
+    justify-content: space-around;
+    flex-wrap: wrap; /* Permite que los eventos se envuelvan en múltiples líneas */
 }
 
-.texto {
-    flex: 2;
-    background-color: aliceblue;
-    width: 90%;
+.eventos .carta {
+    width: 45%; /* Aumenta el ancho de la carta */
+    height: 350px; /* Ajusta la altura de la carta */
+    position: relative;
+    box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px; /* Aumenta el espacio entre las cartas */
+    border-radius: 20px; /* Añade bordes redondeados */
+    overflow: hidden; /* Oculta cualquier contenido que sobresalga de la carta */
+    text-align: center; /* Centra el texto horizontalmente */
+}
+
+.eventos .carta img {
+    width: 100%; /* Ocupa todo el ancho de la carta */
+    height: 100%; /* Ocupa todo el alto de la carta */
+    object-fit: cover;
+}
+
+/* Ajustes para la información dentro de las cartas de eventos */
+.eventos .carta .info {
+    position: absolute;
+    bottom: 10px; /* Posiciona el texto 10px desde el borde inferior de la carta */
+    left: 50%; /* Centra horizontalmente el texto */
+    transform: translateX(-50%); /* Centra horizontalmente el texto */
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.7); /* Fondo semi-transparente para el texto */
+    color: #000; /* Cambia el color del texto a negro */
+    font-size: large; /* Tamaño de fuente grande */
+    z-index: 1; /* Asegura que el texto esté por encima de la imagen */
+    width: 100%; /* Ajusta el ancho del contenedor de texto */
+    text-align: center; /* Centra horizontalmente el texto */
+}
+
+.eventos .carta .info a {
+    color: #000; /* Cambia el color del enlace a negro */
+    text-decoration: none; /* Quita el subrayado del enlace */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el enlace */
 }
