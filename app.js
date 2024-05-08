@@ -14,23 +14,32 @@ app.use('/resources', express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
 app.use(cookieParser());
+app.use('/api', require('./public/controladores/obtenerEventos'));
+
 
 // Controladores
 const authController = require('./public/controladores/authController');
 const userController = require('./public/controladores/userController');
 const companyController = require('./public/controladores/companyController');
 const verificacionToken_jwt = require('./public/controladores/jwtMiddleware');
+const eventoController = require('./public/controladores/eventoController');
 
 // Rutas
 app.post('/registro_nuevo', userController.registro_usuario);
 app.post('/registro_nuevo', companyController.registroEmpresa);
 app.post('/login', authController.login);
-app.post('/auth', authController.login); 
+app.post('/auth', authController.login);
+app.post('/crear_evento',eventoController.guardarEvento);
 
 // Vistas/Páginas públicas
 app.get('/', (req, res) => {
     console.log('Se recibió una solicitud INDEX');
     res.render('main.ejs');
+});
+
+app.get('/mostrar_evento', (req, res) => {
+    console.log('Se recibió una solicitud MOSTRAR EVENTOS');
+    res.render('mostrar_evento.ejs');
 });
 
 app.get('/inicio_sesion', (req, res) => {
@@ -88,14 +97,20 @@ app.get('/espacioUs1', verificacionToken_jwt('user'), (req, res) => {
     res.render('espacioUs1.ejs'); 
 });
 
-app.get('/acercaDeE', verificacionToken_jwt('company'), (req, res) => {
+app.get('/espacioEmp', verificacionToken_jwt('company'), (req, res) => {
     console.log('Accediendo una empresa');
-    res.render('acercaDeE.ejs'); 
+    res.render('espacioEmp.ejs'); 
 });
 
-app.get('/eventos', verificacionToken_jwt(['user', 'company']), (req, res) => {
+
+app.get('/crear_evento',verificacionToken_jwt('company'), (req, res) => {
+    console.log('Se recibió una solicitud INDEX');
+    res.render('crear_evento.ejs');
+});
+
+app.get('/mostrar_evento', verificacionToken_jwt(['user', 'company']), (req, res) => {
     console.log('Accediendo una empresa y usuario');
-    res.render('eventos.ejs');
+    res.render('mostrar_evento.ejs');
 });
 
 // Configuracion del servidor

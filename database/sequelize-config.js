@@ -107,10 +107,39 @@ const Persona = sequelize.define('Persona', {
         tableName: 'persona' // Nombre de la tabla en la base de datos
     });
 
+
+
+  const Evento = sequelize.define('Evento', {
+      id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      titulo: {
+        type: Sequelize.STRING(255),
+        allowNull: false
+      },
+      descripcion: {
+        type: Sequelize.TEXT
+      },
+      numero_entradas: {
+        type: Sequelize.INTEGER
+      },
+      localizacion: {
+        type: Sequelize.STRING(255)
+      },
+      precio: {
+        type: Sequelize.DECIMAL(10, 2)
+      }},
+      {
+          tableName: 'evento' // Nombre de la tabla en la base de datos
+      });
+
 // Exporta los modelos junto con la instancia de Sequelize
 module.exports = {
     sequelize,
     Usuario,
     Compania,
     Persona,
+    Evento
 };

@@ -46,7 +46,7 @@ async function login(req, res) {
                 res.redirect('/espacioUs1');
                 break;
             case 'company':
-                res.redirect('/acercaDeE');
+                res.redirect('/espacioEmp');
                 break;
             default:
                 res.status(500).send('El rol del usuario no está definido correctamente');
