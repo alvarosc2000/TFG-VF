@@ -109,14 +109,16 @@
             });
 
 
-            // Controlador de eventos de clic en el botón de información
+           // Controlador de eventos de clic en el botón de información
             $(document).on('click', '.info-event-button', function(e){
-                e.preventDefault(); // Evita que el enlace se comporte como un enlace normal
-                var eventId = $(this).data('id');
-                console.log('Clic en botón de información detectado para el evento ID:', eventId);
+            e.preventDefault(); // Evita que el enlace se comporte como un enlace normal
+            var eventId = $(this).data('id');
+            console.log('Clic en botón de información detectado para el evento ID:', eventId);
 
-                // Aquí puedes redirigir a la página de información del evento usando window.location
+            // Redirigir a la página de información del evento con el ID como parámetro en la URL
+            window.location.href = '/informacion_evento?id=' + eventId;
             });
+
         });
     </script>
 </body>

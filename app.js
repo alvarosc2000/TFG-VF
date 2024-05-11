@@ -158,6 +158,19 @@ app.get('/editar_evento', verificacionToken_jwt('company'), async (req, res) => 
     }
 });
 
+app.get('/informacion_evento', async (req, res) => {
+    const eventId = req.query.id;  // Asegúrate de que este parámetro corresponde al que estás usando en la URL
+    try {
+        const evento = await eventoController.obtenerEventoPorId(eventId);
+        res.render('informacion_evento.ejs', { evento: evento });
+    } catch (error) {
+        console.error('Error al obtener el evento:', error);
+        res.status(500).send('Hubo un error al obtener los datos del evento');
+    }
+});
+
+
+
 
 
 // Configuracion del servidor
