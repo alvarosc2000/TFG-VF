@@ -5,7 +5,7 @@ const sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USER, pr
     dialect: 'mysql',
     define: {
       timestamps: false // Desactivar la generación automática de createdAt y updatedAt
-    }
+    },
   });
   
 

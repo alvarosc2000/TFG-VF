@@ -31,6 +31,43 @@ app.post('/login', authController.login);
 app.post('/auth', authController.login);
 app.post('/crear_evento',eventoController.guardarEvento);
 
+
+app.post('/api/eventos/:id/actualizar', async (req, res) => {
+    console.log('Solicitud de actualización recibida');
+    const eventId = req.params.id;
+    const updatedEventData = req.body;
+
+    try {
+        const result = await eventoController.actualizarEvento(eventId, updatedEventData);
+        res.status(200).json(result);
+    } catch (error) {
+        console.error('Error al actualizar el evento:', error);
+        res.status(500).json({ error: 'Hubo un error al actualizar el evento' });
+    }
+});
+
+
+
+
+app.get('/api/eliminar_evento', eventoController.eliminarEvento);
+app.get('/api/editar_evento',eventoController.actualizarEvento);
+
+
+app.get('/api/eventos/:id/actualizar', async (req, res) => {
+    try {
+        const eventId = req.params.id; // Obtener el ID del evento desde los parámetros de la URL
+        const updatedEventData = req.body; // Pasar los datos del evento actualizados
+        await eventoController.actualizarEvento(eventId, updatedEventData);
+        res.status(200).json({ message: 'Evento actualizado exitosamente' });
+    } catch (error) {
+        console.error('Error al actualizar el evento:', error);
+        res.status(500).json({ error: 'Hubo un error al actualizar el evento' });
+    }
+});
+
+
+
+
 // Vistas/Páginas públicas
 app.get('/', (req, res) => {
     console.log('Se recibió una solicitud INDEX');
@@ -50,11 +87,6 @@ app.get('/inicio_sesion', (req, res) => {
 app.get('/registro_empresa', (req, res) => {
     console.log('Se recibió una solicitud REGISTRO EMPRESA');
     res.render('registro_empresa.ejs');
-});
-
-app.get('/registro_usuario', (req, res) => {
-    console.log('Se recibió una solicitud REGISTRO USUARIO');
-    res.render('registro_usuario.ejs');
 });
 
 app.get('/index', (req, res) => {
@@ -112,6 +144,21 @@ app.get('/mostrar_evento', verificacionToken_jwt(['user', 'company']), (req, res
     console.log('Accediendo una empresa y usuario');
     res.render('mostrar_evento.ejs');
 });
+
+// Ruta para editar evento
+app.get('/editar_evento', verificacionToken_jwt('company'), async (req, res) => {
+    try {
+        const eventId = req.query.id;
+        // Obtener los datos del evento por su ID
+        const eventoData = await eventoController.obtenerEventoPorId(eventId);
+        res.render('editar_evento.ejs', { eventId: eventId, evento: eventoData });
+    } catch (error) {
+        console.error('Error al obtener los datos del evento:', error);
+        res.status(500).send('Hubo un error al obtener los datos del evento');
+    }
+});
+
+
 
 // Configuracion del servidor
 const PORT = process.env.PORT || 4000;
