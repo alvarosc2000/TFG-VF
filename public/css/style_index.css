@@ -1,13 +1,27 @@
+/* Agrega margen superior al contenedor de la barra de navegación */
+.navbar {
+    margin-bottom: 100px;
+}
+
+/* Ajusta el margen del contenedor principal del contenido */
+.nivel-superior,
+.nivel-inferior {
+    margin-top: 20px;
+}
+
+/* Ajusta el margen entre los contenedores de contenido */
+.contenedor {
+    margin: 20px auto; /* En lugar de usar margen negativo */
+}
+
+/* Ajusta el margen horizontal de los contenedores de contenido */
+.contenido {
+    margin: 0 10px; /* Reducir el margen horizontal */
+}
+
+
 body {
-    margin: 0%;
-    padding: 0%;
-    font-family: 'Times New Roman', Times, serif;
-    height: 90vh;
-    background-image: url("gente-caminando-juntos-al-aire-libre-plano-medio.jpg");
-    background-attachment: initial;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center ;
+    background-color: #f2f2f2;
 }
 
 .contenedor {
@@ -69,20 +83,7 @@ h1 {
     transition: all 0.3s ease;
 }
 
-.menu-items {
-    display: none;
-    position: absolute;
-    top: 0px;
-    left: 0;
-    background-color: #029a0a;
-    width: 200px;
-    padding: 10px;
-    list-style-type: none;
-    font-size: medium;
-    height: calc(100vh - 100px); /* Calcula la altura del menú para que ocupe toda la pantalla */
-    transition: opacity 0.5s ease; /* Transición lenta de 0.5 segundos */
-    opacity: 0; /* Comienza con opacidad 0 para que el menú sea invisible inicialmente */
-}
+
 
 .menu-items li {
     margin-bottom: 10px;
