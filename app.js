@@ -23,6 +23,7 @@ const userController = require('./public/controladores/userController');
 const companyController = require('./public/controladores/companyController');
 const verificacionToken_jwt = require('./public/controladores/jwtMiddleware');
 const eventoController = require('./public/controladores/eventoController');
+const { obtenerEventosPorCategoria } = require('./public/controladores/eventoController');
 
 // Rutas
 app.post('/registro_nuevo', userController.registro_usuario);
@@ -66,6 +67,48 @@ app.get('/api/eventos/:id/actualizar', async (req, res) => {
 });
 
 
+app.get('/eventos/categoria_clases', async (req, res) => {
+    try {
+        const eventos = await obtenerEventosPorCategoria('clases');
+        res.render('vista_eventos_categoria.ejs', { eventos: eventos, titulo: "Eventos de Clases" });
+    } catch (error) {
+        console.error('Error al cargar la página de eventos de clases:', error);
+        res.status(500).send('Hubo un error al obtener los eventos de clases');
+    }
+});
+
+
+app.get('/eventos/categoria_campus', async (req, res) => {
+    try {
+        const eventos = await obtenerEventosPorCategoria('campus');
+        res.render('vista_eventos_categoria.ejs', { eventos: eventos, titulo: "Eventos de campus" });
+    } catch (error) {
+        console.error('Error al cargar la página de eventos de campus:', error);
+        res.status(500).send('Hubo un error al obtener los eventos de campus');
+    }
+});
+
+
+app.get('/eventos/categoria_partidos', async (req, res) => {
+    try {
+        const eventos = await obtenerEventosPorCategoria('partido');
+        res.render('vista_eventos_partidos.ejs', { eventos: eventos, titulo: "Eventos de campus" });
+    } catch (error) {
+        console.error('Error al cargar la página de eventos de partidos:', error);
+        res.status(500).send('Hubo un error al obtener los eventos de partidos');
+    }
+});
+
+
+app.get('/eventos/categoria_evento', async (req, res) => {
+    try {
+        const eventos = await obtenerEventosPorCategoria('evento');
+        res.render('vista_eventos_evento.ejs', { eventos: eventos, titulo: "Eventos de evento" });
+    } catch (error) {
+        console.error('Error al cargar la página de eventos de evento:', error);
+        res.status(500).send('Hubo un error al obtener los eventos de evento');
+    }
+});
 
 
 // Vistas/Páginas públicas

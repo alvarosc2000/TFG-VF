@@ -65,9 +65,24 @@ async function actualizarEvento(eventId, updatedEventData) {
     }
 }
 
+
+async function obtenerEventosPorCategoria(categoria) {
+    try {
+        const eventos = await Evento.findAll({
+            where: { categoria: categoria }
+        });
+        return eventos;
+    } catch (error) {
+        console.error('Error al obtener eventos por categoría:', error);
+        throw new Error('Hubo un error al obtener eventos por categoría');
+    }
+}
+
+
 module.exports = {
     guardarEvento,
     eliminarEvento,
     obtenerEventoPorId,
-    actualizarEvento
+    actualizarEvento,
+    obtenerEventosPorCategoria
 };
