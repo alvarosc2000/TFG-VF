@@ -130,7 +130,19 @@ const Persona = sequelize.define('Persona', {
       },
       precio: {
         type: Sequelize.DECIMAL(10, 2)
-      }},
+      },
+      fecha_inicio: {
+        type: Sequelize.DATE
+      },
+      fecha_fin: {
+        type: Sequelize.DATE
+      },
+      deporte: {
+        type: Sequelize.TEXT
+      },
+      categoria: {
+        type: Sequelize.TEXT
+      },},
       {
           tableName: 'evento' // Nombre de la tabla en la base de datos
       });

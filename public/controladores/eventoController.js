@@ -1,7 +1,7 @@
 const { Evento } = require('../../database/sequelize-config');
 
 async function guardarEvento(req, res) {
-    const { titulo, descripcion, numero_entradas, localizacion, precio } = req.body;
+    const { titulo, descripcion, numero_entradas, localizacion, precio, categoria,deporte, fecha_inicio , fecha_fin} = req.body;
 
     try {
         await Evento.create({
@@ -9,7 +9,12 @@ async function guardarEvento(req, res) {
             descripcion: descripcion,
             numero_entradas: numero_entradas,
             localizacion: localizacion,
-            precio: precio
+            precio: precio,
+            categoria: categoria,
+            deporte: deporte,
+            fecha_inicio: fecha_inicio,
+            fecha_fin: fecha_fin
+
         });
 
         res.send('Evento creado exitosamente');

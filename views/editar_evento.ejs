@@ -27,6 +27,18 @@
             <label for="precio">Precio:</label>
             <input type="number" id="precio" name="precio" value="<%= evento.precio %>"><br>
 
+            <label for="categoria">Categoria:</label>
+            <input type="text" id="categoria" name="categoria" value="<%= evento.categoria %>"><br>
+
+            <label for="deporte">Deporte:</label>
+            <input type="text" id="deporte" name="deporte" value="<%= evento.deporte %>"><br>
+
+            <label for="fecha_inicio">Fecha inicio:</label>
+            <input type="date" id="fecha_inicio" name="fecha_inicio" value="<%= evento.fecha_inicio %>"><br>
+
+            <label for="fecha_fin">Fecha fin:</label>
+            <input type="date" id="fecha_fin" name="fecha_fin" value="<%= evento.fecha_fin %>"><br>
+
             <input type="hidden" id="eventId" name="eventId" value="<%= evento.id %>">
             <button type="submit">Guardar Cambios</button>
         </form>
@@ -44,7 +56,11 @@
         descripcion: $('#descripcion').val(),
         numero_entradas: $('#numero_entradas').val(),
         localizacion: $('#localizacion').val(),
-        precio: $('#precio').val()
+        precio: $('#precio').val(),
+        deporte: $('#deporte').val(),
+        categoria: $('#categoria').val(),
+        fecha_inicio: $('#fecha_inicio').val(),
+        fecha_fin: $('#fecha_fin').val()
     };
 
     var eventId = $('#eventId').val();
