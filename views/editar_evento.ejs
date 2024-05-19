@@ -31,10 +31,10 @@
             <input type="text" id="deporte" name="deporte" value="<%= evento.deporte %>"><br>
 
             <label for="fecha_inicio">Fecha de inicio:</label>
-            <input type="date" id="fecha_inicio" name="fecha_inicio" value="<%= new Date(evento.fecha_inicio) %>"><br>
+            <input type="date" id="fecha_inicio" name="fecha_inicio" value="<%= evento.fecha_inicio %>"><br>
 
             <label for="fecha_fin">Fecha de fin:</label>
-            <input type="date" id="fecha_fin" name="fecha_fin" value="<%= new Date(evento.fecha_fin)%>"><br>
+            <input type="date" id="fecha_fin" name="fecha_fin" value="<%=evento.fecha_fin%>"><br>
 
             <!-- Contenedor para campos específicos de la categoría -->
             <div id="categoriaCampos"></div>
