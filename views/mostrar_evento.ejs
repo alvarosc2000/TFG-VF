@@ -36,7 +36,6 @@
     </div>
   </nav>
 
-
 <body>
     <div class="container mt-4">
         <h1>Eventos</h1>
@@ -49,7 +48,6 @@
                     <th scope="col">Entradas</th>
                     <th scope="col">Localización</th>
                     <th scope="col">Precio</th>
-                    <th scope="col">Categoria</th>
                     <th scope="col">Deporte</th>
                     <th scope="col">Fecha Inicio</th>
                     <th scope="col">Fecha Fin</th>
@@ -85,7 +83,6 @@
                                 <td>${evento.numero_entradas}</td>
                                 <td>${evento.localizacion}</td>
                                 <td>${evento.precio}</td>
-                                <td>${evento.categoria}</td>
                                 <td>${evento.deporte}</td>
                                 <td>${evento.fecha_inicio}</td>
                                 <td>${evento.fecha_fin}</td>
@@ -97,6 +94,7 @@
                                         <a href="#" class="create-event-button edit-event-button" data-id="${evento.id}">
                                             <i class='bx bxs-edit'></i>Editar
                                         </a>
+
                                         <a href="#" class="create-event-button info-event-button" data-id="${evento.id}">
                                             <i class='bx bx-info-circle'></i>Información
                                         </a>
@@ -123,38 +121,35 @@
 
                 // Hacer la solicitud AJAX para eliminar el evento
                 $.ajax({
-                    url: '/api/eliminar_evento?id=' + eventId,
-                    method: 'GET',
-                    success: function(response){
-                        console.log('Evento eliminado de la base de datos:', response);
-                    },
-                    error: function(error){
+                    url: '/api/eliminar_evento/' + eventId, // Asegúrate de que la URL es correcta
+                    method: 'DELETE',
+                        success: function(response) {
+                            console.log('Evento eliminado de la base de datos:', response);
+                        },
+                        error: function(error) {
                         console.error('Error al eliminar el evento:', error);
                         alert('Hubo un error al eliminar el evento. Por favor, inténtalo de nuevo más tarde.');
                     }
                 });
+
             });
 
-            // Controlador de eventos de clic en el botón de editar
-            $(document).on('click', '.edit-event-button', function(e){
-            e.preventDefault(); // Evita que el enlace se comporte como un enlace normal
-            var eventId = $(this).data('id');
-            console.log('Clic en botón de editar detectado para el evento ID:', eventId);
+// Controlador de eventos de clic en el botón de editar
+$(document).on('click', '.edit-event-button', function(e) {
+    e.preventDefault();
+    var eventId = $(this).data('id');
+    window.location.href = '/editar_evento/' + eventId; // Cambio aquí
+});
 
-             // Redirigir a la página de edición del evento con el ID como parámetro en la URL
-                window.location.href = '/editar_evento?id=' + eventId;
-            });
+// Controlador de eventos de clic en el botón de información
+$(document).on('click', '.info-event-button', function(e) {
+    e.preventDefault();
+    var eventId = $(this).data('id');
+    window.location.href = '/informacion_evento/' + eventId; // Cambio aquí
+});
 
 
-           // Controlador de eventos de clic en el botón de información
-            $(document).on('click', '.info-event-button', function(e){
-            e.preventDefault(); // Evita que el enlace se comporte como un enlace normal
-            var eventId = $(this).data('id');
-            console.log('Clic en botón de información detectado para el evento ID:', eventId);
 
-            // Redirigir a la página de información del evento con el ID como parámetro en la URL
-            window.location.href = '/informacion_evento?id=' + eventId;
-            });
 
         });
     </script>

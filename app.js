@@ -3,18 +3,22 @@ const app = express();
 const session = require('express-session');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser'); // Asegúrate de incluir esto
 
 dotenv.config({ path: './env/.env' });
 
 // Middlewares
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true })); // Asegúrate de incluir esto
+app.use(bodyParser.json()); // Asegúrate de incluir esto
 app.use('/resources', express.static('public'));
 app.use('/resources', express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
 app.use(cookieParser());
 app.use('/api', require('./public/controladores/obtenerEventos'));
+const { sequelize, Evento, EventoClase, EventoPartido, EventoCampus, EventoOcasion } = require('./database/sequelize-config');
 
 
 // Controladores
@@ -23,93 +27,16 @@ const userController = require('./public/controladores/userController');
 const companyController = require('./public/controladores/companyController');
 const verificacionToken_jwt = require('./public/controladores/jwtMiddleware');
 const eventoController = require('./public/controladores/eventoController');
-const { obtenerEventosPorCategoria } = require('./public/controladores/eventoController');
 
 // Rutas
 app.post('/registro_nuevo', userController.registro_usuario);
 app.post('/registro_nuevo', companyController.registroEmpresa);
 app.post('/login', authController.login);
 app.post('/auth', authController.login);
-app.post('/crear_evento',eventoController.guardarEvento);
+app.post('/crear_evento', eventoController.guardarEvento);
+app.post('/api/eventos/crear', eventoController.guardarEvento);
 
-
-app.post('/api/eventos/:id/actualizar', async (req, res) => {
-    console.log('Solicitud de actualización recibida');
-    const eventId = req.params.id;
-    const updatedEventData = req.body;
-
-    try {
-        const result = await eventoController.actualizarEvento(eventId, updatedEventData);
-        res.status(200).json(result);
-    } catch (error) {
-        console.error('Error al actualizar el evento:', error);
-        res.status(500).json({ error: 'Hubo un error al actualizar el evento' });
-    }
-});
-
-
-
-
-app.get('/api/eliminar_evento', eventoController.eliminarEvento);
-app.get('/api/editar_evento',eventoController.actualizarEvento);
-
-
-app.get('/api/eventos/:id/actualizar', async (req, res) => {
-    try {
-        const eventId = req.params.id; // Obtener el ID del evento desde los parámetros de la URL
-        const updatedEventData = req.body; // Pasar los datos del evento actualizados
-        await eventoController.actualizarEvento(eventId, updatedEventData);
-        res.status(200).json({ message: 'Evento actualizado exitosamente' });
-    } catch (error) {
-        console.error('Error al actualizar el evento:', error);
-        res.status(500).json({ error: 'Hubo un error al actualizar el evento' });
-    }
-});
-
-
-app.get('/eventos/categoria_clases', async (req, res) => {
-    try {
-        const eventos = await obtenerEventosPorCategoria('clases');
-        res.render('vista_eventos_categoria.ejs', { eventos: eventos, titulo: "Eventos de Clases" });
-    } catch (error) {
-        console.error('Error al cargar la página de eventos de clases:', error);
-        res.status(500).send('Hubo un error al obtener los eventos de clases');
-    }
-});
-
-
-app.get('/eventos/categoria_campus', async (req, res) => {
-    try {
-        const eventos = await obtenerEventosPorCategoria('campus');
-        res.render('vista_eventos_categoria.ejs', { eventos: eventos, titulo: "Eventos de campus" });
-    } catch (error) {
-        console.error('Error al cargar la página de eventos de campus:', error);
-        res.status(500).send('Hubo un error al obtener los eventos de campus');
-    }
-});
-
-
-app.get('/eventos/categoria_partidos', async (req, res) => {
-    try {
-        const eventos = await obtenerEventosPorCategoria('partido');
-        res.render('vista_eventos_partidos.ejs', { eventos: eventos, titulo: "Eventos de campus" });
-    } catch (error) {
-        console.error('Error al cargar la página de eventos de partidos:', error);
-        res.status(500).send('Hubo un error al obtener los eventos de partidos');
-    }
-});
-
-
-app.get('/eventos/categoria_evento', async (req, res) => {
-    try {
-        const eventos = await obtenerEventosPorCategoria('evento');
-        res.render('vista_eventos_evento.ejs', { eventos: eventos, titulo: "Eventos de evento" });
-    } catch (error) {
-        console.error('Error al cargar la página de eventos de evento:', error);
-        res.status(500).send('Hubo un error al obtener los eventos de evento');
-    }
-});
-
+app.delete('/api/eliminar_evento/:id', eventoController.eliminarEvento);
 
 // Vistas/Páginas públicas
 app.get('/', (req, res) => {
@@ -169,16 +96,15 @@ app.use((err, req, res, next) => {
 // Rutas privadas para usuarios y empresas
 app.get('/espacioUs1', verificacionToken_jwt('user'), (req, res) => {
     console.log('Accediendo un usuario');
-    res.render('espacioUs1.ejs'); 
+    res.render('espacioUs1.ejs');
 });
 
 app.get('/espacioEmp', verificacionToken_jwt('company'), (req, res) => {
     console.log('Accediendo una empresa');
-    res.render('espacioEmp.ejs'); 
+    res.render('espacioEmp.ejs');
 });
 
-
-app.get('/crear_evento',verificacionToken_jwt('company'), (req, res) => {
+app.get('/crear_evento', verificacionToken_jwt('company'), (req, res) => {
     console.log('Se recibió una solicitud INDEX');
     res.render('crear_evento.ejs');
 });
@@ -188,35 +114,57 @@ app.get('/mostrar_evento', verificacionToken_jwt(['user', 'company']), (req, res
     res.render('mostrar_evento.ejs');
 });
 
-// Ruta para editar evento
-app.get('/editar_evento', verificacionToken_jwt('company'), async (req, res) => {
+app.get('/informacion_evento/:id', async (req, res) => {
+    const eventId = req.params.id;
+    const resultado = await eventoController.obtenerEventoPorId(eventId);
+    if (resultado.error) {
+        return res.status(resultado.status).send(resultado.error);
+    }
+    res.render('informacion_evento', { evento: resultado.data, categoria: resultado.categoria });
+});
+
+app.get('/editar_evento/:id', async (req, res) => {
+    const eventId = req.params.id;
+    const resultado = await eventoController.obtenerEventoPorId(eventId);
+    if (resultado.error) {
+        return res.status(resultado.status).send(resultado.error);
+    }
+    res.render('editar_evento', { evento: resultado.data, categoria: resultado.categoria });
+});
+
+// POST Endpoint to Update Event
+app.post('/api/eventos/:id/actualizar', async (req, res) => {
+    const eventId = req.params.id;
+    const { titulo, descripcion, numero_entradas, localizacion, precio, deporte, fecha_inicio, fecha_fin, instructor, duracion, nivel, equipo_local, equipo_visitante, liga, programa, tipo_ocasion } = req.body;
+
     try {
-        const eventId = req.query.id;
-        // Obtener los datos del evento por su ID
-        const eventoData = await eventoController.obtenerEventoPorId(eventId);
-        res.render('editar_evento.ejs', { eventId: eventId, evento: eventoData });
+        const evento = await Evento.findByPk(eventId);
+        if (!evento) {
+            return res.status(404).send('Evento no encontrado');
+        }
+
+        // Update general event details
+        await evento.update({ titulo, descripcion, numero_entradas, localizacion, precio, deporte, fecha_inicio, fecha_fin });
+
+        // Update specific category details
+        if (instructor) {
+            await EventoClase.update({ instructor, duracion, nivel }, { where: { evento_id: eventId } });
+        } else if (equipo_local) {
+            await EventoPartido.update({ equipo_local, equipo_visitante, liga }, { where: { evento_id: eventId } });
+        } else if (programa) {
+            await EventoCampus.update({ programa }, { where: { evento_id: eventId } });
+        } else if (tipo_ocasion) {
+            await EventoOcasion.update({ tipo_ocasion }, { where: { evento_id: eventId } });
+        }
+
+        res.json({ message: 'Evento actualizado correctamente' });
     } catch (error) {
-        console.error('Error al obtener los datos del evento:', error);
-        res.status(500).send('Hubo un error al obtener los datos del evento');
+        console.error('Error al actualizar el evento:', error);
+        res.status(500).send('Error al actualizar el evento');
     }
 });
 
-app.get('/informacion_evento', async (req, res) => {
-    const eventId = req.query.id;  // Asegúrate de que este parámetro corresponde al que estás usando en la URL
-    try {
-        const evento = await eventoController.obtenerEventoPorId(eventId);
-        res.render('informacion_evento.ejs', { evento: evento });
-    } catch (error) {
-        console.error('Error al obtener el evento:', error);
-        res.status(500).send('Hubo un error al obtener los datos del evento');
-    }
-});
-
-
-
-
-
-// Configuracion del servidor
+// Configuración del servidor
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
     console.log(`Servidor en funcionamiento en http://localhost:${PORT}`);

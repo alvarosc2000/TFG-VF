@@ -4,72 +4,135 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Crear Evento</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-          <a class="navbar-brand" href="/">ALLSPORT</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#"></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/espacioEmp">Espacio Empresa</a>
-              </li>
-    
-              <li class="nav-item">
-                <a class="nav-link" href="/index">Más Información</a>
-              </li>
-              
-              <li class="nav-item">
-                <a class="nav-link" href="/logout">Cerrar Sesión</a>
-              </li>
-    
-          </div>
+            <a class="navbar-brand" href="/">ALLSPORT</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/espacioEmp">Espacio Empresa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/index">Más Información</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Cerrar Sesión</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </nav>
+    </nav>
 
     <div class="container mt-4">
-        <h1>Crear Evento</h1>
-        <!-- Formulario para crear un nuevo evento -->
-        <form action="crear_evento" method="POST">
-            <!-- Campos del formulario -->
-            <!-- Título -->
+        <h1>Cree su evento</h1>
+        <form action="/api/eventos/crear" method="POST">
             <div class="mb-3">
                 <label for="titulo" class="form-label">Título</label>
                 <input type="text" class="form-control" id="titulo" name="titulo" required>
             </div>
-            <!-- Descripción -->
             <div class="mb-3">
                 <label for="descripcion" class="form-label">Descripción</label>
                 <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
             </div>
-            <!-- Número de entradas -->
             <div class="mb-3">
                 <label for="numero_entradas" class="form-label">Número de Entradas</label>
                 <input type="number" class="form-control" id="numero_entradas" name="numero_entradas" required>
             </div>
-            <!-- Localización -->
             <div class="mb-3">
                 <label for="localizacion" class="form-label">Localización</label>
                 <input type="text" class="form-control" id="localizacion" name="localizacion" required>
             </div>
-            <!-- Precio -->
+            <div class="mb-3">
+                <label for="deporte" class="form-label">Deporte</label>
+                <input type="text" class="form-control" id="deporte" name="deporte" required>
+            </div>
+            <div class="mb-3">
+                <label for="fecha_inicio" class="form-label">Fecha Inicio</label>
+                <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" required>
+            </div>
+            <div class="mb-3">
+                <label for="fecha_fin" class="form-label">Fecha Fin</label>
+                <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" required>
+            </div>
             <div class="mb-3">
                 <label for="precio" class="form-label">Precio</label>
-                <input type="number" step="0.01" class="form-control" id="precio" name="precio" required>
+                <input type="number" class="form-control" id="precio" name="precio" step="0.01" required>
             </div>
-            <!-- Botón para crear el evento -->
+            <div class="mb-3">
+                <label for="categoria" class="form-label">Categoría</label>
+                <select class="form-control" id="categoria" name="categoria" required onchange="cambiarCamposCategoria()">
+                    <option value="">Seleccione una categoría</option>
+                    <option value="clases">Clases</option>
+                    <option value="partidos">Partidos</option>
+                    <option value="campus">Campus</option>
+                    <option value="ocasion">Ocasión</option>
+                </select>
+            </div>
+            <div id="camposCategoria"></div>
             <button type="submit" class="btn btn-primary">Crear Evento</button>
         </form>
     </div>
 
-    <!-- Scripts de Bootstrap -->
+    <script>
+        function cambiarCamposCategoria() {
+            var categoria = document.getElementById('categoria').value;
+            var camposCategoria = document.getElementById('camposCategoria');
+            camposCategoria.innerHTML = ''; // Limpiar los campos adicionales
+
+            switch(categoria) {
+                case 'clases':
+                    camposCategoria.innerHTML += `
+                        <div class="mb-3">
+                            <label for="instructor" class="form-label">Instructor</label>
+                            <input type="text" class="form-control" id="instructor" name="instructor" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="duracion" class="form-label">Duración</label>
+                            <input type="text" class="form-control" id="duracion" name="duracion" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nivel" class="form-label">Duración</label>
+                            <input type="text" class="form-control" id="nivel" name="nivel" required>
+                        </div>`;
+                    break;
+                case 'partidos':
+                    camposCategoria.innerHTML += `
+                        <div class="mb-3">
+                            <label for="equipo_local" class="form-label">Equipo Local</label>
+                            <input type="text" class="form-control" id="equipo_local" name="equipo_local" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="equipo_visitante" class="form-label">Equipo Visitante</label>
+                            <input type="text" class="form-control" id="equipo_visitante" name="equipo_visitante" required>
+                        </div>`;
+                    break;
+                case 'campus':
+                    camposCategoria.innerHTML += `
+                        <div class="mb-3">
+                            <label for="programa" class="form-label">Actividades</label>
+                            <input type="text" class="form-control" id="programa" name="programa" required>
+                        </div>`;
+                    break;
+                case 'ocasion':
+                    camposCategoria.innerHTML += `
+                        <div class="mb-3">
+                            <label for="tipo_ocasion" the form-label">Temática</label>
+                            <input type="text" class="form-control" id="tipo_ocasion" name="tipo_ocasion" required>
+                        </div>`;
+                    break;
+            }
+        }
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
