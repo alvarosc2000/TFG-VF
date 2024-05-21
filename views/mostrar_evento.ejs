@@ -39,6 +39,27 @@
 <body>
     <div class="container mt-4">
         <h1>Eventos</h1>
+
+        <!-- Filtros -->
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label for="filterOrder" class="form-label">Ordenar por</label>
+                <select class="form-control" id="filterOrder">
+                    <option value="titulo">Título</option>
+                    <option value="precio">Precio</option>
+                    <option value="fecha_inicio">Fecha Inicio</option>
+                    <option value="fecha_fin">Fecha Fin</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="filterOrderDirection" class="form-label">Dirección</label>
+                <select class="form-control" id="filterOrderDirection">
+                    <option value="asc">Ascendente</option>
+                    <option value="desc">Descendente</option>
+                </select>
+            </div>
+        </div>
+
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -68,41 +89,51 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function(){
+            // Variables globales para almacenamiento de eventos y filtrado
+            let eventos = [];
+            let filteredEventos = [];
+
+            // Función para renderizar la tabla
+            function renderTable(data) {
+                $('#tablaEventos').empty();
+                data.forEach(function(evento, index){
+                    $('#tablaEventos').append(`
+                        <tr>
+                            <th scope="row">${index + 1}</th>
+                            <td>${evento.titulo}</td>
+                            <td>${evento.descripcion}</td>
+                            <td>${evento.numero_entradas}</td>
+                            <td>${evento.localizacion}</td>
+                            <td>${evento.precio}</td>
+                            <td>${evento.deporte}</td>
+                            <td>${evento.fecha_inicio}</td>
+                            <td>${evento.fecha_fin}</td>
+                            <td>
+                                <div class="btn-group" role="group" aria-label="Acciones">
+                                    <a href="#" class="create-event-button delete-event-button" data-id="${evento.id}">
+                                        <i class='bx bxs-eraser'></i>Eliminar
+                                    </a>
+                                    <a href="#" class="create-event-button edit-event-button" data-id="${evento.id}">
+                                        <i class='bx bxs-edit'></i>Editar
+                                    </a>
+                                    <a href="#" class="create-event-button info-event-button" data-id="${evento.id}">
+                                        <i class='bx bx-info-circle'></i>Información
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    `);
+                });
+            }
+
             // Hacer la solicitud AJAX para obtener los datos de los eventos
             $.ajax({
                 url: '/api/mostrar_evento', // Cambia la URL aquí
                 method: 'GET',
                 success: function(response){
-                    // Iterar sobre los eventos recibidos y agregarlos a la tabla
-                    response.forEach(function(evento, index){
-                        $('#tablaEventos').append(`
-                            <tr>
-                                <th scope="row">${index + 1}</th>
-                                <td>${evento.titulo}</td>
-                                <td>${evento.descripcion}</td>
-                                <td>${evento.numero_entradas}</td>
-                                <td>${evento.localizacion}</td>
-                                <td>${evento.precio}</td>
-                                <td>${evento.deporte}</td>
-                                <td>${evento.fecha_inicio}</td>
-                                <td>${evento.fecha_fin}</td>
-                                <td>
-                                    <div class="btn-group" role="group" aria-label="Acciones">
-                                        <a href="#" class="create-event-button delete-event-button" data-id="${evento.id}">
-                                            <i class='bx bxs-eraser'></i>Eliminar
-                                        </a>
-                                        <a href="#" class="create-event-button edit-event-button" data-id="${evento.id}">
-                                            <i class='bx bxs-edit'></i>Editar
-                                        </a>
-
-                                        <a href="#" class="create-event-button info-event-button" data-id="${evento.id}">
-                                            <i class='bx bx-info-circle'></i>Información
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        `);
-                    });
+                    eventos = response;
+                    filteredEventos = response;
+                    renderTable(response);
                 },
                 error: function(error){
                     console.error('Error al obtener los eventos:', error);
@@ -123,34 +154,47 @@
                 $.ajax({
                     url: '/api/eliminar_evento/' + eventId, // Asegúrate de que la URL es correcta
                     method: 'DELETE',
-                        success: function(response) {
-                            console.log('Evento eliminado de la base de datos:', response);
-                        },
-                        error: function(error) {
+                    success: function(response) {
+                        console.log('Evento eliminado de la base de datos:', response);
+                    },
+                    error: function(error) {
                         console.error('Error al eliminar el evento:', error);
                         alert('Hubo un error al eliminar el evento. Por favor, inténtalo de nuevo más tarde.');
                     }
                 });
-
             });
 
-// Controlador de eventos de clic en el botón de editar
-$(document).on('click', '.edit-event-button', function(e) {
-    e.preventDefault();
-    var eventId = $(this).data('id');
-    window.location.href = '/editar_evento/' + eventId; // Cambio aquí
-});
+            // Controlador de eventos de clic en el botón de editar
+            $(document).on('click', '.edit-event-button', function(e) {
+                e.preventDefault();
+                var eventId = $(this).data('id');
+                window.location.href = '/editar_evento/' + eventId; // Cambio aquí
+            });
 
-// Controlador de eventos de clic en el botón de información
-$(document).on('click', '.info-event-button', function(e) {
-    e.preventDefault();
-    var eventId = $(this).data('id');
-    window.location.href = '/informacion_evento/' + eventId; // Cambio aquí
-});
+            // Controlador de eventos de clic en el botón de información
+            $(document).on('click', '.info-event-button', function(e) {
+                e.preventDefault();
+                var eventId = $(this).data('id');
+                window.location.href = '/informacion_evento/' + eventId; // Cambio aquí
+            });
 
+            // Función para ordenar la tabla
+            function sortTable(column, order) {
+                const sortedEventos = [...filteredEventos].sort((a, b) => {
+                    if (a[column] < b[column]) return order === 'asc' ? -1 : 1;
+                    if (a[column] > b[column]) return order === 'asc' ? 1 : -1;
+                    return 0;
+                });
 
+                renderTable(sortedEventos);
+            }
 
-
+            // Evento de cambio en los filtros de ordenación
+            $('#filterOrder, #filterOrderDirection').on('change', function() {
+                const column = $('#filterOrder').val();
+                const order = $('#filterOrderDirection').val();
+                sortTable(column, order);
+            });
         });
     </script>
 </body>
