@@ -1,20 +1,21 @@
 body {
-    margin: 0;
-    padding: 0;
+    margin: 0%;
+    padding: 0%;
     font-family: 'Times New Roman', Times, serif;
-    height: 100vh;
-    display: flex;
-    justify-content: center; /* Centra horizontalmente */
-    align-items: center; /* Centra verticalmente */
-   background-image: url("gente-caminando-juntos-al-aire-libre-plano-medio.jpg"); 
-   /*background: linear-gradient(to bottom right, rgb(157, 188, 245), rgb(73, 73, 255));*/
+    height: 90vh;
+    background-image: url("gente-caminando-juntos-al-aire-libre-plano-medio.jpg");
     background-attachment: initial;
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: center ;
+    height: calc(120vh - 70px); /* Resta la altura de la barra de navegación */
+
 }
 
 .registro {
+    top: 15%;
+    right: 300px;
+    position: absolute; 
     background-color: aliceblue;
     text-align: left;
     width: 500px;

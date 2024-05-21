@@ -100,12 +100,6 @@ app.get('/logout', (req, res) => {
     });
 });
 
-// Error handling
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Hubo un error en el servidor');
-});
-
 // Rutas privadas para usuarios y empresas
 app.get('/espacioUs1', verificacionToken_jwt('user'), (req, res) => {
     console.log('Accediendo un usuario');
@@ -145,11 +139,26 @@ app.get('/editar_evento/:id', async (req, res) => {
     res.render('editar_evento', { evento: resultado.data, categoria: resultado.categoria });
 });
 
+app.get('/olvidarContrasena', (req, res) => {
+    console.log('Se recibió una solicitud OLVIDAR CONTRASEÑA');
+    res.render('olvidarContrasena.ejs');
+});
+
+app.post('/auth/forgot-password', userController.forgotPassword);
+app.get('/auth/reset-password/:token', userController.resetPasswordPage);
+app.post('/auth/reset-password/:token', userController.resetPassword);
+
 // POST Endpoint to Update Event
 app.post('/api/eventos/:id/actualizar', upload.array('fotos', 10), eventoController.actualizarEvento);
 
 // POST Endpoint to Upload Photo
 app.post('/api/eventos/:id/subirFoto', upload.single('foto'), eventoController.subirFoto);
+
+// Error handling
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Hubo un error en el servidor');
+});
 
 // Configuración del servidor
 const PORT = process.env.PORT || 4000;

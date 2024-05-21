@@ -6,8 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../resources/css/style_registro.css">
     <title>Formulario de Registro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">ALLSPORT</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Acerca de</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contacto</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
     <div class="registro">
         <h1>Formulario de Registro</h1>
@@ -28,7 +52,7 @@
             </div>
 
             <div class="div">
-                <select name="role" id="rol_select" required onchange="mostrarCampos()">
+                <select class="form-select" name="role" id="rol_select" required onchange="mostrarCampos()">
                     <option value="">Seleccionar Rol</option>
                     <option value="user">Usuario</option>
                     <option value="company">Empresa</option>
@@ -64,36 +88,7 @@
         </form>
     </div>
 
-    <script>
-        function mostrarCampos() {
-            var rolSelect = document.getElementById("rol_select");
-            var emailContainer = document.getElementById("email_container");
-            var nifContainer = document.getElementById("nif_container");
-            var contactoContainer = document.getElementById("contacto_container");
-            var nombreContainer = document.getElementById("nombre_container");
-            var apellidoContainer = document.getElementById("apellido_container");
+    <script src="../resources/javascript/registros_ajustes.js"></script>
 
-
-            if (rolSelect.value === "company") {
-                emailContainer.style.display = "block";
-                nifContainer.style.display = "block";
-                contactoContainer.style.display = "block";
-                nombreContainer.style.display = "none";
-                apellidoContainer.style.display = "none";
-            } else if(rolSelect.value == "user"){
-                nombreContainer.style.display = "block";
-                apellidoContainer.style.display = "block";
-                emailContainer.style.display = "block";
-                nifContainer.style.display = "none";
-                contactoContainer.style.display = "none";
-            }else {
-                emailContainer.style.display = "none";
-                nifContainer.style.display = "none";
-                contactoContainer.style.display = "none";
-                nombreContainer.style.display = "none";
-                apellidoContainer.style.display = "none";
-            }
-        }
-    </script>
 </body>
 </html>

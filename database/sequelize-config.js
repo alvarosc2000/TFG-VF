@@ -30,6 +30,10 @@ const Usuario = sequelize.define('Usuario', {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
     },
+    resetToken: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
     role: {
         type: DataTypes.ENUM('user', 'company'),
         allowNull: false,

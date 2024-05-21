@@ -24,6 +24,20 @@ const sendVerificationEmail = async (email, token) => {
     }
 }
 
+
+const sendPasswordResetEmail = async (email, token) => {
+    try {
+        return await transporter.sendMail({
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: "Restablecimiento de contraseña en ALLSPORT",
+            html: getPasswordResetTemplate(token),
+        });
+    } catch (error) {
+        console.log('ERROR CON EMAIL:', error);
+    }
+}
+
 // Función para generar el contenido HTML del correo electrónico de verificación
 function getTemplate (token) {
     return `
@@ -43,6 +57,24 @@ function getTemplate (token) {
     `;
 }
 
+function getPasswordResetTemplate(token) {
+    return `
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+            <meta charset="UTF-8">
+            <title>Restablecimiento de contraseña</title>
+        </head>
+        <body>
+            <h1>Restablecimiento de contraseña</h1>
+            <p>Haga clic en el siguiente enlace para restablecer su contraseña:</p>
+            <p><a href="http://localhost:4000/auth/reset-password/${token}">Restablecer contraseña</a></p>
+        </body>
+        </html>
+    `;
+}
+
 module.exports = {
-    sendVerificationEmail
+    sendVerificationEmail,
+    sendPasswordResetEmail
 }

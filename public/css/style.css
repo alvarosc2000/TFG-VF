@@ -8,6 +8,9 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center ;
+    height: calc(120vh - 70px); /* Resta la altura de la barra de navegación */
+    overflow-y: hidden; /*Quita la barra de windows*/
+
 }
 
 
@@ -17,12 +20,12 @@ body {
    position: absolute; 
    background-color: aliceblue;
    text-align: left;
-   width: 500px;
+   width: 550px;
    transform: translate(-50%, -50%);
    border-radius: 17px;
    border-color: black;
    font-size: 15pt;
-   height: 400px;
+   height: 450px;
    padding: 20px;
 }
 
