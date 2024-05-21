@@ -50,7 +50,6 @@ async function guardarEvento(req, res) {
                 return res.status(400).send('Categoría no válida');
         }
 
-        // Manejar fotos subidas
         if (req.files) {
             const fotoPromises = req.files.map(file => {
                 return FotoEvento.create({
@@ -78,7 +77,6 @@ async function obtenerEventoPorId(eventId) {
             return { error: 'Evento no encontrado', status: 404 };
         }
 
-        // Identificar la categoría del evento
         let categoria = '';
         if (evento.EventoClase) categoria = 'clase';
         else if (evento.EventoPartido) categoria = 'partido';
@@ -104,7 +102,6 @@ async function actualizarEvento(req, res) {
 
         await evento.update({ titulo, descripcion, numero_entradas, localizacion, precio, deporte, fecha_inicio, fecha_fin });
 
-        // Actualizar detalles específicos de la categoría
         if (instructor) {
             await EventoClase.update({ instructor, duracion, nivel }, { where: { evento_id: eventId } });
         } else if (equipo_local) {
@@ -115,7 +112,6 @@ async function actualizarEvento(req, res) {
             await EventoOcasion.update({ tipo_ocasion }, { where: { evento_id: eventId } });
         }
 
-        // Manejar fotos subidas
         if (req.files) {
             const fotoPromises = req.files.map(file => {
                 return FotoEvento.create({
@@ -139,6 +135,8 @@ async function eliminarEvento(req, res) {
     const t = await sequelize.transaction();
 
     try {
+        await FotoEvento.destroy({ where: { evento_id: eventId }, transaction: t });
+
         await Promise.all([
             EventoClase.destroy({ where: { evento_id: eventId }, transaction: t }),
             EventoPartido.destroy({ where: { evento_id: eventId }, transaction: t }),
