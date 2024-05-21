@@ -200,7 +200,7 @@ const EventoOcasion = sequelize.define('EventoOcasion', {
 });
 
 const FotoEvento = sequelize.define('FotoEvento', {
-    fotoId: {
+    foto_id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true

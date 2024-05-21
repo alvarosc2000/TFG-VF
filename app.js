@@ -3,23 +3,25 @@ const app = express();
 const session = require('express-session');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser'); // Asegúrate de incluir esto
+const bodyParser = require('body-parser');
+const multer = require('multer');
+const path = require('path');
 
 dotenv.config({ path: './env/.env' });
 
 // Middlewares
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true })); // Asegúrate de incluir esto
-app.use(bodyParser.json()); // Asegúrate de incluir esto
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use('/resources', express.static('public'));
-app.use('/resources', express.static(__dirname + '/public'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.set('view engine', 'ejs');
 app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
 app.use(cookieParser());
 app.use('/api', require('./public/controladores/obtenerEventos'));
-const { sequelize, Evento, EventoClase, EventoPartido, EventoCampus, EventoOcasion } = require('./database/sequelize-config');
 
+const { sequelize, Evento, EventoClase, EventoPartido, EventoCampus, EventoOcasion, FotoEvento } = require('./database/sequelize-config');
 
 // Controladores
 const authController = require('./public/controladores/authController');
@@ -28,13 +30,25 @@ const companyController = require('./public/controladores/companyController');
 const verificacionToken_jwt = require('./public/controladores/jwtMiddleware');
 const eventoController = require('./public/controladores/eventoController');
 
+// Configuración de Multer
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '_' + file.originalname);
+    }
+});
+
+const upload = multer({ storage: storage });
+
 // Rutas
 app.post('/registro_nuevo', userController.registro_usuario);
 app.post('/registro_nuevo', companyController.registroEmpresa);
 app.post('/login', authController.login);
 app.post('/auth', authController.login);
-app.post('/crear_evento', eventoController.guardarEvento);
-app.post('/api/eventos/crear', eventoController.guardarEvento);
+app.post('/crear_evento', upload.array('fotos', 10), eventoController.guardarEvento);
+app.post('/api/eventos/crear', upload.array('fotos', 10), eventoController.guardarEvento);
 
 app.delete('/api/eliminar_evento/:id', eventoController.eliminarEvento);
 
@@ -82,7 +96,6 @@ app.get('/logout', (req, res) => {
             console.error("Error al cerrar sesión:", err);
             return res.status(500).send('Error al cerrar sesión');
         }
-        // Redirecciono a la pagina principal
         res.render('main.ejs');
     });
 });
@@ -133,36 +146,10 @@ app.get('/editar_evento/:id', async (req, res) => {
 });
 
 // POST Endpoint to Update Event
-app.post('/api/eventos/:id/actualizar', async (req, res) => {
-    const eventId = req.params.id;
-    const { titulo, descripcion, numero_entradas, localizacion, precio, deporte, fecha_inicio, fecha_fin, instructor, duracion, nivel, equipo_local, equipo_visitante, liga, programa, tipo_ocasion } = req.body;
+app.post('/api/eventos/:id/actualizar', upload.array('fotos', 10), eventoController.actualizarEvento);
 
-    try {
-        const evento = await Evento.findByPk(eventId);
-        if (!evento) {
-            return res.status(404).send('Evento no encontrado');
-        }
-
-        // Update general event details
-        await evento.update({ titulo, descripcion, numero_entradas, localizacion, precio, deporte, fecha_inicio, fecha_fin });
-
-        // Update specific category details
-        if (instructor) {
-            await EventoClase.update({ instructor, duracion, nivel }, { where: { evento_id: eventId } });
-        } else if (equipo_local) {
-            await EventoPartido.update({ equipo_local, equipo_visitante, liga }, { where: { evento_id: eventId } });
-        } else if (programa) {
-            await EventoCampus.update({ programa }, { where: { evento_id: eventId } });
-        } else if (tipo_ocasion) {
-            await EventoOcasion.update({ tipo_ocasion }, { where: { evento_id: eventId } });
-        }
-
-        res.json({ message: 'Evento actualizado correctamente' });
-    } catch (error) {
-        console.error('Error al actualizar el evento:', error);
-        res.status(500).send('Error al actualizar el evento');
-    }
-});
+// POST Endpoint to Upload Photo
+app.post('/api/eventos/:id/subirFoto', upload.single('foto'), eventoController.subirFoto);
 
 // Configuración del servidor
 const PORT = process.env.PORT || 4000;

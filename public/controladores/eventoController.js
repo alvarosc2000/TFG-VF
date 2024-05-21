@@ -1,4 +1,5 @@
-const { sequelize, Evento, EventoClase, EventoPartido, EventoCampus, EventoOcasion } = require('../../database/sequelize-config');
+const { sequelize, Evento, EventoClase, EventoPartido, EventoCampus, EventoOcasion, FotoEvento } = require('../../database/sequelize-config');
+const path = require('path');
 
 async function guardarEvento(req, res) {
     const { titulo, descripcion, numero_entradas, localizacion, precio, categoria, deporte, fecha_inicio, fecha_fin, ...detallesCategoria } = req.body;
@@ -17,7 +18,7 @@ async function guardarEvento(req, res) {
         });
 
         switch (categoria) {
-            case 'clases':
+            case 'clase':
                 await EventoClase.create({
                     instructor: detallesCategoria.instructor,
                     duracion: detallesCategoria.duracion,
@@ -25,10 +26,11 @@ async function guardarEvento(req, res) {
                     evento_id: evento.id
                 });
                 break;
-            case 'partidos':
+            case 'partido':
                 await EventoPartido.create({
                     equipo_local: detallesCategoria.equipo_local,
                     equipo_visitante: detallesCategoria.equipo_visitante,
+                    liga: detallesCategoria.liga,
                     evento_id: evento.id
                 });
                 break;
@@ -48,6 +50,18 @@ async function guardarEvento(req, res) {
                 return res.status(400).send('Categoría no válida');
         }
 
+        // Manejar fotos subidas
+        if (req.files) {
+            const fotoPromises = req.files.map(file => {
+                return FotoEvento.create({
+                    evento_id: evento.id,
+                    url: path.join('/uploads', file.filename),
+                    descripcion: file.originalname
+                });
+            });
+            await Promise.all(fotoPromises);
+        }
+
         res.send('Evento creado exitosamente con todos los detalles de categoría.');
     } catch (error) {
         console.error('Error al guardar el evento:', error);
@@ -58,7 +72,7 @@ async function guardarEvento(req, res) {
 async function obtenerEventoPorId(eventId) {
     try {
         const evento = await Evento.findByPk(eventId, {
-            include: [EventoClase, EventoPartido, EventoCampus, EventoOcasion]
+            include: [EventoClase, EventoPartido, EventoCampus, EventoOcasion, FotoEvento]
         });
         if (!evento) {
             return { error: 'Evento no encontrado', status: 404 };
@@ -90,7 +104,7 @@ async function actualizarEvento(req, res) {
 
         await evento.update({ titulo, descripcion, numero_entradas, localizacion, precio, deporte, fecha_inicio, fecha_fin });
 
-        // Update specific category details
+        // Actualizar detalles específicos de la categoría
         if (instructor) {
             await EventoClase.update({ instructor, duracion, nivel }, { where: { evento_id: eventId } });
         } else if (equipo_local) {
@@ -101,10 +115,22 @@ async function actualizarEvento(req, res) {
             await EventoOcasion.update({ tipo_ocasion }, { where: { evento_id: eventId } });
         }
 
+        // Manejar fotos subidas
+        if (req.files) {
+            const fotoPromises = req.files.map(file => {
+                return FotoEvento.create({
+                    evento_id: eventId,
+                    url: path.join('/uploads', file.filename),
+                    descripcion: file.originalname
+                });
+            });
+            await Promise.all(fotoPromises);
+        }
+
         res.json({ message: 'Evento actualizado correctamente' });
     } catch (error) {
         console.error('Error al actualizar el evento:', error);
-        res.status(500).send('Hubo un error al actualizar el evento');
+        res.status(500).send('Error al actualizar el evento');
     }
 }
 
@@ -131,9 +157,31 @@ async function eliminarEvento(req, res) {
     }
 }
 
+async function subirFoto(req, res) {
+    const eventId = req.params.id;
+    const file = req.file;
+
+    if (!file) {
+        return res.status(400).send('No se subió ninguna foto');
+    }
+
+    try {
+        await FotoEvento.create({
+            evento_id: eventId,
+            url: path.join('/uploads', file.filename),
+            descripcion: file.originalname
+        });
+        res.json({ message: 'Foto subida exitosamente' });
+    } catch (error) {
+        console.error('Error al subir la foto:', error);
+        res.status(500).send('Error al subir la foto');
+    }
+}
+
 module.exports = {
     guardarEvento,
     eliminarEvento,
     obtenerEventoPorId,
-    actualizarEvento
+    actualizarEvento,
+    subirFoto
 };

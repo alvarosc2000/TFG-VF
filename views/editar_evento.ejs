@@ -10,7 +10,7 @@
 <body>
     <div class="container mt-4">
         <h1>Editar Evento</h1>
-        <form id="editarEventoForm" action="/api/eventos/<%= evento.id %>/actualizar" method="POST">
+        <form id="editarEventoForm" action="/api/eventos/<%= evento.id %>/actualizar" method="POST" enctype="multipart/form-data">
             <input type="hidden" id="eventoId" name="eventoId" value="<%= evento.id %>">
             <label for="titulo">Título:</label>
             <input type="text" id="titulo" name="titulo" value="<%= evento.titulo %>"><br>
@@ -34,10 +34,14 @@
             <input type="date" id="fecha_inicio" name="fecha_inicio" value="<%= evento.fecha_inicio %>"><br>
 
             <label for="fecha_fin">Fecha de fin:</label>
-            <input type="date" id="fecha_fin" name="fecha_fin" value="<%=evento.fecha_fin%>"><br>
+            <input type="date" id="fecha_fin" name="fecha_fin" value="<%= evento.fecha_fin %>"><br>
 
             <!-- Contenedor para campos específicos de la categoría -->
             <div id="categoriaCampos"></div>
+
+            <!-- Carga de fotos -->
+            <label for="fotos">Subir Fotos:</label>
+            <input type="file" id="fotos" name="fotos" multiple><br>
 
             <button type="submit">Guardar Cambios</button>
         </form>
@@ -45,7 +49,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         function cargarCamposCategoria() {
-            var categoria = "<%= categoria %>"; // Suponiendo que 'categoria' se determine en el servidor
+            var categoria = "<%= categoria %>";
             var camposCategoria = document.getElementById('categoriaCampos');
             camposCategoria.innerHTML = '';
 
@@ -74,25 +78,6 @@
         }
 
         window.onload = cargarCamposCategoria;
-
-        $('#editarEventoForm').submit(function(e) {
-            e.preventDefault();
-            var eventId = $('#eventoId').val();
-            var formData = $(this).serialize();
-
-            $.ajax({
-                url: `/api/eventos/${eventId}/actualizar`,
-                method: 'POST',
-                data: formData,
-                success: function(response) {
-                    alert('Evento actualizado exitosamente.');
-                    window.location.href = '/mostrar_evento';
-                },
-                error: function(error) {
-                    alert('Error al actualizar el evento: ' + error.responseText);
-                }
-            });
-        });
     </script>
 </body>
 </html>
