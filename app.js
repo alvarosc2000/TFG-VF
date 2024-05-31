@@ -121,6 +121,9 @@ app.get('/mostrar_evento', verificacionToken_jwt(['user', 'company']), (req, res
     res.render('mostrar_evento.ejs');
 });
 
+
+
+
 app.get('/informacion_evento/:id', async (req, res) => {
     const eventId = req.params.id;
     const resultado = await eventoController.obtenerEventoPorId(eventId);

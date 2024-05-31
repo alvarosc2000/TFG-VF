@@ -86,6 +86,7 @@ const Compania = sequelize.define('Compania', {
     tableName: 'compania'
 });
 
+
 const Persona = sequelize.define('Persona', {
     id_persona: {
         type: DataTypes.INTEGER,
