@@ -21,6 +21,7 @@ app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
 app.use(cookieParser());
 app.use('/api', require('./public/controladores/obtenerEventos'));
 
+
 const { sequelize, Evento, EventoClase, EventoPartido, EventoCampus, EventoOcasion, FotoEvento } = require('./database/sequelize-config');
 
 // Controladores
@@ -40,7 +41,7 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
 // Rutas
 app.post('/registro_nuevo', userController.registro_usuario);
@@ -54,37 +55,30 @@ app.delete('/api/eliminar_evento/:id', eventoController.eliminarEvento);
 
 // Vistas/Páginas públicas
 app.get('/', (req, res) => {
-    console.log('Se recibió una solicitud INDEX');
     res.render('main.ejs');
 });
 
 app.get('/mostrar_evento', (req, res) => {
-    console.log('Se recibió una solicitud MOSTRAR EVENTOS');
     res.render('mostrar_evento.ejs');
 });
 
 app.get('/inicio_sesion', (req, res) => {
-    console.log('Se recibió una solicitud INICIO DE SESION');
     res.render('inicio_sesion.ejs');
 });
 
 app.get('/registro_empresa', (req, res) => {
-    console.log('Se recibió una solicitud REGISTRO EMPRESA');
     res.render('registro_empresa.ejs');
 });
 
 app.get('/index', (req, res) => {
-    console.log('Se recibió una solicitud INDEX');
     res.render('index.ejs');
 });
 
 app.get('/registros_unificados', (req, res) => {
-    console.log('Se recibió una solicitud REGISTRO USUARIO');
     res.render('registros_unificados.ejs');
 });
 
 app.get('/registro_nuevo', (req, res) => {
-    console.log('Se recibió una solicitud REGISTRO USUARIO');
     res.render('registro_nuevo.ejs');
 });
 
@@ -102,27 +96,20 @@ app.get('/logout', (req, res) => {
 
 // Rutas privadas para usuarios y empresas
 app.get('/espacioUs1', verificacionToken_jwt('user'), (req, res) => {
-    console.log('Accediendo un usuario');
     res.render('espacioUs1.ejs');
 });
 
 app.get('/espacioEmp', verificacionToken_jwt('company'), (req, res) => {
-    console.log('Accediendo una empresa');
     res.render('espacioEmp.ejs');
 });
 
 app.get('/crear_evento', verificacionToken_jwt('company'), (req, res) => {
-    console.log('Se recibió una solicitud INDEX');
     res.render('crear_evento.ejs');
 });
 
 app.get('/mostrar_evento', verificacionToken_jwt(['user', 'company']), (req, res) => {
-    console.log('Accediendo una empresa y usuario');
     res.render('mostrar_evento.ejs');
 });
-
-
-
 
 app.get('/informacion_evento/:id', async (req, res) => {
     const eventId = req.params.id;
@@ -143,7 +130,6 @@ app.get('/editar_evento/:id', async (req, res) => {
 });
 
 app.get('/olvidarContrasena', (req, res) => {
-    console.log('Se recibió una solicitud OLVIDAR CONTRASEÑA');
     res.render('olvidarContrasena.ejs');
 });
 

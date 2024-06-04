@@ -35,63 +35,29 @@ const Usuario = sequelize.define('Usuario', {
         allowNull: true
       },
     role: {
-        type: DataTypes.ENUM('user', 'company'),
+        type: DataTypes.ENUM('user', 'company', 'admin'),
         allowNull: false,
     },
     token: {
         type: DataTypes.STRING,
     },
-    compania_id: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: 'Compania',
-            key: 'id_compania',
-        },
-    },
-    persona_id: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: 'Persona',
-            key: 'id_persona',
-        },
-    },
-    admin_id: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: 'Usuario',
-            key: 'id_usuario',
-        },
-    },
 }, {
     tableName: 'usuario'
 });
-
-const Compania = sequelize.define('Compania', {
-    id_compania: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-    },
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    nif: {
-        type: DataTypes.STRING,
-    },
-    contacto: {
-        type: DataTypes.STRING,
-    },
-}, {
-    tableName: 'compania'
-});
-
 
 const Persona = sequelize.define('Persona', {
     id_persona: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
+    },
+    usuario_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'Usuario',
+            key: 'id_usuario',
+        }
     },
     nombre: {
         type: DataTypes.STRING,
@@ -107,6 +73,52 @@ const Persona = sequelize.define('Persona', {
     },
 }, {
     tableName: 'persona'
+});
+
+const Admin = sequelize.define('Admin', {
+    id_admin: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    usuario_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'Usuario',
+            key: 'id_usuario',
+        }
+    },
+}, {
+    tableName: 'admin'
+});
+
+const Compania = sequelize.define('Compania', {
+    id_compania: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    usuario_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'Usuario',
+            key: 'id_usuario',
+        }
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    nif: {
+        type: DataTypes.STRING,
+    },
+    contacto: {
+        type: DataTypes.STRING,
+    },
+}, {
+    tableName: 'compania'
 });
 
 const Evento = sequelize.define('Evento', {
@@ -224,6 +236,14 @@ const FotoEvento = sequelize.define('FotoEvento', {
 });
 
 // Definir las asociaciones
+Usuario.hasOne(Persona, { foreignKey: 'usuario_id' });
+Usuario.hasOne(Admin, { foreignKey: 'usuario_id' });
+Usuario.hasOne(Compania, { foreignKey: 'usuario_id' });
+
+Persona.belongsTo(Usuario, { foreignKey: 'usuario_id' });
+Admin.belongsTo(Usuario, { foreignKey: 'usuario_id' });
+Compania.belongsTo(Usuario, { foreignKey: 'usuario_id' });
+
 Evento.hasOne(EventoClase, { foreignKey: 'evento_id' });
 Evento.hasOne(EventoPartido, { foreignKey: 'evento_id' });
 Evento.hasOne(EventoCampus, { foreignKey: 'evento_id' });
@@ -239,8 +259,9 @@ FotoEvento.belongsTo(Evento, { foreignKey: 'evento_id' });
 module.exports = {
     sequelize,
     Usuario,
-    Compania,
     Persona,
+    Admin,
+    Compania,
     Evento,
     EventoClase,
     EventoPartido,

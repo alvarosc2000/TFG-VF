@@ -173,5 +173,68 @@ CREATE TABLE `fotos_evento` (
 );
 
 
+CREATE TABLE `admin` (
+    `id_admin` INT NOT NULL AUTO_INCREMENT,
+    `nombre` VARCHAR(255) NOT NULL,
+    `email` VARCHAR(255) NOT NULL,
+    `apellido` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`id_admin`)
+);
+
+
+-----------
+
+
+
+-- Desactivar las verificaciones de foreign keys
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- Crear la tabla `usuario`
+CREATE TABLE `usuario` (
+    `id_usuario` INT NOT NULL AUTO_INCREMENT,
+    `user` VARCHAR(255) NOT NULL,
+    `pass` VARCHAR(255) NOT NULL,
+    `email` VARCHAR(255) NOT NULL,
+    `verified` BOOLEAN DEFAULT FALSE,
+    `role` ENUM('user', 'company', 'admin') NOT NULL,
+    `token` VARCHAR(255),
+    PRIMARY KEY (`id_usuario`)
+);
+
+-- Crear la tabla `persona`
+CREATE TABLE `persona` (
+    `id_persona` INT NOT NULL AUTO_INCREMENT,
+    `usuario_id` INT NOT NULL,
+    `nombre` VARCHAR(255) NOT NULL,
+    `apellido` VARCHAR(255) NOT NULL,
+    `email` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`id_persona`),
+    FOREIGN KEY (`usuario_id`) REFERENCES `usuario`(`id_usuario`)
+);
+
+-- Crear la tabla `admin`
+CREATE TABLE `admin` (
+    `id_admin` INT NOT NULL AUTO_INCREMENT,
+    `usuario_id` INT NOT NULL,
+    PRIMARY KEY (`id_admin`),
+    FOREIGN KEY (`usuario_id`) REFERENCES `usuario`(`id_usuario`)
+);
+
+-- Crear la tabla `compania`
+CREATE TABLE `compania` (
+    `id_compania` INT NOT NULL AUTO_INCREMENT,
+    `usuario_id` INT NOT NULL,
+    `email` VARCHAR(255) NOT NULL,
+    `nif` VARCHAR(255),
+    `contacto` VARCHAR(255),
+    PRIMARY KEY (`id_compania`),
+    FOREIGN KEY (`usuario_id`) REFERENCES `usuario`(`id_usuario`)
+);
+
+-- Activar las verificaciones de foreign keys
+SET FOREIGN_KEY_CHECKS = 1;
+
+
+
 
 npm instal express nodemon audit
