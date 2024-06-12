@@ -9,7 +9,7 @@ const path = require('path');
 
 dotenv.config({ path: './env/.env' });
 
-// Middlewares
+// Middlewares-
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
