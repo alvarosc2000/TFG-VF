@@ -9,7 +9,8 @@ const path = require('path');
 
 dotenv.config({ path: './env/.env' });
 
-// Middlewares-
+const verificarRole = require('./public/controladores/roleMiddleware');
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -21,17 +22,14 @@ app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
 app.use(cookieParser());
 app.use('/api', require('./public/controladores/obtenerEventos'));
 
+const { sequelize, Evento, EventoPartido } = require('./database/sequelize-config');
 
-const { sequelize, Evento, EventoClase, EventoPartido, EventoCampus, EventoOcasion, FotoEvento } = require('./database/sequelize-config');
-
-// Controladores
 const authController = require('./public/controladores/authController');
 const userController = require('./public/controladores/userController');
 const companyController = require('./public/controladores/companyController');
 const verificacionToken_jwt = require('./public/controladores/jwtMiddleware');
 const eventoController = require('./public/controladores/eventoController');
 
-// Configuración de Multer
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/');
@@ -43,15 +41,17 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Rutas
 app.post('/registro_nuevo', userController.registro_usuario);
 app.post('/registro_nuevo', companyController.registroEmpresa);
 app.post('/login', authController.login);
 app.post('/auth', authController.login);
-app.post('/crear_evento', upload.array('fotos', 10), eventoController.guardarEvento);
-app.post('/api/eventos/crear', upload.array('fotos', 10), eventoController.guardarEvento);
 
-app.delete('/api/eliminar_evento/:id', eventoController.eliminarEvento);
+// Solo admins y companies pueden crear eventos
+app.post('/crear_evento', verificacionToken_jwt(['admin', 'company']), upload.array('fotos', 10), eventoController.guardarEvento);
+app.post('/api/eventos/crear', verificacionToken_jwt(['admin', 'company']), upload.array('fotos', 10), eventoController.guardarEvento);
+
+// Solo admins pueden eliminar cualquier evento y companies solo pueden eliminar los suyos
+app.delete('/api/eliminar_evento/:id', verificacionToken_jwt(['admin', 'company']), eventoController.eliminarEvento);
 
 // Vistas/Páginas públicas
 app.get('/', (req, res) => {
@@ -94,7 +94,6 @@ app.get('/logout', (req, res) => {
     });
 });
 
-// Rutas privadas para usuarios y empresas
 app.get('/espacioUs1', verificacionToken_jwt('user'), (req, res) => {
     res.render('espacioUs1.ejs');
 });
@@ -109,6 +108,90 @@ app.get('/crear_evento', verificacionToken_jwt('company'), (req, res) => {
 
 app.get('/mostrar_evento', verificacionToken_jwt(['user', 'company']), (req, res) => {
     res.render('mostrar_evento.ejs');
+});
+
+app.get('/vista_eventos_partidos', verificacionToken_jwt(['user', 'company', 'admin']), async (req, res) => {
+    try {
+        const partidos = await Evento.findAll({
+            where: { categoria: 'partido' }
+        });
+        res.render('vista_eventos_partidos', { titulo: 'Partidos', eventos: partidos });
+    } catch (error) {
+        console.error("Error al obtener partidos:", error);
+        res.status(500).json({ error: 'Error al obtener partidos' });
+    }
+});
+
+app.get('/vista_eventos_clases', verificacionToken_jwt(['user', 'company', 'admin']), async (req, res) => {
+    try {
+        const clases = await Evento.findAll({
+            where: { categoria: 'clase' }
+        });
+        res.render('vista_eventos_clases', { titulo: 'Clases', eventos: clases });
+    } catch (error) {
+        console.error("Error al obtener clases:", error);
+        res.status(500).json({ error: 'Error al obtener clases' });
+    }
+});
+
+app.get('/vista_eventos_campus', verificacionToken_jwt(['user', 'company', 'admin']), async (req, res) => {
+    try {
+        const campus = await Evento.findAll({
+            where: { categoria: 'campus' }
+        });
+        res.render('vista_eventos_campus', { titulo: 'Campus', eventos: campus });
+    } catch (error) {
+        console.error("Error al obtener campus:", error);
+        res.status(500).json({ error: 'Error al obtener campus' });
+    }
+});
+
+app.get('/vista_eventos_eventos', verificacionToken_jwt(['user', 'company', 'admin']), async (req, res) => {
+    try {
+        const eventos = await Evento.findAll({
+            where: { categoria: 'evento' }
+        });
+        res.render('vista_eventos_eventos', { titulo: 'Eventos', eventos: eventos });
+    } catch (error) {
+        console.error("Error al obtener eventos:", error);
+        res.status(500).json({ error: 'Error al obtener eventos' });
+    }
+});
+
+app.get('/api/eventos', async (req, res) => {
+    try {
+        const eventos = await Evento.findAll();
+
+        // Mapear eventos al formato requerido por FullCalendar
+        const eventosFormatted = eventos.map(evento => {
+            let url = `/informacion_evento/${evento.id}`; // URL por defecto
+            switch (evento.categoria) {
+                case 'partido':
+                    url = `/vista_eventos_partidos/${evento.id}`;
+                    break;
+                case 'clase':
+                    url = `/vista_eventos_clases/${evento.id}`;
+                    break;
+                case 'evento':
+                    url = `/vista_eventos_eventos/${evento.id}`;
+                    break;
+                case 'campus':
+                    url = `/vista_eventos_campus/${evento.id}`;
+                    break;
+            }
+            return {
+                title: evento.titulo,
+                start: evento.fecha_inicio,
+                end: evento.fecha_fin,
+                url: url
+            };
+        });
+
+        res.json(eventosFormatted); // Devolver los eventos formateados como JSON
+    } catch (error) {
+        console.error("Error al obtener eventos:", error);
+        res.status(500).json({ error: 'Error al obtener eventos' });
+    }
 });
 
 app.get('/informacion_evento/:id', async (req, res) => {
@@ -137,19 +220,15 @@ app.post('/auth/forgot-password', userController.forgotPassword);
 app.get('/auth/reset-password/:token', userController.resetPasswordPage);
 app.post('/auth/reset-password/:token', userController.resetPassword);
 
-// POST Endpoint to Update Event
-app.post('/api/eventos/:id/actualizar', upload.array('fotos', 10), eventoController.actualizarEvento);
+app.post('/api/eventos/:id/actualizar', verificacionToken_jwt(['admin', 'company']), upload.array('fotos', 10), eventoController.actualizarEvento);
 
-// POST Endpoint to Upload Photo
-app.post('/api/eventos/:id/subirFoto', upload.single('foto'), eventoController.subirFoto);
+app.post('/api/eventos/:id/subirFoto', verificacionToken_jwt(['admin', 'company']), upload.single('foto'), eventoController.subirFoto);
 
-// Error handling
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Hubo un error en el servidor');
 });
 
-// Configuración del servidor
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
     console.log(`Servidor en funcionamiento en http://localhost:${PORT}`);

@@ -23,15 +23,12 @@
           <li class="nav-item">
             <a class="nav-link" href="/espacioEmp">Espacio Empresa</a>
           </li>
-
           <li class="nav-item">
             <a class="nav-link" href="/index">Más Información</a>
           </li>
-          
           <li class="nav-item">
             <a class="nav-link" href="/logout">Cerrar Sesión</a>
           </li>
-
       </div>
     </div>
   </nav>
@@ -93,10 +90,34 @@
             let eventos = [];
             let filteredEventos = [];
 
+            // Obtener el rol del usuario (esto debe ser proporcionado por el servidor, por ejemplo, a través de una variable de sesión o una API)
+            const userRole = 'usuario'; // Cambia esto según el rol real: 'usuario', 'admin' o 'compania'
+
             // Función para renderizar la tabla
             function renderTable(data) {
                 $('#tablaEventos').empty();
                 data.forEach(function(evento, index){
+                    let actionButtons = '';
+                    if (userRole === 'admin' || userRole === 'compania') {
+                        actionButtons = `
+                            <a href="#" class="create-event-button delete-event-button" data-id="${evento.id}">
+                                <i class='bx bxs-eraser'></i>Eliminar
+                            </a>
+                            <a href="#" class="create-event-button edit-event-button" data-id="${evento.id}">
+                                <i class='bx bxs-edit'></i>Editar
+                            </a>
+                            <a href="#" class="create-event-button info-event-button" data-id="${evento.id}">
+                                <i class='bx bx-info-circle'></i>Información
+                            </a>
+                        `;
+                    } else if (userRole === 'usuario') {
+                        actionButtons = `
+                            <a href="#" class="create-event-button info-event-button" data-id="${evento.id}">
+                                <i class='bx bx-info-circle'></i>Información
+                            </a>
+                        `;
+                    }
+
                     $('#tablaEventos').append(`
                         <tr>
                             <th scope="row">${index + 1}</th>
@@ -110,15 +131,7 @@
                             <td>${evento.fecha_fin}</td>
                             <td>
                                 <div class="btn-group" role="group" aria-label="Acciones">
-                                    <a href="#" class="create-event-button delete-event-button" data-id="${evento.id}">
-                                        <i class='bx bxs-eraser'></i>Eliminar
-                                    </a>
-                                    <a href="#" class="create-event-button edit-event-button" data-id="${evento.id}">
-                                        <i class='bx bxs-edit'></i>Editar
-                                    </a>
-                                    <a href="#" class="create-event-button info-event-button" data-id="${evento.id}">
-                                        <i class='bx bx-info-circle'></i>Información
-                                    </a>
+                                    ${actionButtons}
                                 </div>
                             </td>
                         </tr>
