@@ -22,7 +22,7 @@ app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
 app.use(cookieParser());
 app.use('/api', require('./public/controladores/obtenerEventos'));
 
-const { sequelize, Evento, EventoPartido } = require('./database/sequelize-config');
+const { sequelize, Evento, EventoPartido, Usuario } = require('./database/sequelize-config');
 
 const authController = require('./public/controladores/authController');
 const userController = require('./public/controladores/userController');
@@ -41,8 +41,18 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+// Middleware para obtener el rol del usuario y pasarlo a las vistas
+app.use(async (req, res, next) => {
+    if (req.session.userId) {
+        const user = await Usuario.findByPk(req.session.userId);
+        res.locals.userRole = user ? user.role : null;
+    } else {
+        res.locals.userRole = null;
+    }
+    next();
+});
 app.post('/registro_nuevo', userController.registro_usuario);
-app.post('/registro_nuevo', companyController.registroEmpresa);
+app.post('/registro_empresa', companyController.registroEmpresa);
 app.post('/login', authController.login);
 app.post('/auth', authController.login);
 
@@ -58,9 +68,11 @@ app.get('/', (req, res) => {
     res.render('main.ejs');
 });
 
+// Rutas con vistas
 app.get('/mostrar_evento', (req, res) => {
-    res.render('mostrar_evento.ejs');
+    res.render('mostrar_evento.ejs', { userRole: res.locals.userRole });
 });
+
 
 app.get('/inicio_sesion', (req, res) => {
     res.render('inicio_sesion.ejs');
@@ -94,20 +106,20 @@ app.get('/logout', (req, res) => {
     });
 });
 
-app.get('/espacioUs1', verificacionToken_jwt('user'), (req, res) => {
+app.get('/espacioUs1', verificacionToken_jwt(['user', 'admin']), (req, res) => {
     res.render('espacioUs1.ejs');
 });
 
-app.get('/espacioEmp', verificacionToken_jwt('company'), (req, res) => {
+app.get('/espacioEmp', verificacionToken_jwt(['admin', 'company']), (req, res) => {
     res.render('espacioEmp.ejs');
 });
 
-app.get('/crear_evento', verificacionToken_jwt('company'), (req, res) => {
-    res.render('crear_evento.ejs');
+app.get('/espacioAdm', verificacionToken_jwt('admin'), (req, res) => {
+    res.render('espacioAdm.ejs');
 });
 
-app.get('/mostrar_evento', verificacionToken_jwt(['user', 'company']), (req, res) => {
-    res.render('mostrar_evento.ejs');
+app.get('/crear_evento', verificacionToken_jwt(['admin', 'company']), (req, res) => {
+    res.render('crear_evento.ejs');
 });
 
 app.get('/vista_eventos_partidos', verificacionToken_jwt(['user', 'company', 'admin']), async (req, res) => {
@@ -115,7 +127,7 @@ app.get('/vista_eventos_partidos', verificacionToken_jwt(['user', 'company', 'ad
         const partidos = await Evento.findAll({
             where: { categoria: 'partido' }
         });
-        res.render('vista_eventos_partidos', { titulo: 'Partidos', eventos: partidos });
+        res.render('vista_eventos_partidos', { eventos: partidos });
     } catch (error) {
         console.error("Error al obtener partidos:", error);
         res.status(500).json({ error: 'Error al obtener partidos' });
@@ -127,7 +139,7 @@ app.get('/vista_eventos_clases', verificacionToken_jwt(['user', 'company', 'admi
         const clases = await Evento.findAll({
             where: { categoria: 'clase' }
         });
-        res.render('vista_eventos_clases', { titulo: 'Clases', eventos: clases });
+        res.render('vista_eventos_clases', { eventos: clases });
     } catch (error) {
         console.error("Error al obtener clases:", error);
         res.status(500).json({ error: 'Error al obtener clases' });
@@ -139,7 +151,7 @@ app.get('/vista_eventos_campus', verificacionToken_jwt(['user', 'company', 'admi
         const campus = await Evento.findAll({
             where: { categoria: 'campus' }
         });
-        res.render('vista_eventos_campus', { titulo: 'Campus', eventos: campus });
+        res.render('vista_eventos_campus', { eventos: campus });
     } catch (error) {
         console.error("Error al obtener campus:", error);
         res.status(500).json({ error: 'Error al obtener campus' });
@@ -151,7 +163,7 @@ app.get('/vista_eventos_eventos', verificacionToken_jwt(['user', 'company', 'adm
         const eventos = await Evento.findAll({
             where: { categoria: 'evento' }
         });
-        res.render('vista_eventos_eventos', { titulo: 'Eventos', eventos: eventos });
+        res.render('vista_eventos_eventos', { eventos: eventos });
     } catch (error) {
         console.error("Error al obtener eventos:", error);
         res.status(500).json({ error: 'Error al obtener eventos' });

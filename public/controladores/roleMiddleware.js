@@ -1,4 +1,4 @@
-const { User } = require('../../database/sequelize-config');
+const { Usuario } = require('../../database/sequelize-config');
 
 function verificarRole(rolesPermitidos) {
     return async (req, res, next) => {
@@ -9,7 +9,7 @@ function verificarRole(rolesPermitidos) {
         }
 
         try {
-            const user = await User.findByPk(userId);
+            const user = await Usuario.findByPk(userId);
             if (!user) {
                 return res.status(401).send('No autorizado');
             }
