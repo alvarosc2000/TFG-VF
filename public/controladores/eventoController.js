@@ -176,10 +176,34 @@ async function subirFoto(req, res) {
     }
 }
 
+
+ async function comprarEntrada(eventId) {
+    try {
+        const evento = await Evento.findByPk(eventId);
+        if (!evento) {
+            console.log('Evento no encontrado');
+            return { error: 'Evento no encontrado', status: 404 };
+        }
+        if (evento.numero_entradas > 0) {
+            evento.numero_entradas -= 1;
+            await evento.save();
+            console.log('Compra realizada con éxito');
+            return { message: 'Compra realizada con éxito', status: 200 };
+        } else {
+            console.log('No hay entradas disponibles');
+            return { error: 'No hay entradas disponibles', status: 400 };
+        }
+    } catch (error) {
+        console.error('Error al comprar entrada:', error);
+        return { error: 'Error al comprar entrada', status: 500 };
+    }
+}
+
 module.exports = {
     guardarEvento,
     eliminarEvento,
     obtenerEventoPorId,
     actualizarEvento,
-    subirFoto
+    subirFoto,
+    comprarEntrada
 };

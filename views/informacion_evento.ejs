@@ -15,7 +15,7 @@
             <div class="evento-detalles">
                 <p><strong>Título:</strong> <%= evento.titulo %></p>
                 <p><strong>Descripción:</strong> <%= evento.descripcion %></p>
-                <p><strong>Número de Entradas:</strong> <%= evento.numero_entradas %></p>
+                <p><strong>Número de Entradas:</strong> <span id="numeroEntradas"><%= evento.numero_entradas %></span></p>
                 <p><strong>Localización:</strong> <%= evento.localizacion %></p>
                 <p><strong>Precio:</strong> <%= evento.precio %></p>
                 <p><strong>Deporte:</strong> <%= evento.deporte %></p>
@@ -35,7 +35,8 @@
                     <p><strong>Tipo de Ocasion:</strong> <%= evento.EventoOcasion ? evento.EventoOcasion.tipo_ocasion : '' %></p>
                 <% } %>
                 <div class="comprar-boton">
-                    <button class="btn btn-primary btn-lg">Comprar</button>
+                    <input type="hidden" id="eventoId" value="<%= evento.id %>">
+                    <button id="comprarButton" class="btn btn-primary btn-lg">Comprar</button>
                 </div>
             </div>
 
@@ -67,7 +68,53 @@
         </div>
     </div>
 
-    <!-- Incluye el JavaScript de Bootstrap -->
+    <!-- Modal para mensajes -->
+    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="messageModalLabel">Mensaje</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="messageContent"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#comprarButton').click(function() {
+                const eventId = $('#eventoId').val();
+                $.ajax({
+                    url: `/api/comprar_entrada/${eventId}`,
+                    type: 'POST',
+                    success: function(response) {
+                        const messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
+                        const messageContent = document.getElementById('messageContent');
+                        messageContent.textContent = response.message;
+                        messageContent.className = 'alert alert-success';
+                        messageModal.show();
+
+                        $('#numeroEntradas').text(function(i, oldVal) {
+                            return oldVal - 1;
+                        });
+                    },
+                    error: function(xhr) {
+                        const errorResponse = xhr.responseJSON ? xhr.responseJSON.error : 'Error al comprar la entrada';
+                        const messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
+                        const messageContent = document.getElementById('messageContent');
+                        messageContent.textContent = errorResponse;
+                        messageContent.className = 'alert alert-danger';
+                        messageModal.show();
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

@@ -51,6 +51,18 @@ app.use(async (req, res, next) => {
     }
     next();
 });
+
+app.post('/api/comprar_entrada/:id', async (req, res) => {
+    const eventId = req.params.id;
+    const resultado = await eventoController.comprarEntrada(eventId);
+    if (resultado.error) {
+        console.log('Error:', resultado.error);  // Agregar mensaje de depuración
+        return res.status(resultado.status).send({ error: resultado.error });
+    }
+    console.log('Message:', resultado.message);  // Agregar mensaje de depuración
+    res.status(resultado.status).send({ message: resultado.message });
+});
+
 app.post('/registro_nuevo', userController.registro_usuario);
 app.post('/registro_empresa', companyController.registroEmpresa);
 app.post('/login', authController.login);
@@ -72,7 +84,6 @@ app.get('/', (req, res) => {
 app.get('/mostrar_evento', (req, res) => {
     res.render('mostrar_evento.ejs', { userRole: res.locals.userRole });
 });
-
 
 app.get('/inicio_sesion', (req, res) => {
     res.render('inicio_sesion.ejs');
