@@ -8,30 +8,31 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
+
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">ALLSPORT</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#"></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/espacioEmp">Espacio Empresa</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/index">Más Información</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout">Cerrar Sesión</a>
-                </li>
-            </ul>
-        </div>
+      <a class="navbar-brand" href="/">ALLSPORT</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#"></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/espacioEmp">Espacio Empresa</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/index">Más Información</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Cerrar Sesión</a>
+          </li>
+      </div>
     </div>
-</nav>
+  </nav>
+
 <body>
     <div class="container mt-4">
         <h1>Eventos</h1>
@@ -75,25 +76,23 @@
                 <!-- Aquí se cargarán los datos de los eventos -->
             </tbody>
         </table>
-
-        <% if (userRole === 'admin' || userRole === 'company') { %>
-            <a href="/crear_evento" class="create-event-button">
-                <i class='bx bxs-eraser'></i>Crear Evento
-            </a>
-        <% } %>
+        
+        <a href="/crear_evento" class="create-event-button">
+            <i class='bx bxs-eraser'></i>Crear Evento
+        </a>
     </div>
 
+    <!-- Agregar el script jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function(){
             // Variables globales para almacenamiento de eventos y filtrado
             let eventos = [];
             let filteredEventos = [];
-    
-            // Obtener el rol del usuario desde el servidor
-            const userRole = '<%= userRole %>'; // Rol del usuario pasado desde el backend
-            console.log(userRole); // Verificar el rol en la consola
-    
+
+            // Obtener el rol del usuario (esto debe ser proporcionado por el servidor, por ejemplo, a través de una variable de sesión o una API)
+            const userRole = 'user'; // Cambia esto según el rol real: 'usuario', 'admin' o 'compania'
+
             // Función para renderizar la tabla
             function renderTable(data) {
                 $('#tablaEventos').empty();
@@ -118,7 +117,7 @@
                             </a>
                         `;
                     }
-    
+
                     $('#tablaEventos').append(`
                         <tr>
                             <th scope="row">${index + 1}</th>
@@ -126,7 +125,7 @@
                             <td>${evento.descripcion}</td>
                             <td>${evento.numero_entradas}</td>
                             <td>${evento.localizacion}</td>
-                            <td>${evento.precio}</td>
+                            <td>${evento.precio}€</td>
                             <td>${evento.deporte}</td>
                             <td>${evento.fecha_inicio}</td>
                             <td>${evento.fecha_fin}</td>
@@ -139,10 +138,10 @@
                     `);
                 });
             }
-    
+
             // Hacer la solicitud AJAX para obtener los datos de los eventos
             $.ajax({
-                url: '/api/mostrar_evento',
+                url: '/api/mostrar_evento', // Cambia la URL aquí
                 method: 'GET',
                 success: function(response){
                     eventos = response;
@@ -154,19 +153,19 @@
                     alert('Hubo un error al obtener los eventos. Por favor, inténtalo de nuevo más tarde.');
                 }
             });
-    
+
             // Controlador de eventos de clic en el botón de eliminar
             $(document).on('click', '.delete-event-button', function(e){
-                e.preventDefault();
+                e.preventDefault(); // Evita que el enlace se comporte como un enlace normal
                 var eventId = $(this).data('id');
                 console.log('Clic en botón de eliminar detectado para el evento ID:', eventId);
-    
+
                 // Eliminar la fila correspondiente de la tabla
                 $(this).closest('tr').remove();
-    
+
                 // Hacer la solicitud AJAX para eliminar el evento
                 $.ajax({
-                    url: '/api/eliminar_evento/' + eventId,
+                    url: '/api/eliminar_evento/' + eventId, // Asegúrate de que la URL es correcta
                     method: 'DELETE',
                     success: function(response) {
                         console.log('Evento eliminado de la base de datos:', response);
@@ -177,50 +176,37 @@
                     }
                 });
             });
-    
+
             // Controlador de eventos de clic en el botón de editar
-            $(document).on('click', '.edit-event-button', function(e){
+            $(document).on('click', '.edit-event-button', function(e) {
                 e.preventDefault();
                 var eventId = $(this).data('id');
-                console.log('Clic en botón de editar detectado para el evento ID:', eventId);
-                window.location.href = '/editar_evento/' + eventId;
+                window.location.href = '/editar_evento/' + eventId; // Cambio aquí
             });
-    
+
             // Controlador de eventos de clic en el botón de información
-            $(document).on('click', '.info-event-button', function(e){
+            $(document).on('click', '.info-event-button', function(e) {
                 e.preventDefault();
                 var eventId = $(this).data('id');
-                console.log('Clic en botón de información detectado para el evento ID:', eventId);
-                window.location.href = '/info_evento/' + eventId;
+                window.location.href = '/informacion_evento/' + eventId; // Cambio aquí
             });
-    
-            // Función para ordenar los eventos
-            function sortEventos(order, direction) {
-                let sortedEventos = [...filteredEventos];
-                sortedEventos.sort((a, b) => {
-                    if (order === 'titulo') {
-                        if (direction === 'asc') return a.titulo.localeCompare(b.titulo);
-                        else return b.titulo.localeCompare(a.titulo);
-                    } else if (order === 'precio') {
-                        if (direction === 'asc') return a.precio - b.precio;
-                        else return b.precio - a.precio;
-                    } else if (order === 'fecha_inicio') {
-                        if (direction === 'asc') return new Date(a.fecha_inicio) - new Date(b.fecha_inicio);
-                        else return new Date(b.fecha_inicio) - new Date(a.fecha_inicio);
-                    } else if (order === 'fecha_fin') {
-                        if (direction === 'asc') return new Date(a.fecha_fin) - new Date(b.fecha_fin);
-                        else return new Date(b.fecha_fin) - new Date(a.fecha_fin);
-                    }
+
+            // Función para ordenar la tabla
+            function sortTable(column, order) {
+                const sortedEventos = [...filteredEventos].sort((a, b) => {
+                    if (a[column] < b[column]) return order === 'asc' ? -1 : 1;
+                    if (a[column] > b[column]) return order === 'asc' ? 1 : -1;
+                    return 0;
                 });
-                return sortedEventos;
-            }
-    
-            // Controlador de cambio para los filtros de ordenación
-            $('#filterOrder, #filterOrderDirection').on('change', function() {
-                const order = $('#filterOrder').val();
-                const direction = $('#filterOrderDirection').val();
-                const sortedEventos = sortEventos(order, direction);
+
                 renderTable(sortedEventos);
+            }
+
+            // Evento de cambio en los filtros de ordenación
+            $('#filterOrder, #filterOrderDirection').on('change', function() {
+                const column = $('#filterOrder').val();
+                const order = $('#filterOrderDirection').val();
+                sortTable(column, order);
             });
         });
     </script>

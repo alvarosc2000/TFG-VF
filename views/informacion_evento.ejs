@@ -20,7 +20,7 @@
                 <p><strong>Precio:</strong> <%= evento.precio %></p>
                 <p><strong>Deporte:</strong> <%= evento.deporte %></p>
                 <p><strong>Fecha de Inicio:</strong> <%= evento.fecha_inicio %></p>
-                <p><strong>Fecha de Fin:</strong> <%= evento.fecha_fin%></p>
+                <p><strong>Fecha de Fin:</strong> <%= evento.fecha_fin %></p>
                 <% if (categoria === 'clase') { %>
                     <p><strong>Instructor:</strong> <%= evento.EventoClase ? evento.EventoClase.instructor : '' %></p>
                     <p><strong>Duración:</strong> <%= evento.EventoClase ? evento.EventoClase.duracion : '' %></p>
@@ -34,6 +34,9 @@
                 <% } else if (categoria === 'ocasion') { %>
                     <p><strong>Tipo de Ocasion:</strong> <%= evento.EventoOcasion ? evento.EventoOcasion.tipo_ocasion : '' %></p>
                 <% } %>
+                <div class="comprar-boton">
+                    <button class="btn btn-primary btn-lg">Comprar</button>
+                </div>
             </div>
 
             <div class="evento-imagenes">

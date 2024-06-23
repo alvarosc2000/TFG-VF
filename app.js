@@ -161,7 +161,7 @@ app.get('/vista_eventos_campus', verificacionToken_jwt(['user', 'company', 'admi
 app.get('/vista_eventos_eventos', verificacionToken_jwt(['user', 'company', 'admin']), async (req, res) => {
     try {
         const eventos = await Evento.findAll({
-            where: { categoria: 'evento' }
+            where: { categoria: 'ocasion' }
         });
         res.render('vista_eventos_eventos', { eventos: eventos });
     } catch (error) {
