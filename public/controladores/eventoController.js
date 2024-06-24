@@ -1,5 +1,6 @@
-const { sequelize, Evento, EventoClase, EventoPartido, EventoCampus, EventoOcasion, FotoEvento } = require('../../database/sequelize-config');
+const { sequelize, Usuario, Evento, EventoClase, EventoPartido, EventoCampus, EventoOcasion, FotoEvento } = require('../../database/sequelize-config');
 const path = require('path');
+const { sendEntradas } = require('../javascript/mail');
 
 async function guardarEvento(req, res) {
     const { titulo, descripcion, numero_entradas, localizacion, precio, categoria, deporte, fecha_inicio, fecha_fin, ...detallesCategoria } = req.body;
@@ -177,7 +178,7 @@ async function subirFoto(req, res) {
 }
 
 
- async function comprarEntrada(eventId) {
+async function comprarEntrada(eventId, email) {
     try {
         const evento = await Evento.findByPk(eventId);
         if (!evento) {
@@ -188,6 +189,7 @@ async function subirFoto(req, res) {
             evento.numero_entradas -= 1;
             await evento.save();
             console.log('Compra realizada con éxito');
+            await sendEntradas(email);
             return { message: 'Compra realizada con éxito', status: 200 };
         } else {
             console.log('No hay entradas disponibles');

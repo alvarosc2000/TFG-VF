@@ -1,6 +1,7 @@
+// authController.js
 const jwt = require('jsonwebtoken');
 const bcryptjs = require('bcryptjs');
-const { Usuario, Persona, Compania } = require('../../database/sequelize-config');
+const { Usuario } = require('../../database/sequelize-config');
 
 async function login(req, res) {
     const { user, pass } = req.body;
@@ -33,7 +34,8 @@ async function login(req, res) {
 
         req.session.user = {
             token: token,
-            user: usuario_encontrado.user
+            user: usuario_encontrado.user,
+            userId: usuario_encontrado.id_usuario // Guardar userId en la sesión
         };
 
         switch (usuario_encontrado.role) {

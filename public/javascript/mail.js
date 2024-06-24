@@ -17,13 +17,12 @@ const sendVerificationEmail = async (email, token) => {
             from: process.env.EMAIL_USER,
             to: email,
             subject: "Activación de cuenta en ALLSPORT",
-            html: getTemplate(token), // Usamos el token como contenido HTML del correo
+            html: getTemplate(token),
         });
     } catch (error) {
         console.log('ERROR CON EMAIL:', error);
     }
-}
-
+};
 
 const sendPasswordResetEmail = async (email, token) => {
     try {
@@ -36,10 +35,22 @@ const sendPasswordResetEmail = async (email, token) => {
     } catch (error) {
         console.log('ERROR CON EMAIL:', error);
     }
-}
+};
 
-// Función para generar el contenido HTML del correo electrónico de verificación
-function getTemplate (token) {
+const sendEntradas = async (email) => {
+    try {
+        return await transporter.sendMail({
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: "Entradas ALLSPORT",
+            html: getEntradas(),
+        });
+    } catch (error) {
+        console.log('ERROR CON EMAIL:', error);
+    }
+};
+
+function getTemplate(token) {
     return `
         <!DOCTYPE html>
         <html lang="es">
@@ -74,7 +85,23 @@ function getPasswordResetTemplate(token) {
     `;
 }
 
+function getEntradas() {
+    return `
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+            <meta charset="UTF-8">
+            <title>Entradas ALLSPORT</title>
+        </head>
+        <body>
+            <h1>Gracias por su compra</h1>
+        </body>
+        </html>
+    `;
+}
+
 module.exports = {
     sendVerificationEmail,
-    sendPasswordResetEmail
-}
+    sendPasswordResetEmail,
+    sendEntradas
+};
