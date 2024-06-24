@@ -82,6 +82,14 @@ app.post('/api/comprar_entrada/:id', async (req, res) => {
 });
 
 
+app.get('/mostrar_evento', (req, res) => {
+    const userRole = req.session.user ? req.session.user.role : null; // Obtener el rol del usuario desde la sesión
+    res.render('mostrar_evento', { userRole });
+});
+
+
+
+
 // Rutas de autenticación y registro
 app.post('/registro_nuevo', userController.registro_usuario);
 app.post('/registro_empresa', companyController.registroEmpresa);
@@ -98,9 +106,7 @@ app.get('/', (req, res) => {
     res.render('main.ejs');
 });
 
-app.get('/mostrar_evento', (req, res) => {
-    res.render('mostrar_evento.ejs', { userRole: res.locals.userRole });
-});
+
 
 app.get('/inicio_sesion', (req, res) => {
     res.render('inicio_sesion.ejs');
