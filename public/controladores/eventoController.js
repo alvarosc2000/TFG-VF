@@ -69,6 +69,7 @@ async function guardarEvento(req, res) {
     }
 }
 
+
 async function obtenerEventoPorId(eventId) {
     try {
         const evento = await Evento.findByPk(eventId, {

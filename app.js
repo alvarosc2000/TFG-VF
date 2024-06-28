@@ -31,7 +31,7 @@ app.use(cookieParser());
 app.use('/api', require('./public/controladores/obtenerEventos'));
 
 // Importación de modelos y controladores
-const { sequelize, Evento, EventoPartido, Usuario } = require('./database/sequelize-config');
+const { sequelize, Evento, EventoPartido, EventoClase, EventoCampus, EventoOcasion, FotoEvento } = require('./database/sequelize-config');
 const authController = require('./public/controladores/authController');
 const userController = require('./public/controladores/userController');
 const companyController = require('./public/controladores/companyController');
@@ -156,11 +156,13 @@ app.get('/crear_evento', verificacionToken_jwt(['admin', 'company']), (req, res)
     res.render('crear_evento.ejs');
 });
 
-// Rutas para mostrar eventos por categoría
+
+// Ruta para mostrar eventos por categoría
 app.get('/vista_eventos_partidos', verificacionToken_jwt(['user', 'company', 'admin']), async (req, res) => {
     try {
         const partidos = await Evento.findAll({
-            where: { categoria: 'partido' }
+            include: [EventoPartido],
+            where: sequelize.literal('`EventoPartido`.`evento_id` IS NOT NULL')
         });
         res.render('vista_eventos_partidos', { eventos: partidos });
     } catch (error) {
@@ -172,7 +174,8 @@ app.get('/vista_eventos_partidos', verificacionToken_jwt(['user', 'company', 'ad
 app.get('/vista_eventos_clases', verificacionToken_jwt(['user', 'company', 'admin']), async (req, res) => {
     try {
         const clases = await Evento.findAll({
-            where: { categoria: 'clase' }
+            include: [EventoClase],
+            where: sequelize.literal('`EventoClase`.`evento_id` IS NOT NULL')
         });
         res.render('vista_eventos_clases', { eventos: clases });
     } catch (error) {
@@ -184,7 +187,8 @@ app.get('/vista_eventos_clases', verificacionToken_jwt(['user', 'company', 'admi
 app.get('/vista_eventos_campus', verificacionToken_jwt(['user', 'company', 'admin']), async (req, res) => {
     try {
         const campus = await Evento.findAll({
-            where: { categoria: 'campus' }
+            include: [EventoCampus],
+            where: sequelize.literal('`EventoCampus`.`evento_id` IS NOT NULL')
         });
         res.render('vista_eventos_campus', { eventos: campus });
     } catch (error) {
@@ -193,12 +197,13 @@ app.get('/vista_eventos_campus', verificacionToken_jwt(['user', 'company', 'admi
     }
 });
 
-app.get('/vista_eventos_eventos', verificacionToken_jwt(['user', 'company', 'admin']), async (req, res) => {
+app.get('/vista_eventos_ocasion', verificacionToken_jwt(['user', 'company', 'admin']), async (req, res) => {
     try {
         const eventos = await Evento.findAll({
-            where: { categoria: 'ocasion' }
+            include: [EventoOcasion],
+            where: sequelize.literal('`EventoOcasion`.`evento_id` IS NOT NULL')
         });
-        res.render('vista_eventos_eventos', { eventos: eventos });
+        res.render('vista_eventos_ocasion', { eventos: eventos });
     } catch (error) {
         console.error("Error al obtener eventos:", error);
         res.status(500).json({ error: 'Error al obtener eventos' });
