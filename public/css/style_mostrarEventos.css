@@ -1,0 +1,64 @@
+/* Estilos para los botones de acciones */
+.create-event-button {
+    display: block;
+    width: fit-content;
+    margin: 10px auto; /* Separación de 10px arriba y abajo, centrado horizontal */
+    padding: 8px 16px; /* Reducir el padding para hacer los botones más pequeños */
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.create-event-button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos específicos para cada tipo de botón */
+.edit-event-button,
+.delete-event-button,
+.info-event-button {
+    display: inline-block; /* Hacer que los botones se alineen horizontalmente */
+    margin: 5px; /* Ajustar el margen entre los botones */
+    padding: 6px 12px; /* Reducir el padding para hacer los botones más pequeños */
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px; /* Tamaño de fuente más pequeño */
+    transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
+}
+
+.edit-event-button {
+    background-color: #28a745; /* Verde */
+    color: #fff;
+}
+
+.delete-event-button {
+    background-color: #dc3545; /* Rojo */
+    color: #fff;
+}
+
+.info-event-button {
+    background-color: #007bff; /* Azul */
+    color: #fff;
+}
+
+.edit-event-button:hover,
+.delete-event-button:hover,
+.info-event-button:hover {
+    filter: brightness(85%); /* Reducir la intensidad del color al hacer hover */
+}
+
+
+/* Estilos de la tabla */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    border: 2px solid #007bff; /* Borde sólido azul para resaltar la tabla */
+    border-radius: 8px; /* Bordes redondeados */
+    overflow: hidden; /* Ocultar bordes dobles en las esquinas */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
