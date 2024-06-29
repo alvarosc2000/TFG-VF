@@ -4,6 +4,13 @@ const { sendEntradas } = require('../javascript/mail');
 
 async function guardarEvento(req, res) {
     const { titulo, descripcion, numero_entradas, localizacion, precio, categoria, deporte, fecha_inicio, fecha_fin, ...detallesCategoria } = req.body;
+    const id_compania = req.session.user.companiaId;
+
+    console.log('Datos recibidos:', req.body);
+
+    if (!id_compania) {
+        return res.status(400).send('El id de la compañía es obligatorio');
+    }
 
     try {
         const evento = await Evento.create({
@@ -15,8 +22,10 @@ async function guardarEvento(req, res) {
             deporte,
             fecha_inicio,
             fecha_fin,
-            categoria
+            id_compania
         });
+
+        console.log('Evento creado:', evento);
 
         switch (categoria) {
             case 'clase':
@@ -69,7 +78,6 @@ async function guardarEvento(req, res) {
     }
 }
 
-
 async function obtenerEventoPorId(eventId) {
     try {
         const evento = await Evento.findByPk(eventId, {
@@ -95,11 +103,17 @@ async function obtenerEventoPorId(eventId) {
 async function actualizarEvento(req, res) {
     const eventId = req.params.id;
     const { titulo, descripcion, numero_entradas, localizacion, precio, deporte, fecha_inicio, fecha_fin, instructor, duracion, nivel, equipo_local, equipo_visitante, liga, programa, tipo_ocasion } = req.body;
+    const id_compania = req.session.user.companiaId;
 
     try {
         const evento = await Evento.findByPk(eventId);
         if (!evento) {
             return res.status(404).send('Evento no encontrado');
+        }
+
+        // Verificar que la compañía es propietaria del evento
+        if (req.session.user.role === 'company' && evento.id_compania !== id_compania) {
+            return res.status(403).send('No tienes permiso para actualizar este evento');
         }
 
         await evento.update({ titulo, descripcion, numero_entradas, localizacion, precio, deporte, fecha_inicio, fecha_fin });
@@ -134,9 +148,20 @@ async function actualizarEvento(req, res) {
 
 async function eliminarEvento(req, res) {
     const eventId = req.params.id;
+    const id_compania = req.session.user.companiaId;
     const t = await sequelize.transaction();
 
     try {
+        const evento = await Evento.findByPk(eventId);
+        if (!evento) {
+            return res.status(404).send('Evento no encontrado');
+        }
+
+        // Verificar que la compañía es propietaria del evento
+        if (req.session.user.role === 'company' && evento.id_compania !== id_compania) {
+            return res.status(403).send('No tienes permiso para eliminar este evento');
+        }
+
         await FotoEvento.destroy({ where: { evento_id: eventId }, transaction: t });
 
         await Promise.all([
@@ -178,7 +203,6 @@ async function subirFoto(req, res) {
     }
 }
 
-
 async function comprarEntrada(eventId, email) {
     try {
         const evento = await Evento.findByPk(eventId);
@@ -202,11 +226,43 @@ async function comprarEntrada(eventId, email) {
     }
 }
 
+async function obtenerEventos(req, res) {
+    const userRole = req.session.user.role;
+    const companiaId = req.session.user.companiaId;
+
+    try {
+        let eventos;
+
+        if (userRole === 'admin') {
+            eventos = await Evento.findAll({
+                include: [EventoClase, EventoPartido, EventoCampus, EventoOcasion, FotoEvento]
+            });
+        } else if (userRole === 'company') {
+            eventos = await Evento.findAll({
+                where: { id_compania: companiaId },
+                include: [EventoClase, EventoPartido, EventoCampus, EventoOcasion, FotoEvento]
+            });
+        } else if (userRole === 'user') {
+            eventos = await Evento.findAll({
+                include: [EventoClase, EventoPartido, EventoCampus, EventoOcasion, FotoEvento]
+            });
+        } else {
+            return res.status(403).send('Acceso denegado');
+        }
+
+        res.json(eventos);
+    } catch (error) {
+        console.error('Error al obtener eventos:', error);
+        res.status(500).send('Error interno del servidor');
+    }
+}
+
 module.exports = {
     guardarEvento,
     eliminarEvento,
     obtenerEventoPorId,
     actualizarEvento,
     subirFoto,
-    comprarEntrada
+    comprarEntrada,
+    obtenerEventos
 };

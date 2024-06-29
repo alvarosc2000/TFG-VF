@@ -1,17 +1,18 @@
 const jwt = require('jsonwebtoken');
 const bcryptjs = require('bcryptjs');
-const { Usuario } = require('../../database/sequelize-config');
+const { Usuario, Compania } = require('../../database/sequelize-config');
 
 async function login(req, res) {
-    const { user, pass } = req.body; // Notamos que el rol no se toma del body, ya que debe venir del usuario encontrado
+    const { user, pass } = req.body;
 
     try {
         // Buscar al usuario en la base de datos
         const usuario_encontrado = await Usuario.findOne({
             where: {
                 user: user,
-                verified: true // Asegúrate de tener un campo 'verified' en tu modelo Usuario
-            }
+                verified: true
+            },
+            include: Compania
         });
 
         // Si el usuario no existe o no está verificado, responder con un error 401
@@ -31,17 +32,17 @@ async function login(req, res) {
         const token = jwt.sign({
             id: usuario_encontrado.id_usuario,
             user: usuario_encontrado.user,
-            role: usuario_encontrado.role, // Asegúrate de que el rol se obtiene del usuario encontrado
-            persona_id: usuario_encontrado.persona_id,
-            compania_id: usuario_encontrado.compania_id
+            role: usuario_encontrado.role,
+            compania_id: usuario_encontrado.Companium ? usuario_encontrado.Companium.id_compania : null
         }, process.env.JWT_SECRET, { expiresIn: '2h' });
 
         // Guardar el token y otros datos del usuario en la sesión
         req.session.user = {
             token: token,
             user: usuario_encontrado.user,
-            role: usuario_encontrado.role, // Guardar el rol del usuario en la sesión
-            userId: usuario_encontrado.id_usuario // Guardar userId en la sesión
+            role: usuario_encontrado.role,
+            userId: usuario_encontrado.id_usuario,
+            companiaId: usuario_encontrado.Companium ? usuario_encontrado.Companium.id_compania : null
         };
 
         // Redirigir al usuario según su rol

@@ -95,6 +95,8 @@ function getEntradas() {
         </head>
         <body>
             <h1>Gracias por su compra</h1>
+            <h2>Presente el código qr en el evento para poder acceder </h2>
+            <img src="../resources/css/qr.jpg">
         </body>
         </html>
     `;

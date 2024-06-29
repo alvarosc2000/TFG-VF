@@ -55,8 +55,12 @@ app.use(async (req, res, next) => {
     if (req.session.userId) {
         const user = await Usuario.findByPk(req.session.userId);
         res.locals.userRole = user ? user.role : null;
+        res.locals.userId = user ? user.id_usuario : null;
+        res.locals.companiaId = user && user.role === 'company' ? user.id_compania : null;
     } else {
         res.locals.userRole = null;
+        res.locals.userId = null;
+        res.locals.companiaId = null;
     }
     next();
 });
@@ -81,12 +85,14 @@ app.post('/api/comprar_entrada/:id', async (req, res) => {
     res.status(resultado.status).send({ message: resultado.message });
 });
 
+app.get('/mostrar_evento', verificacionToken_jwt(['user', 'company', 'admin']), async (req, res) => {
+    const userRole = req.session.user ? req.session.user.role : null;
+    const companiaId = req.session.user ? req.session.user.companiaId : null;
 
-app.get('/mostrar_evento', (req, res) => {
-    const userRole = req.session.user ? req.session.user.role : null; // Obtener el rol del usuario desde la sesión
-    res.render('mostrar_evento', { userRole });
+    res.render('mostrar_evento', { userRole, companiaId });
 });
 
+app.get('/api/mostrar_evento', verificacionToken_jwt(['user', 'company', 'admin']), eventoController.obtenerEventos);
 
 
 
@@ -97,7 +103,18 @@ app.post('/login', authController.login);
 app.post('/auth', authController.login);
 
 // Rutas para la gestión de eventos
-app.post('/crear_evento', verificacionToken_jwt(['admin', 'company']), upload.array('fotos', 10), eventoController.guardarEvento);
+app.post('/crear_evento', verificacionToken_jwt(['admin', 'company']), upload.array('fotos', 10), async (req, res) => {
+    // Suponiendo que id_compania se almacena en la sesión o el token JWT
+    const id_compania = req.session.user && req.session.user.companiaId;
+
+    if (!id_compania) {
+        return res.status(400).send('El id de la compañía es obligatorio');
+    }
+
+    req.body.id_compania = id_compania;
+    await eventoController.guardarEvento(req, res);
+});
+
 app.post('/api/eventos/crear', verificacionToken_jwt(['admin', 'company']), upload.array('fotos', 10), eventoController.guardarEvento);
 app.delete('/api/eliminar_evento/:id', verificacionToken_jwt(['admin', 'company']), eventoController.eliminarEvento);
 
@@ -105,8 +122,6 @@ app.delete('/api/eliminar_evento/:id', verificacionToken_jwt(['admin', 'company'
 app.get('/', (req, res) => {
     res.render('main.ejs');
 });
-
-
 
 app.get('/inicio_sesion', (req, res) => {
     res.render('inicio_sesion.ejs');
@@ -156,8 +171,7 @@ app.get('/crear_evento', verificacionToken_jwt(['admin', 'company']), (req, res)
     res.render('crear_evento.ejs');
 });
 
-
-// Ruta para mostrar eventos por categoría
+// Rutas para mostrar eventos por categoría
 app.get('/vista_eventos_partidos', verificacionToken_jwt(['user', 'company', 'admin']), async (req, res) => {
     try {
         const partidos = await Evento.findAll({
@@ -292,5 +306,6 @@ const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
     console.log(`Servidor en funcionamiento en http://localhost:${PORT}`);
 });
+
 
 module.exports = app;

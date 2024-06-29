@@ -33,7 +33,7 @@ const Usuario = sequelize.define('Usuario', {
     resetToken: {
         type: DataTypes.STRING,
         allowNull: true
-      },
+    },
     role: {
         type: DataTypes.ENUM('user', 'company', 'admin'),
         allowNull: false,
@@ -152,9 +152,14 @@ const Evento = sequelize.define('Evento', {
     deporte: {
         type: DataTypes.TEXT
     },
+    id_compania: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    }
 }, {
     tableName: 'evento'
 });
+
 
 const EventoClase = sequelize.define('EventoClase', {
     evento_id: {
@@ -243,6 +248,9 @@ Usuario.hasOne(Compania, { foreignKey: 'usuario_id' });
 Persona.belongsTo(Usuario, { foreignKey: 'usuario_id' });
 Admin.belongsTo(Usuario, { foreignKey: 'usuario_id' });
 Compania.belongsTo(Usuario, { foreignKey: 'usuario_id' });
+
+Compania.hasMany(Evento, { foreignKey: 'id_compania' });
+Evento.belongsTo(Compania, { foreignKey: 'id_compania' });
 
 Evento.hasOne(EventoClase, { foreignKey: 'evento_id' });
 Evento.hasOne(EventoPartido, { foreignKey: 'evento_id' });

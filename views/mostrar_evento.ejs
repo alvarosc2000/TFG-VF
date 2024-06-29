@@ -88,15 +88,16 @@
         let eventos = [];
         let filteredEventos = [];
 
-        // Obtener el rol del usuario (esto debe ser proporcionado por el servidor)
+        // Obtener el rol del usuario y el id de la compañía (esto debe ser proporcionado por el servidor)
         const userRole = '<%= userRole %>'; // Asegúrate de que esta variable se pasa correctamente desde el servidor
+        const companiaId = '<%= companiaId %>'; // Asegúrate de que esta variable se pasa correctamente desde el servidor
 
         // Función para renderizar la tabla
         function renderTable(data) {
             $('#tablaEventos').empty();
             data.forEach(function(evento, index){
                 let actionButtons = '';
-                if (userRole === 'admin' || userRole === 'company') {
+                if (userRole === 'admin' || (userRole === 'company' && evento.id_compania === parseInt(companiaId))) {
                     actionButtons = `
                         <a href="#" class="create-event-button delete-event-button" data-id="${evento.id}">
                             <i class='bx bxs-eraser'></i>Eliminar
@@ -143,8 +144,8 @@
             method: 'GET',
             success: function(response){
                 eventos = response;
-                filteredEventos = response;
-                renderTable(response);
+                filteredEventos = response.filter(evento => userRole === 'admin' || (userRole === 'company' && evento.id_compania === parseInt(companiaId)));
+                renderTable(filteredEventos);
             },
             error: function(error){
                 console.error('Error al obtener los eventos:', error);
