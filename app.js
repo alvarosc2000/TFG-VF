@@ -31,7 +31,7 @@ app.use(cookieParser());
 app.use('/api', require('./public/controladores/obtenerEventos'));
 
 // Importación de modelos y controladores
-const { sequelize, Evento, EventoPartido, EventoClase, EventoCampus, EventoOcasion, FotoEvento } = require('./database/sequelize-config');
+const { sequelize, Usuario, Evento, EventoPartido, EventoClase, EventoCampus, EventoOcasion, FotoEvento } = require('./database/sequelize-config');
 const authController = require('./public/controladores/authController');
 const userController = require('./public/controladores/userController');
 const companyController = require('./public/controladores/companyController');
