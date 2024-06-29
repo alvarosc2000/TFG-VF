@@ -94,8 +94,6 @@ app.get('/mostrar_evento', verificacionToken_jwt(['user', 'company', 'admin']), 
 
 app.get('/api/mostrar_evento', verificacionToken_jwt(['user', 'company', 'admin']), eventoController.obtenerEventos);
 
-
-
 // Rutas de autenticación y registro
 app.post('/registro_nuevo', userController.registro_usuario);
 app.post('/registro_empresa', companyController.registroEmpresa);

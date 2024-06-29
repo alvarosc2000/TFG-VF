@@ -20,9 +20,11 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="#"></a>
           </li>
+          <% if (userRole === 'admin' || userRole === 'company') { %>
           <li class="nav-item">
-            <a class="nav-link" href="/espacioEmp">Espacio Empresa</a>
+            <a class="nav-link" href="/crear_evento">Crear Evento</a>
           </li>
+          <% } %>
           <li class="nav-item">
             <a class="nav-link" href="/index">Más Información</a>
           </li>
@@ -75,10 +77,6 @@
             <!-- Aquí se cargarán los datos de los eventos -->
         </tbody>
     </table>
-    
-    <a href="/crear_evento" class="create-event-button">
-        <i class='bx bxs-eraser'></i>Crear Evento
-    </a>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -144,7 +142,7 @@
             method: 'GET',
             success: function(response){
                 eventos = response;
-                filteredEventos = response.filter(evento => userRole === 'admin' || (userRole === 'company' && evento.id_compania === parseInt(companiaId)));
+                filteredEventos = eventos.filter(evento => userRole === 'admin' || (userRole === 'company' && evento.id_compania === parseInt(companiaId)) || userRole === 'user');
                 renderTable(filteredEventos);
             },
             error: function(error){
