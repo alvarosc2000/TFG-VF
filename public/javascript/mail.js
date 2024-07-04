@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const path = require('path');
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -44,6 +45,13 @@ const sendEntradas = async (email) => {
             to: email,
             subject: "Entradas ALLSPORT",
             html: getEntradas(),
+            attachments: [
+                {
+                    filename: 'Entrada.jpg',
+                    path: path.join(__dirname, '../css/Entrada.jpg'),
+                    cid: 'entrada@allsport' // el CID que usaremos en el HTML
+                }
+            ]
         });
     } catch (error) {
         console.log('ERROR CON EMAIL:', error);
@@ -59,7 +67,7 @@ function getTemplate(token) {
             <title>Verificación de cuenta</title>
         </head>
         <body>
-            <h1>Verificación de cuenta </h1>
+            <h1>Verificación de cuenta</h1>
             <p>Cuenta creada en ALLSPORT MALAGA</p>
             <p>Por favor, haga clic en el siguiente enlace para activar su cuenta:</p>
             <p><a href="http://localhost:4000/verificar/${token}">Activar cuenta</a></p>
@@ -95,8 +103,8 @@ function getEntradas() {
         </head>
         <body>
             <h1>Gracias por su compra</h1>
-            <h2>Presente el código qr en el evento para poder acceder </h2>
-            <img src="../resources/css/qr.jpg">
+            <p>Presente el código QR en el evento para poder acceder</p>
+            <img src="cid:entrada@allsport" alt="Entrada" style="width: 200px; height: 100px;">
         </body>
         </html>
     `;
