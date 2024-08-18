@@ -14,6 +14,7 @@ dotenv.config({ path: './env/.env' });
 const verificarRole = require('./public/controladores/roleMiddleware');
 
 // Configuración de middlewares
+app.use('/resources', express.static(path.join(__dirname, 'resources')));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -25,7 +26,7 @@ app.use(session({
     secret: 'secret',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false } // Asegúrate de que esté en false durante el desarrollo. Cámbialo a true en producción.
+    cookie: { secure: false } 
 }));
 app.use(cookieParser());
 app.use('/api', require('./public/controladores/obtenerEventos'));
@@ -102,7 +103,6 @@ app.post('/auth', authController.login);
 
 // Rutas para la gestión de eventos
 app.post('/crear_evento', verificacionToken_jwt(['admin', 'company']), upload.array('fotos', 10), async (req, res) => {
-    // Suponiendo que id_compania se almacena en la sesión o el token JWT
     const id_compania = req.session.user && req.session.user.companiaId;
 
     if (!id_compania) {

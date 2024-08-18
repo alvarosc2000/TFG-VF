@@ -25,22 +25,19 @@
               <li class="nav-item">
                 <a class="nav-link" href="/inicio_sesion">Inicio sesión</a>
               </li>
-    
               <li class="nav-item">
                 <a class="nav-link" href="/index">Más Información</a>
               </li>
-              
               <li class="nav-item">
                 <a class="nav-link" href="/registro_nuevo">Registro</a>
               </li>
-    
           </div>
         </div>
       </nav>
 
     <div class="registro">
         <h1>Formulario de Registro</h1>
-        <form action="registro_nuevo" method="POST">
+        <form action="registro_nuevo" method="POST" id="registroForm">
             <div class="div">
                 <input type="text" name="user" required id="usuario_input">
                 <label for="user" id="usuario_label">Usuario</label>
@@ -58,8 +55,8 @@
 
             <div class="div">
                 <select class="form-select" name="role" id="rol_select" required onchange="mostrarCampos()">
-                    <option value="">Seleccionar Rol</option>
-                    <option value="user">Usuario</option>
+                    <option value="">TIPO DE USUARIO</option>
+                    <option value="user">Usuario individual</option>
                     <option value="company">Empresa</option>
                 </select>                
             </div>
@@ -89,9 +86,38 @@
                 <label for="apellido" id="apellido_label">Apellido</label>
             </div>
 
-            <input type="submit" class="btn-save" value="CONFIRMAR">
+            <div class="div politica-privacidad">
+                <input type="checkbox" id="aceptarPolitica" onchange="toggleSubmitButton()">
+                He leído y acepto la <a href="../resources/css/politicaPrivacidadDatos.pdf" target="_blank">Política de Privacidad</a>
+              </div>
+            <div class="div">
+                <input type="submit" class="btn-save" value="CONFIRMAR" disabled id="submitButton">
+            </div>
         </form>
     </div>
+
+    <script>
+        function mostrarCampos() {
+            var rolSelect = document.getElementById('rol_select');
+            var emailContainer = document.getElementById('email_container');
+            var nifContainer = document.getElementById('nif_container');
+            var contactoContainer = document.getElementById('contacto_container');
+            var nombreContainer = document.getElementById('nombre_container');
+            var apellidoContainer = document.getElementById('apellido_container');
+            
+            emailContainer.style.display = rolSelect.value === 'user' ? 'block' : 'none';
+            nifContainer.style.display = rolSelect.value === 'company' ? 'block' : 'none';
+            contactoContainer.style.display = rolSelect.value === 'company' ? 'block' : 'none';
+            nombreContainer.style.display = rolSelect.value === 'user' ? 'block' : 'none';
+            apellidoContainer.style.display = rolSelect.value === 'user' ? 'block' : 'none';
+        }
+
+        function toggleSubmitButton() {
+            var aceptarPolitica = document.getElementById('aceptarPolitica');
+            var submitButton = document.getElementById('submitButton');
+            submitButton.disabled = !aceptarPolitica.checked;
+        }
+    </script>
 
     <script src="../resources/javascript/registros_ajustes.js"></script>
 

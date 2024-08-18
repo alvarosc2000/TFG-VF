@@ -44,20 +44,20 @@ async function registro_usuario(req, res) {
             verified: false
         });
 
-        // Si el rol es "company", crear una nueva entrada en la tabla Compania
+        // Si el rol es "company", creo una nueva entrada en la tabla Compania
         if (role === 'company') {
             const nuevaCompania = await Compania.create({
-                usuario_id: nuevoUsuario.id_usuario, // Asignar el id_usuario correspondiente
+                usuario_id: nuevoUsuario.id_usuario, 
                 email,
                 nif,
                 contacto
             });
         }
 
-        // Si el rol es "user", crear una nueva entrada en la tabla Persona
+        // Si el rol es "user", creo una nueva entrada en la tabla Persona
         else if (role === 'user') {
             const nuevaPersona = await Persona.create({
-                usuario_id: nuevoUsuario.id_usuario, // Asignar el id_usuario correspondiente
+                usuario_id: nuevoUsuario.id_usuario, 
                 nombre,
                 apellido,
                 email

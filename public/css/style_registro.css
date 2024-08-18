@@ -9,7 +9,6 @@ body {
     background-repeat: no-repeat;
     background-position: center ;
     height: calc(120vh - 70px); /* Resta la altura de la barra de navegación */
-
 }
 
 .registro {
@@ -37,7 +36,8 @@ body {
     border-bottom: #AEB6BF solid;
 }
 
-.div input {
+.div input,
+.div select {
     background: none;
     padding: 0 5px;
     height: 40px;
@@ -54,7 +54,6 @@ body {
     color: #AEB6BF;
     pointer-events: none;
 }
-
 
 input[type="submit"] {
     width: 50%;
@@ -78,7 +77,8 @@ input[type="button"]:hover {
     border-radius: 17px;
     border-color: black;
     font-size: 15pt;
-    padding: 20px;}
+    padding: 20px;
+}
 
 #registro-empresa{
     background-color: aliceblue;
@@ -90,6 +90,25 @@ input[type="button"]:hover {
     padding: 20px;
 }
 
+.div label {
+    display: flex;
+    align-items: center;
+}
+
+.div input[type="checkbox"] {
+    margin-right: 10px; /* Añade un margen a la derecha del checkbox */
+    vertical-align: middle; /* Alinea verticalmente el checkbox */
+}
+
+.div label a {
+    text-decoration: underline;
+    color: blue;
+}
+
+.div label a:hover {
+    color: darkblue;
+}
+
 /* Ajustes para los botones dentro de los formularios */
 .div:last-child {
     display: flex; /* Usa flexbox para alinear los botones */
@@ -97,7 +116,6 @@ input[type="button"]:hover {
     margin: 45px 0;
     text-align: center;
 }
-
 
 .btn-change {
     width: 50%;

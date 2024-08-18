@@ -1,5 +1,6 @@
 const { sequelize, Usuario, Evento, EventoClase, EventoPartido, EventoCampus, EventoOcasion, FotoEvento } = require('../../database/sequelize-config');
 const path = require('path');
+const fs = require('fs');
 const { sendEntradas } = require('../javascript/mail');
 
 async function guardarEvento(req, res) {
@@ -100,9 +101,11 @@ async function obtenerEventoPorId(eventId) {
     }
 }
 
+
+
 async function actualizarEvento(req, res) {
     const eventId = req.params.id;
-    const { titulo, descripcion, numero_entradas, localizacion, precio, deporte, fecha_inicio, fecha_fin, instructor, duracion, nivel, equipo_local, equipo_visitante, liga, programa, tipo_ocasion } = req.body;
+    const { titulo, descripcion, numero_entradas, localizacion, precio, deporte, fecha_inicio, fecha_fin, instructor, duracion, nivel, equipo_local, equipo_visitante, liga, programa, tipo_ocasion, fotosEliminadas } = req.body;
     const id_compania = req.session.user.companiaId;
 
     try {
@@ -128,7 +131,31 @@ async function actualizarEvento(req, res) {
             await EventoOcasion.update({ tipo_ocasion }, { where: { evento_id: eventId } });
         }
 
-        if (req.files) {
+        // Manejo de fotos eliminadas
+        if (fotosEliminadas && fotosEliminadas.length > 0) {
+            const idsFotosEliminadas = Array.isArray(fotosEliminadas) ? fotosEliminadas : fotosEliminadas.split(',');
+
+            // Obtener las URLs de las fotos a eliminar
+            const fotos = await FotoEvento.findAll({ where: { foto_id: idsFotosEliminadas } });
+            const fotoPaths = fotos.map(foto => foto.url);
+
+            // Eliminar las fotos de la base de datos
+            await FotoEvento.destroy({ where: { foto_id: idsFotosEliminadas } });
+
+            // Eliminar las fotos del sistema de archivos
+            fotoPaths.forEach(filePath => {
+                fs.unlink(filePath, (err) => {
+                    if (err) {
+                        console.error(`Error al eliminar el archivo ${filePath}:`, err);
+                    } else {
+                        console.log(`Archivo ${filePath} eliminado exitosamente`);
+                    }
+                });
+            });
+        }
+
+        // Manejo de nuevas fotos
+        if (req.files && req.files.length > 0) {
             const fotoPromises = req.files.map(file => {
                 return FotoEvento.create({
                     evento_id: eventId,
@@ -145,6 +172,7 @@ async function actualizarEvento(req, res) {
         res.status(500).send('Error al actualizar el evento');
     }
 }
+
 
 async function eliminarEvento(req, res) {
     const eventId = req.params.id;

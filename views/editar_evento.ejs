@@ -39,8 +39,21 @@
             <!-- Contenedor para campos específicos de la categoría -->
             <div id="categoriaCampos"></div>
 
-            <!-- Carga de fotos -->
-            <label for="fotos">Subir Fotos:</label>
+            <!-- Mostrar imágenes existentes -->
+            <div id="fotosExistentes">
+                <h4>Fotos Existentes:</h4>
+                <% if (evento.FotoEventos && evento.FotoEventos.length > 0) { %>
+                    <% evento.FotoEventos.forEach(function(foto) { %>
+                        <div class="foto-item">
+                            <img src="<%= foto.url %>" alt="<%= foto.descripcion %>" width="100">
+                            <input type="checkbox" name="fotosEliminadas" value="<%= foto.foto_id %>"> Eliminar
+                        </div>
+                    <% }); %>
+                <% } %>
+            </div>
+
+            <!-- Carga de fotos nuevas -->
+            <label for="fotos">Subir Fotos Nuevas:</label>
             <input type="file" id="fotos" name="fotos" multiple><br>
 
             <button type="submit">Guardar Cambios</button>
@@ -78,6 +91,19 @@
         }
 
         window.onload = cargarCamposCategoria;
+
+        // Captura el evento de submit del formulario para manipular fotosEliminadas
+        $('#editarEventoForm').on('submit', function() {
+            var fotosEliminadas = [];
+            $('input[name="fotosEliminadas"]:checked').each(function() {
+                fotosEliminadas.push($(this).val());
+            });
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'fotosEliminadas',
+                value: fotosEliminadas.join(',')
+            }).appendTo('#editarEventoForm');
+        });
     </script>
 </body>
 </html>

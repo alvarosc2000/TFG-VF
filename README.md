@@ -74,6 +74,8 @@ Procesos Dinámicos: Uso de AJAX para actualizar la interfaz sin recargar la pá
 Integración de Terceros: Envío de correos electrónicos para verificación de cuenta y restablecimiento de contraseñas.
 Transacciones de Base de Datos: Uso de transacciones en Sequelize para garantizar la integridad de datos durante operaciones críticas.
 
+Para el envió de entradas necesito un content id cid para
+referenciar ya que no se puede acceder a recursos locales
 
 
 
