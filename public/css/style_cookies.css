@@ -1,0 +1,139 @@
+/* Reset de márgenes y rellenos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilo base */
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+    padding-top: 60px; /* Espacio para el header */
+}
+
+/* Estilo del header */
+header {
+    background: #333;
+    color: #fff;
+    padding: 15px 0;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+header h1 {
+    font-size: 1.8rem;
+}
+
+/* Estilo principal */
+main {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+}
+
+section {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+section h2 {
+    border-bottom: 2px solid #333;
+    color: #333;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+}
+
+section ul {
+    list-style: disc;
+    margin-left: 20px;
+}
+
+section ul li {
+    margin-bottom: 10px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Estilo del footer */
+footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+footer p {
+    font-size: 0.9rem;
+}
+
+/* Estilo del banner de cookies */
+.cookie-banner {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 500px;
+    z-index: 1000;
+}
+
+.cookie-banner p {
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.cookie-banner button {
+    background: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 5px;
+    padding: 10px 20px;
+    transition: background 0.3s ease;
+}
+
+.cookie-banner button:hover {
+    background: #0056b3;
+}
+
+.cookie-banner button#deny-cookies {
+    background: #dc3545;
+}
+
+.cookie-banner button#deny-cookies:hover {
+    background: #c82333;
+}

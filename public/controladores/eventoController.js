@@ -23,7 +23,8 @@ async function guardarEvento(req, res) {
             deporte,
             fecha_inicio,
             fecha_fin,
-            id_compania
+            id_compania,
+            evento_del_mes: false,
         });
 
         console.log('Evento creado:', evento);

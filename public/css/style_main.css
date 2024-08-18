@@ -1,15 +1,16 @@
+/* Estilo base */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     background-color: #f2f2f2;
     height: 100vh;
-    overflow-y: hidden; /*Quita la barra de windows*/
+    overflow-y: hidden; /* Quita la barra de windows */
 }
 
 .titulo h1 {
     text-align: center;
     font-size: 38pt;
-    background-color:none;
+    background-color: none;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     margin-left: 90px;
     margin-right: 90px;
@@ -55,8 +56,8 @@ body {
 }
 
 .carta {
-    width: 450px;
-    height: 450px;
+    width: 500px;
+    height: 400px;
     padding: 4rem 2rem;
     margin-bottom: 10px; /* Agrega espacio entre las cartas */
     background: greenyellow;
@@ -138,6 +139,57 @@ body {
     box-shadow: 0px 7px 10px rgba(0,0,0,0.5);
 }
 
-.titulo{
+.titulo {
     margin-top: 50px;
+}
+
+/* Estilo del aviso de cookies */
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 99%;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+.cookie-banner p {
+    margin: 0;
+    flex: 1;
+    font-size: 1rem;
+}
+
+.cookie-banner a {
+    color: #ffcc00;
+    text-decoration: underline;
+}
+
+.cookie-banner .btn {
+    background-color: #ffcc00;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 0 5px; /* Espaciado entre los botones */
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.cookie-banner .btn:hover {
+    background-color: #e6b800;
+}
+
+.cookie-banner .btn#deny-cookies {
+    background-color: #e6b800;
+}
+
+.cookie-banner .btn#deny-cookies:hover {
+    background-color: #e6b800;
 }

@@ -155,7 +155,10 @@ const Evento = sequelize.define('Evento', {
     id_compania: {
         type: DataTypes.INTEGER,
         allowNull: false
-    }
+    },
+    evento_del_mes: {
+        type: DataTypes.BOOLEAN,
+    },
 }, {
     tableName: 'evento'
 });

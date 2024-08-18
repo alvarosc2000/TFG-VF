@@ -93,6 +93,8 @@ app.get('/mostrar_evento', verificacionToken_jwt(['user', 'company', 'admin']), 
     res.render('mostrar_evento', { userRole, companiaId });
 });
 
+
+
 app.get('/api/mostrar_evento', verificacionToken_jwt(['user', 'company', 'admin']), eventoController.obtenerEventos);
 
 // Rutas de autenticación y registro
@@ -119,6 +121,10 @@ app.delete('/api/eliminar_evento/:id', verificacionToken_jwt(['admin', 'company'
 // Rutas para las vistas
 app.get('/', (req, res) => {
     res.render('main.ejs');
+});
+
+app.get('/politica_cookies', (req, res) => {
+    res.render('politica_cookies.ejs');
 });
 
 app.get('/inicio_sesion', (req, res) => {
@@ -168,6 +174,28 @@ app.get('/espacioAdm', verificacionToken_jwt('admin'), (req, res) => {
 app.get('/crear_evento', verificacionToken_jwt(['admin', 'company']), (req, res) => {
     res.render('crear_evento.ejs');
 });
+
+app.get('/lista_usuarios', verificacionToken_jwt('admin'), async (req, res) => {
+    res.render('lista_usuarios');
+});
+
+// Ruta para dar de baja a un usuario
+app.delete('/api/dar_de_baja_usuario/:id', verificacionToken_jwt('admin'), userController.darDeBajaUsuario);
+
+
+// Ruta para obtener la lista de usuarios
+app.get('/api/mostrar_usuarios', verificacionToken_jwt('admin'), async (req, res) => {
+    try {
+        const usuarios = await Usuario.findAll({
+            attributes: ['id_usuario', 'user', 'email', 'verified', 'role']
+        });
+        res.json(usuarios);
+    } catch (error) {
+        console.error('Error al obtener los usuarios:', error);
+        res.status(500).json({ error: 'Error al obtener los usuarios' });
+    }
+});
+
 
 // Rutas para mostrar eventos por categoría
 app.get('/vista_eventos_partidos', verificacionToken_jwt(['user', 'company', 'admin']), async (req, res) => {

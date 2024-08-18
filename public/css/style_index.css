@@ -1,129 +1,72 @@
-/* Agrega margen superior al contenedor de la barra de navegación */
-.navbar {
-    margin-bottom: 100px;
-}
-
-/* Ajusta el margen del contenedor principal del contenido */
-.nivel-superior,
-.nivel-inferior {
-    margin-top: 20px;
-}
-
-/* Ajusta el margen entre los contenedores de contenido */
-.contenedor {
-    margin: 20px auto; /* En lugar de usar margen negativo */
-}
-
-/* Ajusta el margen horizontal de los contenedores de contenido */
-.contenido {
-    margin: 0 10px; /* Reducir el margen horizontal */
-}
-
-
+/* Reseteo y configuración general */
 body {
-    background-color: #f2f2f2;
+    background-color: #f9f9f9;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
 }
 
-.contenedor {
-    display: flex;
-    justify-content: space-between;
-    margin: 0 -20px; /* Reducir el margen horizontal */
-    margin: -20px 0; /* Reducir el margen vertical */
+.navbar {
+    margin-bottom: 40px;
 }
 
-.contenido {
-    width: 45%;
-    margin-bottom: 0px; /* Reducir el margen inferior del contenedor */
-    background-color: aliceblue;
-    border-radius: 60px;
-    overflow: hidden;
-    display: flex;
-    margin: 0 50px; /* Ajustar el margen horizontal */
+.navbar-brand {
+    font-weight: bold;
 }
 
-.texto {
-    width: 100%;
-    padding: 20px;
+.nav-link {
+    font-size: 16px;
 }
 
-.texto h1 {
-    font-size: 20px;
-    border-bottom: none;
-}
-
-h1 {
-    text-align: center;
-    color: rgb(0, 7, 5);
-    font-size: 50px;
-    border-bottom: 2px solid #1e1a1a;
-}
-
-.cab h1 {
-    text-align: center;
-    color: rgb(0, 7, 5);
-    font-size: 50px;
-    border-bottom: 2px solid #1e1a1a;
-    background-color: none;
-    margin: 30px; /* Agregar margen superior e inferior */
-    margin-bottom: 60px; /* Ajustar margen inferior para crear separación */
-}
-
-
-
-.menu-icon {
-    cursor: pointer;
-    padding: 10px;
-}
-
-.menu-line {
-    width: 25px;
-    height: 3px;
-    background-color: white;
-    margin: 5px 0;
-    transition: all 0.3s ease;
-}
-
-
-
-.menu-items li {
-    margin-bottom: 10px;
-    text-align: left;
-}
-
-.menu-items li a {
+.hero {
+    background: linear-gradient(to right, #4a90e2, #50e3c2);
     color: white;
-    text-decoration: none;
-    display: block;
-    margin: 30px;
-    font-size: large;
-}
-
-.menu-items li a:hover {
-    background-color: #bbf6ab;
-}
-
-.imagen-container {
-    width: 100%;
-    display: flex;
-    justify-content: center; /* Centra horizontalmente la imagen */
-    margin-bottom: 5px; /* Reducir el margen inferior del contenedor de la imagen */
-    margin-top: 5px; /* Reducir el margen superior del contenedor de la imagen */
-    border-radius: 20px;
-}
-
-
-.imagen-container img {
-    width: 10%; /* Ajustar el ancho de la imagen */
-    border-radius: 50px;
-}
-
-.mapa {
-    margin-top: 70px;
+    padding: 60px 20px;
     text-align: center;
-    border-radius: 20px;
-    background-color: aliceblue;
-    width: 35%;
+}
+
+.hero-text {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.2em;
+    line-height: 1.5;
+}
+
+.features, .team {
+    padding: 40px 20px;
+}
+
+.feature {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-bottom: 20px;
+}
+
+.feature h2 {
+    font-size: 2em;
+    margin-bottom: 15px;
+}
+
+.feature p {
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+.map {
+    padding: 20px;
+    text-align: center;
+}
+
+.map iframe {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

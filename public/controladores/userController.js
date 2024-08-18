@@ -1,5 +1,5 @@
 const bcryptjs = require('bcryptjs');
-const { Usuario, Compania, Persona } = require('../../database/sequelize-config');
+const { Usuario, Compania, Persona, Evento, EventoClase, EventoPartido, EventoCampus, EventoOcasion, FotoEvento } = require('../../database/sequelize-config');
 const { sendVerificationEmail, sendPasswordResetEmail } = require('../javascript/mail');
 const uuid = require('uuid');
 
@@ -74,6 +74,47 @@ async function registro_usuario(req, res) {
     }
 }
 
+async function darDeBajaUsuario(req, res) {
+    const userId = req.params.id;
+
+    try {
+        // Verificar si el usuario existe
+        const usuario = await Usuario.findByPk(userId);
+        if (!usuario) {
+            return res.status(404).send('Usuario no encontrado');
+        }
+
+        // Si el usuario es una compañía, eliminar los eventos asociados y sus dependencias
+        const compania = await Compania.findOne({ where: { usuario_id: userId } });
+        if (compania) {
+            // Obtener todos los eventos asociados a la compañía
+            const eventos = await Evento.findAll({ where: { id_compania: compania.id_compania } });
+            for (const evento of eventos) {
+                // Eliminar dependencias basadas en la categoría del evento
+                await EventoClase.destroy({ where: { evento_id: evento.id } });
+                await EventoPartido.destroy({ where: { evento_id: evento.id } });
+                await EventoCampus.destroy({ where: { evento_id: evento.id } });
+                await EventoOcasion.destroy({ where: { evento_id: evento.id } });
+                await FotoEvento.destroy({ where: { evento_id: evento.id } });
+                // Eliminar el evento en sí
+                await evento.destroy();
+            }
+            // Eliminar la compañía después de eliminar todos los eventos
+            await compania.destroy();
+        }
+
+        // Eliminar las referencias en las tablas relacionadas para `Persona`, si existen
+        await Persona.destroy({ where: { usuario_id: userId } });
+
+        // Finalmente, eliminar el usuario
+        await usuario.destroy();
+
+        res.send('Usuario y sus referencias eliminados correctamente');
+    } catch (error) {
+        console.error('Error al dar de baja al usuario:', error);
+        res.status(500).send('Error al dar de baja al usuario');
+    }
+}
 
 async function verificacionCuenta(req, res) {
     const { token } = req.params;
@@ -158,5 +199,6 @@ module.exports = {
     verificacionCuenta,
     forgotPassword,
     resetPasswordPage,
-    resetPassword
+    resetPassword,
+    darDeBajaUsuario
 };

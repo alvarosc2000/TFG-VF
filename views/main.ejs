@@ -14,7 +14,7 @@
 
 <div class="mov">
     <div class="carta">
-        <img src="../resources/css/trato.jpg">
+        <img src="../resources/css/unete.jpg">
         <div class="info">
             <h1>ÚNETE</h1>
             <p>¿QUIERES FORMAR PARTE DE ESTE GRUPO?</p>
@@ -23,27 +23,61 @@
     </div>
 
     <div class="carta">
-        <img src="../resources/css/gente-caminando-juntos-al-aire-libre-plano-medio.jpg">
+        <img src="../resources/css/somos.jpg">
         <div class="info">
             <h1>¿QUIENES SOMOS?</h1>
-            <p>WEB DE GESTION DE EVENTOS EN PROCESO</p>
+            <p>DESCUBRE MAS SOBRE NOSOTROS</p>
             <a href="index" class="btn">Leer mas</a>
         </div>
     </div>
 
     <div class="carta">
-        <img src="../resources/css/im1.jpg">
+        <img src="../resources/css/movil4.jpg">
         <div class="info">
             <h1>INICIA SESIÓN</h1>
-            <p>WEB DE GESTION DE EVENTOS EN PROCESO</p>
-            <a href="inicio_sesion" class="btn">Inicio de sesion</a>
+            <p>ACCEDE A TU CUENTA</p>
+            <a href="inicio_sesion" class="btn">Inicia sesión</a>
         </div>
     </div>
 
 </div>
 
+<!-- Aviso de cookies -->
+<div id="cookie-banner" class="cookie-banner">
+    <p>Esta web utiliza cookies para mejorar tu experiencia. Al continuar navegando, aceptas nuestra <a href="politica_cookies">Política de Cookies</a>.</p>
+    <button id="accept-cookies" class="btn">Aceptar</button>
+    <button id="deny-cookies" class="btn">Denegar</button>
+</div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cookieBanner = document.getElementById('cookie-banner');
+        const acceptCookiesButton = document.getElementById('accept-cookies');
+        const denyCookiesButton = document.getElementById('deny-cookies');
+    
+        // Verificar si las cookies ya fueron aceptadas o denegadas
+        if (!localStorage.getItem('cookies-accepted') && !localStorage.getItem('cookies-denied')) {
+            cookieBanner.style.display = 'flex';
+        } else {
+            // Si las cookies fueron aceptadas o denegadas, oculta el banner
+            cookieBanner.style.display = 'none';
+        }
+    
+        // Manejar el clic en el botón de aceptar cookies
+        acceptCookiesButton.addEventListener('click', function() {
+            localStorage.setItem('cookies-accepted', 'true');
+            cookieBanner.style.display = 'none';
+        });
 
+        // Manejar el clic en el botón de denegar cookies
+        denyCookiesButton.addEventListener('click', function() {
+            localStorage.setItem('cookies-denied', 'true');
+            cookieBanner.style.display = 'none';
+            // Opcional: Redirigir a una página específica o mostrar un mensaje
+            // window.location.href = 'pagina_denegada.html'; // Redirige si es necesario
+        });
+    });
+</script>
 
 </body>
 </html>
