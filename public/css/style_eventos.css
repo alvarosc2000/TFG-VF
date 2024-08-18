@@ -3,76 +3,62 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #e3e6e9; /* Color de fondo claro */
+    background-color: #ffffff; /* Fondo claro */
 }
 
+.navbar {
+    margin-bottom: 40px;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+.nav-link {
+    font-size: 16px;
+}
 /* Encabezado */
 .container h1 {
-    width: 100%;
     text-align: center;
-    margin-bottom: 30px; /* Mayor separación del resto */
-    font-size: 48px; /* Tamaño de texto más grande */
+    margin-bottom: 40px;
+    font-size: 2.5rem;
 }
 
 /* Contenedor principal */
 .container {
-    margin-top: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin-top: 20px;
 }
 
-/* Contenedor de la información del evento */
+/* Contenedor de la información del evento y el mapa */
 .evento-info {
     display: flex;
-    width: 110%;
-    max-width: 1600px; /* Ajusta según sea necesario */
-    background-color: #e1dfdf; /* Fondo blanco */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
-    border-radius: 8px; /* Bordes redondeados */
-    padding: 20px;
-    margin-bottom: 20px;
-    margin-top: 40px;
+    flex-direction: column;
 }
 
-/* Detalles del evento */
+/* Estilo para la información del evento */
 .evento-detalles {
-    flex: 1 1 60%;
-    max-width: 60%;
-    text-align: left;
-    padding-right: 20px;
-    border-right: 1px solid #ddd;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;
 }
 
-.evento-detalles p {
-    font-size: 18px; /* Tamaño de texto más grande */
-    margin-bottom: 10px;
+/* Estilo para el mapa */
+.evento-map {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Contenedor de las imágenes del evento */
+/* Imágenes del evento */
 .evento-imagenes {
-    flex: 1 1 40%;
-    max-width: 40%;
-    text-align: center;
-    padding-left: 20px;
-}
-
-.evento-imagenes h3 {
-    margin-bottom: 20px;
-}
-
-/* Estilo para cada imagen del evento */
-.evento-imagen {
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.carousel-inner img {
-    width: 100%;
-    height: auto;
-    display: block;
-    margin: 0 auto;
-    max-height: 500px; /* Tamaño máximo de las imágenes */
+    background-color: #ffffff;
+    margin-left: 120px;
+    width: 80%;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Botón Comprar */
@@ -85,11 +71,22 @@ body {
     background-color: #007bff;
     border-color: #007bff;
     padding: 10px 20px;
-    font-size: 18px;
+    font-size: 1.125rem;
     border-radius: 5px;
 }
 
 .btn-primary:hover {
     background-color: #0056b3;
     border-color: #0056b3;
+}
+
+/* Carousel */
+.carousel-inner img {
+    width: 100%;
+    height: auto;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5);
 }

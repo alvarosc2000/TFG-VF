@@ -1,0 +1,108 @@
+/* Estilo base */
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f2f2f2;
+    height: 100vh;
+    overflow-y: hidden; /* Quita la barra de desplazamiento vertical */
+}
+
+.titulo {
+    text-align: center;
+    font-family: 'Cambria', serif;
+    margin: 50px 0;
+}
+
+.titulo h1 {
+    font-size: 2.5rem;
+    background-color: transparent;
+    color: #333;
+}
+
+.navbar {
+    margin-bottom: 40px;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+.nav-link {
+    font-size: 16px;
+}
+
+.mov {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centra las cartas horizontalmente */
+    gap: 40px; /* Espacio entre las cartas */
+    margin-top: 50px; /* Espacio desde la parte superior */
+}
+
+.carta {
+    width: 100%;
+    width: 700px; /* Ancho máximo de la carta */
+    height: 600px;
+    position: relative;
+    overflow: hidden; /* Asegura que el contenido no se desborde */
+    border-radius: 15px; /* Bordes redondeados de la carta */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Sombra sutil */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.carta:hover {
+    transform: scale(1.05); /* Aumenta el tamaño al pasar el ratón */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3); /* Sombra más pronunciada */
+}
+
+.carta img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.carta .info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.6); /* Fondo oscuro con opacidad */
+    color: #fff;
+    text-align: center;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.carta:hover .info {
+    opacity: 1;
+    transform: translateY(0); /* No mueve el contenido al pasar el ratón */
+}
+
+.carta .info h1 {
+    font-size: 1.5rem;
+    margin: 0 0 10px;
+}
+
+.carta .info p {
+    font-size: 1 rem;
+    margin: 0 0 20px;
+    letter-spacing: 0.5px;
+}
+
+.carta .info .btn {
+    text-decoration: none;
+    padding: 10px 20px;
+    background: #fff;
+    color: #333;
+    font-size: 0.875rem;
+    font-weight: bold;
+    border-radius: 25px; /* Bordes redondeados en el botón */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.carta .info .btn:hover {
+    background-color: #ddd;
+    color: #000;
+}

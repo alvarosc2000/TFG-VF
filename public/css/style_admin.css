@@ -1,51 +1,42 @@
 /* Estilo base */
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     background-color: #f2f2f2;
     height: 100vh;
     overflow-y: auto; /* Permite el desplazamiento vertical */
 }
 
-.titulo h1 {
+/* Estilo para el título principal */
+.titulo {
     text-align: center;
-    font-size: 38pt;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    margin: 50px auto; /* Ajusta el margen superior e inferior */
+    margin: 50px auto;
 }
 
+.titulo h1 {
+    font-size: 2.5rem; /* Tamaño de fuente más moderno */
+    font-family: 'Cambria', serif;
+    color: #333; /* Color oscuro para mejor contraste */
+}
+
+/* Estilo para el borde del título */
 .border {
     text-align: center;
 }
 
 .navbar {
-    background-color: none;
-    overflow: hidden;
+    margin-bottom: 40px;
 }
 
-.navbar ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+.navbar-brand {
+    font-weight: bold;
 }
 
-.navbar ul li {
-    float: left;
+.nav-link {
+    font-size: 16px;
 }
 
-.navbar ul li a {
-    display: block;
-    color: black; /* Cambiar color a negro */
-    text-align: center;
-    padding: 20px 20px;
-    text-decoration: none;
-}
-
-.navbar ul li a:hover {
-    background-color: #dddddd;
-    color: black;
-}
-
+/* Estilo para el contenedor de cartas */
 .mov {
     display: flex;
     flex-wrap: wrap; /* Permite que las cartas se envuelvan en múltiples líneas */
@@ -55,21 +46,24 @@ body {
     max-width: 1200px; /* Limita el ancho máximo del contenedor */
 }
 
+/* Estilo para las cartas */
 .carta {
-    width: 400px;
-    height: 400px;
-    padding: 4rem 2rem;
-    background: greenyellow;
+    width: 100%;
+    width: 600px; /* Ancho máximo de las cartas */
+    height: 500px;
     position: relative;
     display: flex;
     align-items: flex-end;
-    box-shadow: 0px 7px 10px rgba(0,0,0,0.5);
-    transition: 0.5s ease-in-out;
-    flex: 1 1 calc(50% - 20px); /* Calcula el tamaño de las cartas para que quepan 2 por fila */
+    border-radius: 15px; /* Bordes redondeados */
+    overflow: hidden; /* Asegura que el contenido no se desborde */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex: 1 1 calc(50% - 20px); /* Ajusta el tamaño para que haya 2 por fila */
 }
 
 .carta:hover {
-    transform: translateY(20px);
+    transform: scale(1.05); /* Aumenta el tamaño al pasar el ratón */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada */
 }
 
 .carta:before {
@@ -77,13 +71,12 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    display: block;
     width: 100%;
     height: 100%;
     background: linear-gradient(to bottom, rgba(0,176,155,0.5), rgba(150,201,61,0.5));
     z-index: 2;
-    transition: 0.5s all;
     opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .carta:hover:before {
@@ -99,52 +92,48 @@ body {
     left: 0;
 }
 
+/* Estilo para la información dentro de la carta */
 .carta .info {
     position: relative;
     z-index: 3;
     color: #fff;
-    opacity: 1;
-    transform: translateY(30px);
-    background-color: rgba(0, 0, 0, 0.411); 
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro con mayor opacidad */
     border-radius: 20px;
+    padding: 20px;
     width: 100%;
-    transition: 0.5s all;
+    text-align: center; /* Centra el texto dentro del contenedor */
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .carta:hover .info {
     opacity: 1;
-    transform: translateY(0px);
+    transform: translateY(0); /* Mueve la información a su lugar original */
 }
 
 .carta .info h1 {
-    margin: 12px;
-    font-size: 30px
+    margin: 0 0 10px;
+    font-size: 1.5rem;
 }
 
 .carta .info p {
     letter-spacing: 1px;
-    font-size: 15px;
-    margin-top: 8px;
-    margin-bottom: 20px;
-    text-align: center
+    font-size: 0.875rem;
+    margin: 0 0 20px;
 }
 
 .carta .info .btn {
     text-decoration: none;
-    padding: 0.5rem 1rem;
+    padding: 10px 20px;
     background: #fff;
-    color: #000;
-    font-size: 15px;
+    color: #333;
+    font-size: 0.875rem;
     font-weight: bold;
-    cursor: pointer;
-    transition: 0.4s ease-in-out;
-    margin-left: 40%;
+    border-radius: 25px; /* Bordes redondeados en el botón */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: inline-block; /* Asegura que el botón sea un bloque en línea */
 }
 
 .carta .info .btn:hover {
-    box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.719);
-}
-
-.titulo {
-    margin-top: 50px;
+    background-color: #ddd;
+    color: #000;
 }

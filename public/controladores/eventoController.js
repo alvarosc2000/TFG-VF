@@ -24,8 +24,9 @@ async function guardarEvento(req, res) {
             fecha_inicio,
             fecha_fin,
             id_compania,
-            evento_del_mes: false,
+            evento_del_mes: false,  // Asegúrate de que este valor siempre se establezca
         });
+        
 
         console.log('Evento creado:', evento);
 

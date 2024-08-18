@@ -1,0 +1,163 @@
+/* Estilo base */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Barra de navegación */
+.navbar {
+    background-color: #343a40;
+}
+
+.navbar-brand {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.navbar-brand:hover {
+    color: #d4d4d4;
+}
+
+.nav-link {
+    color: #ffffff;
+}
+
+.nav-link:hover {
+    color: #d4d4d4;
+    background-color: transparent;
+}
+
+/* Contenedor principal */
+.container {
+    margin-top: 30px;
+}
+
+/* Encabezado */
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Tabla */
+.table {
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table thead {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+.table th, .table td {
+    text-align: center;
+    padding: 12px;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f8f9fa;
+}
+
+.table-striped tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+/* Botones */
+.btn-group {
+    display: flex;
+    justify-content: center;
+}
+
+.create-event-button {
+    display: flex;
+    align-items: center;
+    color: #007bff;
+    text-decoration: none;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    padding: 8px 12px;
+    margin: 0 5px;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.create-event-button i {
+    margin-right: 5px;
+}
+
+.create-event-button:hover {
+    background-color: #007bff;
+    color: #ffffff;
+    border-color: #007bff;
+}
+
+.delete-event-button {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.delete-event-button:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+.edit-event-button {
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+
+.edit-event-button:hover {
+    background-color: #e0a800;
+    border-color: #d39e00;
+}
+
+.info-event-button {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.info-event-button:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+    .table thead {
+        display: none;
+    }
+
+    .table, .table tbody, .table tr, .table td {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .table tr {
+        margin-bottom: 15px;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table td {
+        display: flex;
+        justify-content: space-between;
+        text-align: left;
+        padding: 10px;
+        position: relative;
+    }
+
+    .table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 50%;
+        padding: 0 10px;
+        font-weight: bold;
+        background-color: #f8f9fa;
+    }
+}
