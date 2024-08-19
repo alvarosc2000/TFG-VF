@@ -44,6 +44,7 @@ CREATE TABLE `evento` (
     `fecha_fin` DATE,
     `deporte` TEXT,
     `id_compania` INT NOT NULL,
+    `evento_del_mes` BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (`id_compania`) REFERENCES `compania`(`id_compania`)
 );
 

@@ -105,16 +105,8 @@ app.post('/auth', authController.login);
 app.post('/api/marcar_evento_mes/:id', verificacionToken_jwt('admin'), eventoController.marcarEventoDelMes);
 
 // Rutas para la gestión de eventos
-app.post('/crear_evento', verificacionToken_jwt(['admin', 'company']), upload.array('fotos', 10), async (req, res) => {
-    const id_compania = req.session.user && req.session.user.companiaId;
+app.post('/api/eventos/crear', verificacionToken_jwt(['admin', 'company']), upload.array('fotos', 10), eventoController.guardarEvento);
 
-    if (!id_compania) {
-        return res.status(400).send('El id de la compañía es obligatorio');
-    }
-
-    req.body.id_compania = id_compania;
-    await eventoController.guardarEvento(req, res);
-});
 
 app.post('/api/eventos/crear', verificacionToken_jwt(['admin', 'company']), upload.array('fotos', 10), eventoController.guardarEvento);
 app.delete('/api/eliminar_evento/:id', verificacionToken_jwt(['admin', 'company']), eventoController.eliminarEvento);

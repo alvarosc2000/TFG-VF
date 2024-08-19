@@ -1,69 +1,154 @@
-/* Reset de estilos */
-body, html {
+
+/* Estilos generales */
+body {
+    background-image: url("persona2.jpg");
+    background-size: cover; /* Asegura que la imagen cubra toda el área del fondo */
+    background-position: center; /* Centra la imagen de fondo */
+    height: 100vh; /* Asegura que el fondo cubra toda la altura de la ventana */
     margin: 0;
     padding: 0;
 }
 
 .formulario {
-    margin: 0 auto; /* Centrar horizontalmente */
-    margin-top: 250px;
-    background-color: aliceblue;
+    margin: 0 auto; 
+    margin-top: 300px; 
+    background-color: #ffffff; 
     text-align: left;
-    width: 700px;
-    border-radius: 17px;
-    border: 1px solid black;
-    font-size: 15pt;
-    height: auto; /* Se ajusta al contenido */
+    width: 120%; 
+    max-width: 500px; 
+    border-radius: 8px; 
+    border: 1px solid #ddd; 
+    font-size: 16px;
     padding: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Agrega una sombra */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
+    background: #fafafa;
 }
 
+/* Estilo del encabezado del formulario */
 .formulario h1 {
     text-align: center;
-    padding: 10px 0; /* Espaciado en la parte superior e inferior */
-    border-bottom: 1px solid #AEB6BF; /* Línea divisoria */
-    margin-bottom: 20px; /* Espacio debajo del título */
+    padding: 15px 0; 
+    border-bottom: 2px solid #e0e0e0; 
+    margin-bottom: 20px;
+    font-size: 24px; 
+    color: #333; 
 }
 
+/* Estilos para los campos del formulario */
 .formulario .div {
     position: relative;
-    margin: 25px 0; /* Espacio entre los elementos del formulario */
+    margin: 20px 0; 
 }
 
 .formulario input[type="email"] {
     width: 100%;
-    height: 40px;
-    padding: 0 5px;
-    border: none;
-    border-bottom: 2px solid #AEB6BF; /* Línea en la parte inferior */
-    background: none;
+    height: 45px;
+    padding: 10px;
+    border: 1px solid #ddd; 
+    border-radius: 5px; 
+    background-color: #fff;
+    font-size: 16px;
+    box-sizing: border-box; 
     outline: none;
-    font-size: 15px;
+    transition: border-color 0.3s;
 }
 
+.formulario input[type="email"]:focus {
+    border-color: #007bff;
+}
+
+/* Etiqueta flotante */
 .formulario label {
     position: absolute;
     top: 50%;
-    left: 5px;
+    left: 10px;
     transform: translateY(-50%);
-    color: #AEB6BF;
-    font-size: 15px;
+    color: #888;
+    font-size: 16px;
     pointer-events: none;
+    transition: all 0.3s;
 }
 
+/* Estilo del botón de envío */
 .formulario input[type="submit"] {
     width: 100%;
-    height: 45px;
+    height: 50px;
     border: none;
-    background-color: #D7DBDD;
-    border-radius: 20px;
-    margin-top: 20px; /* Espacio encima del botón */
+    background-color: #007bff; 
+    color: #fff; 
+    border-radius: 5px; 
+    margin-top: 20px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s;
 }
 
 .formulario input[type="submit"]:hover {
-    background-color: #ccc; /* Cambio de color al pasar el ratón */
+    background-color: #0056b3;
+    transform: scale(1.05); 
+}
+
+/* Estilo para el navbar de Bootstrap */
+.navbar {
+    margin-bottom: 20px; 
 }
 
 
+.modal {
+    display: none; /* Ocultar modal por defecto */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5); /* Fondo oscuro */
+}
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Ocultar etiqueta cuando el campo tiene texto */
+.formulario input[type="email"]:focus + label,
+.formulario input[type="email"]:not(:placeholder-shown) + label {
+    color: transparent; /* Oculte el texto */
+    font-size: 14px; /* Ajuste opcional del tamaño de la fuente */
+    top: 10px; /* Mueve la etiqueta a la parte superior */
+    left: 10px; /* Alinea la etiqueta con el campo de entrada */
+}
+
+/* Estilo del botón de envío */
+.formulario input[type="submit"] {
+    width: 100%;
+    height: 50px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.formulario input[type="submit"]:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}

@@ -84,13 +84,22 @@ input[type="submit"]:hover {
 .div .politica-privacidad {
     display: flex;
     align-items: center;
-    font-size: 0.875rem;
+    font-size: 1rem; /* Aumenta el tamaño del texto */
     margin-top: 10px;
+    gap: 10px; /* Espacio entre el checkbox y el texto */
 }
 
-.div .politica-privacidad input[type="checkbox"] {
-    margin-right: 10px;
+.div  input[type="checkbox"] {
+    transform: scale(0.8); /* Reduce el tamaño del checkbox */
+    margin: 0; /* Asegúrate de que no haya márgenes en el checkbox */
+    width: auto; /* Mantén el ancho automático para evitar un tamaño inusual */
+    height: auto; /* Mantén la altura automática para evitar un tamaño inusual */
 }
+
+.div .politica-privacidad label {
+    font-size: 2rem; /* Ajusta el tamaño del texto según prefieras */
+}
+
 
 .div .politica-privacidad a {
     color: #007bff;

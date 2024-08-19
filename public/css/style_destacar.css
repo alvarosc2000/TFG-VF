@@ -1,0 +1,10 @@
+/* Clase personalizada para el botón de destacar */
+.btn-destacar {
+    background-color: rgb(243, 243, 148);
+    color: black; /* Opcional: Puedes cambiar el color del texto si lo deseas */
+    border: 1px solid black; /* Opcional: Bordes para que el botón destaque más */
+}
+
+.btn-destacar:hover {
+    background-color: #eee9b9; /* Cambia el color al pasar el ratón para un efecto visual */
+}

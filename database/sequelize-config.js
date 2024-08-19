@@ -154,7 +154,11 @@ const Evento = sequelize.define('Evento', {
     },
     id_compania: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
+    },
+    id_admin: {
+        type: DataTypes.INTEGER,
+        allowNull: true
     },
     evento_del_mes: {
         type: DataTypes.BOOLEAN,
@@ -255,6 +259,7 @@ Compania.belongsTo(Usuario, { foreignKey: 'usuario_id' });
 
 Compania.hasMany(Evento, { foreignKey: 'id_compania' });
 Evento.belongsTo(Compania, { foreignKey: 'id_compania' });
+Evento.belongsTo(Admin, { foreignKey: 'id_admin' });
 
 Evento.hasOne(EventoClase, { foreignKey: 'evento_id' });
 Evento.hasOne(EventoPartido, { foreignKey: 'evento_id' });

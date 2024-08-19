@@ -5,12 +5,14 @@ const { sendEntradas } = require('../javascript/mail');
 
 async function guardarEvento(req, res) {
     const { titulo, descripcion, numero_entradas, localizacion, precio, categoria, deporte, fecha_inicio, fecha_fin, ...detallesCategoria } = req.body;
-    const id_compania = req.session.user.companiaId;
+    const userRole = req.session.user.role;
+    const id_compania = req.session.user.companiaId || null;
+    const id_admin = req.session.user.userId || null;
 
     console.log('Datos recibidos:', req.body);
 
-    if (!id_compania) {
-        return res.status(400).send('El id de la compañía es obligatorio');
+    if (!id_compania && !id_admin) {
+        return res.status(400).send('El id de la compañía/admin es obligatorio');
     }
 
     try {
@@ -23,7 +25,8 @@ async function guardarEvento(req, res) {
             deporte,
             fecha_inicio,
             fecha_fin,
-            id_compania,
+            id_compania: userRole === 'company' ? id_compania : null,
+            id_admin: userRole === 'admin' ? id_admin : null,
             evento_del_mes: false,
         });
         

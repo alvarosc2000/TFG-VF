@@ -79,13 +79,13 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label for="fecha_inicio" class="form-label">Fecha Inicio</label>
-                        <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" value="<%= evento.fecha_inicio %>" required>
+                        <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" value="<%= evento.fecha_inicio ? evento.fecha_inicio.toISOString().split('T')[0] : '' %>" required>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label for="fecha_fin" class="form-label">Fecha Fin</label>
-                        <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" value="<%= evento.fecha_fin %>" required>
+                        <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" value="<%= evento.fecha_fin ? evento.fecha_fin.toISOString().split('T')[0] : '' %>" required>
                     </div>
                 </div>
             </div>
@@ -183,33 +183,68 @@
     <script>
         // Función para cargar campos específicos según la categoría
         function cargarCamposCategoria() {
-            var categoria = "<%= categoria %>";
-            var camposCategoria = document.getElementById('categoriaCampos');
-            camposCategoria.innerHTML = '';
+    var categoria = "<%= categoria %>";
+    var camposCategoria = document.getElementById('categoriaCampos');
+    camposCategoria.innerHTML = '';
 
-            switch (categoria) {
-                case 'clase':
-                    camposCategoria.innerHTML += `
-                        <div><label>Instructor:</label><input type="text" name="instructor" value="<%= evento.EventoClase ? evento.EventoClase.instructor : '' %>"></div>
-                        <div><label>Duración:</label><input type="text" name="duracion" value="<%= evento.EventoClase ? evento.EventoClase.duracion : '' %>"></div>
-                        <div><label>Nivel:</label><input type="text" name="nivel" value="<%= evento.EventoClase ? evento.EventoClase.nivel : '' %>"></div>`;
-                    break;
-                case 'partido':
-                    camposCategoria.innerHTML += `
-                        <div><label>Equipo Local:</label><input type="text" name="equipo_local" value="<%= evento.EventoPartido ? evento.EventoPartido.equipo_local : '' %>"></div>
-                        <div><label>Equipo Visitante:</label><input type="text" name="equipo_visitante" value="<%= evento.EventoPartido ? evento.EventoPartido.equipo_visitante : '' %>"></div>
-                       <div></div>`;
-                    break;
-                case 'campus':
-                    camposCategoria.innerHTML += `
-                        <div><label>Programa:</label><input type="text" name="programa" value="<%= evento.EventoCampus ? evento.EventoCampus.programa : '' %>"></div>`;
-                    break;
-                case 'ocasion':
-                    camposCategoria.innerHTML += `
-                        <div><label>Tipo de Ocasion:</label><input type="text" name="tipo_ocasion" value="<%= evento.EventoOcasion ? evento.EventoOcasion.tipo_ocasion : '' %>"></div>`;
-                    break;
-            }
-        }
+    switch (categoria) {
+        case 'clase':
+            camposCategoria.innerHTML += `
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="instructor" class="form-label">Instructor</label>
+                        <input type="text" class="form-control" id="instructor" name="instructor" value="<%= evento.EventoClase ? evento.EventoClase.instructor : '' %>">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="duracion" class="form-label">Duración</label>
+                        <input type="text" class="form-control" id="duracion" name="duracion" value="<%= evento.EventoClase ? evento.EventoClase.duracion : '' %>">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="nivel" class="form-label">Nivel</label>
+                        <input type="text" class="form-control" id="nivel" name="nivel" value="<%= evento.EventoClase ? evento.EventoClase.nivel : '' %>">
+                    </div>
+                </div>`;
+            break;
+        case 'partido':
+            camposCategoria.innerHTML += `
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="equipo_local" class="form-label">Equipo Local</label>
+                        <input type="text" class="form-control" id="equipo_local" name="equipo_local" value="<%= evento.EventoPartido ? evento.EventoPartido.equipo_local : '' %>">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="equipo_visitante" class="form-label">Equipo Visitante</label>
+                        <input type="text" class="form-control" id="equipo_visitante" name="equipo_visitante" value="<%= evento.EventoPartido ? evento.EventoPartido.equipo_visitante : '' %>">
+                    </div>
+                </div>`;
+            break;
+        case 'campus':
+            camposCategoria.innerHTML += `
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="programa" class="form-label">Programa</label>
+                        <input type="text" class="form-control" id="programa" name="programa" value="<%= evento.EventoCampus ? evento.EventoCampus.programa : '' %>">
+                    </div>
+                </div>`;
+            break;
+        case 'ocasion':
+            camposCategoria.innerHTML += `
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="tipo_ocasion" class="form-label">Tipo de Ocasión</label>
+                        <input type="text" class="form-control" id="tipo_ocasion" name="tipo_ocasion" value="<%= evento.EventoOcasion ? evento.EventoOcasion.tipo_ocasion : '' %>">
+                    </div>
+                </div>`;
+            break;
+    }
+}
+
 
         window.onload = cargarCamposCategoria;
 

@@ -86,6 +86,18 @@ document.getElementById("apellido_input").addEventListener("blur", function() {
     }
 });
 
+
+// Ajuste para eliminar la etiqueta label de email
+document.getElementById("email_input").addEventListener("focus", function() {
+    document.getElementById("email_label").style.display = "none";
+});
+
+document.getElementById("email_input").addEventListener("blur", function() {
+    if (this.value.trim() === "") {
+        document.getElementById("email_label").style.display = "block";
+    }
+});
+
 // Ajuste para mostrar u ocultar campos adicionales según el rol seleccionado
 function mostrarCampos() {
     var rolSelect = document.getElementById("rol_select");
