@@ -105,7 +105,7 @@
             $('#tablaEventos').empty();
             data.forEach(function(evento, index){
                 let actionButtons = '';
-                if (userRole === 'admin' || (userRole === 'company' && evento.id_compania === parseInt(companiaId))) {
+                if ( (userRole === 'company' && evento.id_compania === parseInt(companiaId))) {
                     actionButtons = `
                         <a href="#" class="create-event-button delete-event-button" data-id="${evento.id}">
                             <i class='bx bxs-eraser'></i>Eliminar
@@ -121,6 +121,21 @@
                     actionButtons = `
                         <a href="#" class="create-event-button info-event-button" data-id="${evento.id}">
                             <i class='bx bx-info-circle'></i>Información
+                        </a>
+                    `;
+                }else if (userRole === 'admin') {
+                    actionButtons = `
+                        <a href="#" class="create-event-button delete-event-button" data-id="${evento.id}">
+                            <i class='bx bxs-eraser'></i>Eliminar
+                        </a>
+                        <a href="#" class="create-event-button edit-event-button" data-id="${evento.id}">
+                            <i class='bx bxs-edit'></i>Editar
+                        </a>
+                        <a href="#" class="create-event-button info-event-button" data-id="${evento.id}">
+                            <i class='bx bx-info-circle'></i>Información
+                        </a>
+                        <a href="#" class="create-event-button destacar-event-button" data-id="${evento.id}">
+                            <i class='bx bx-star'></i>Destacar
                         </a>
                     `;
                 }
@@ -215,6 +230,26 @@
             const order = $('#filterOrderDirection').val();
             sortTable(column, order);
         });
+
+
+        // Controlador de eventos de clic en el botón de destacar
+        $(document).on('click', '.destacar-event-button', function(e) {
+            e.preventDefault();
+            var eventId = $(this).data('id');
+            $.ajax({
+                url: '/api/marcar_evento_mes/' + eventId,
+                method: 'POST',
+                success: function(response) {
+                    alert('Evento destacado como "Evento del Mes".');
+                    location.reload();  // Recargar la página para reflejar los cambios
+                },
+                error: function(error) {
+                    console.error('Error al destacar el evento:', error);
+                    alert('Hubo un error al destacar el evento.');
+                }
+            });
+        });
+
     });
 </script>
 </body>

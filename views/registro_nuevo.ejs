@@ -40,30 +40,30 @@
         <form action="registro_nuevo" method="POST" id="registroForm">
             <div class="div">
                 <input type="text" name="user" required id="usuario_input">
-                <label for="user" id="usuario_label">Usuario</label>
+                <label for="user" id="usuario_label">USUARIO</label>
             </div>
 
             <div class="div">
                 <input type="password" name="pass" required id="password_input">
-                <label for="pass" id="password_label">Contraseña</label>
+                <label for="pass" id="password_label">CONTRASEÑA</label>
             </div>
 
             <div class="div">
                 <input type="password" name="pass2" required id="password_confirm_input">
-                <label for="pass2" id="password_confirm_label">Confirmar Contraseña</label>
+                <label for="pass2" id="password_confirm_label">CONFIRMAR CONTRASEÑA</label>
             </div>
 
             <div class="div">
                 <select class="form-select" name="role" id="rol_select" required onchange="mostrarCampos()">
-                    <option value="">TIPO DE USUARIO</option>
-                    <option value="user">Usuario individual</option>
-                    <option value="company">Empresa</option>
+                    <option value="">ROL</option>
+                    <option value="user">PERSONA</option>
+                    <option value="company">EMPRESA</option>
                 </select>                
             </div>
 
             <div class="div" id="email_container" style="display: none;">
                 <input type="email" name="email" id="email_input">
-                <label for="email" id="email_label">Correo Electrónico</label>
+                <label for="email" id="email_label">CORREO ELECTRÓNICO</label>
             </div>
 
             <div class="div" id="nif_container" style="display: none;">
@@ -73,17 +73,17 @@
 
             <div class="div" id="contacto_container" style="display: none;">
                 <input type="text" name="contacto" id="contacto_input">
-                <label for="contacto" id="contacto_label">Contacto</label>
+                <label for="contacto" id="contacto_label">CONTACTO</label>
             </div>
 
             <div class="div" id="nombre_container" style="display: none;">
                 <input type="text" name="nombre" id="nombre_input">
-                <label for="nombre" id="nombre_label">Nombre</label>
+                <label for="nombre" id="nombre_label">NOMBRE</label>
             </div>
 
             <div class="div" id="apellido_container" style="display: none;">
                 <input type="text" name="apellido" id="apellido_input">
-                <label for="apellido" id="apellido_label">Apellido</label>
+                <label for="apellido" id="apellido_label">APELLIDOS</label>
             </div>
 
             <div class="div politica-privacidad">

@@ -44,11 +44,17 @@
             <img src="../resources/css/parque_acuatico.jpg">
             <div class="texto">
                 <h1>Evento del mes</h1>
-                <p>Jornada de puertas abiertas en Torremolinos, incluye tarde de juegos y pase al aguapark</p>
-                <a href="/informacion_evento/52">Ver detalles</a>
+                <% if (eventoMes) { %>
+                    <p><%= eventoMes.titulo %>: <%= eventoMes.descripcion %></p>
+                    <a href="/informacion_evento/<%= eventoMes.id %>">Ver detalles</a>
+                <% } else { %>
+                    <p>No hay un evento del mes seleccionado actualmente.</p>
+                <% } %>
             </div>
         </div>
     </section>
+    
+    
 
     <section class="eventos">
         <h1>Eventos</h1>
@@ -66,13 +72,13 @@
                 </div>
             </div>
             <div class="carta">
-                <img src="../resources/css/evento.jpg">
+                <img src="../resources/css/eventoD.jpg">
                 <div class="info">
                     <a href="/vista_eventos_ocasion">EVENTOS</a>
                 </div>
             </div>
             <div class="carta">
-                <img src="../resources/css/campus.jpg">
+                <img src="../resources/css/campamento.jpg">
                 <div class="info">
                     <a href="/vista_eventos_campus">CAMPAMENTOS</a>
                 </div>

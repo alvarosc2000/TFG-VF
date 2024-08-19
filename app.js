@@ -102,6 +102,7 @@ app.post('/registro_nuevo', userController.registro_usuario);
 app.post('/registro_empresa', companyController.registroEmpresa);
 app.post('/login', authController.login);
 app.post('/auth', authController.login);
+app.post('/api/marcar_evento_mes/:id', verificacionToken_jwt('admin'), eventoController.marcarEventoDelMes);
 
 // Rutas para la gestión de eventos
 app.post('/crear_evento', verificacionToken_jwt(['admin', 'company']), upload.array('fotos', 10), async (req, res) => {
@@ -159,9 +160,19 @@ app.get('/logout', (req, res) => {
     });
 });
 
-app.get('/espacioUs1', verificacionToken_jwt(['user', 'admin']), (req, res) => {
-    res.render('espacioUs1.ejs');
+app.get('/espacioUs1', verificacionToken_jwt(['user', 'admin']), async (req, res) => {
+    try {
+        // Buscar el evento del mes
+        const eventoDelMes = await Evento.findOne({ where: { evento_del_mes: true } });
+
+        // Renderizar la vista y pasar el evento del mes
+        res.render('espacioUs1.ejs', { eventoMes: eventoDelMes });
+    } catch (error) {
+        console.error('Error al obtener el evento del mes:', error);
+        res.status(500).send('Error interno del servidor');
+    }
 });
+
 
 app.get('/espacioEmp', verificacionToken_jwt(['admin', 'company']), (req, res) => {
     res.render('espacioEmp.ejs');
@@ -311,6 +322,14 @@ app.get('/editar_evento/:id', async (req, res) => {
 app.get('/olvidarContrasena', (req, res) => {
     res.render('olvidarContrasena.ejs');
 });
+
+
+app.get('/index', async (req, res) => {
+    const eventoDelMes = await Evento.findOne({ where: { evento_del_mes: true } });
+    res.render('index.ejs', { eventoMes: eventoDelMes });
+});
+
+
 
 app.post('/auth/forgot-password', userController.forgotPassword);
 app.get('/auth/reset-password/:token', userController.resetPasswordPage);

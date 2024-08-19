@@ -1,134 +1,109 @@
 body {
-    margin: 0%;
-    padding: 0%;
+    margin: 0;
+    padding: 0;
     font-family: 'Times New Roman', Times, serif;
-    height: 90vh;
-    background-image: url("gente-caminando-juntos-al-aire-libre-plano-medio.jpg");
-    background-attachment: initial;
+    height: 100vh;
+    background-image: url("persona1.jpg");
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: center ;
-    height: calc(120vh - 70px); /* Resta la altura de la barra de navegación */
+    background-position: center;
+}
+
+.navbar {
+    border-bottom: 1px solid #dee2e6;
 }
 
 .registro {
-    top: 15%;
-    right: 300px;
-    position: absolute; 
-    background-color: aliceblue;
-    text-align: left;
-    width: 500px;
-    border-radius: 17px;
-    border-color: black;
-    font-size: 15pt;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffffff;
     padding: 20px;
+    width: 650px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .registro h1 {
     text-align: center;
-    padding-block: 10px 20px ;
-    border-bottom: #AEB6BF solid;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #007bff;
+    color: #007bff;
 }
 
 .div {
     position: relative;
-    margin: 45px; /* Aumenta la separación entre los cuadros */
-    border-bottom: #AEB6BF solid;
+    margin-bottom: 1.5rem;
 }
 
 .div input,
 .div select {
-    background: none;
-    padding: 0 5px;
+    width: 100%;
+    padding: 10px;
     height: 40px;
-    border: none;
-    outline: none;
-    width: calc(100% - 10px); /* Ajusta el ancho del input */
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.div input:focus,
+.div select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(38,143,255,.25);
 }
 
 .div label {
     position: absolute;
     top: 50%;
-    left: 8px; /* Ajusta el espacio entre la etiqueta y el borde */
+    left: 12px;
     transform: translateY(-50%);
-    color: #AEB6BF;
+    color: #6c757d;
     pointer-events: none;
+    font-size: 0.875rem;
+    background-color: #ffffff;
+    padding: 0 4px;
 }
 
 input[type="submit"] {
-    width: 50%;
-    height: 35px;
-    border: 1px, solid;
-    background-color: #D7DBDD;
-    border-radius: 20px;
-    margin: 0 auto;
-    display: block;
+    width: 100%;
+    height: 40px;
+    border: none;
+    background-color: #007bff;
+    color: #ffffff;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-top: 1rem;
+    cursor: pointer;
 }
 
-input[type="button"]:hover {
-    border-color:brown;
-    transition: .5s;
+input[type="submit"]:hover {
+    background-color: #0056b3;
 }
 
-#registro-usuario{
-    background-color: aliceblue;
-    text-align: left;
-    width: 500px;
-    border-radius: 17px;
-    border-color: black;
-    font-size: 15pt;
-    padding: 20px;
-}
-
-#registro-empresa{
-    background-color: aliceblue;
-    text-align: left;
-    width: 500px;
-    border-radius: 17px;
-    border-color: black;
-    font-size: 15pt;
-    padding: 20px;
-}
-
-.div label {
+.div .politica-privacidad {
     display: flex;
     align-items: center;
-}
-
-.div input[type="checkbox"] {
-    margin-right: 10px; /* Añade un margen a la derecha del checkbox */
-    vertical-align: middle; /* Alinea verticalmente el checkbox */
-}
-
-.div label a {
-    text-decoration: underline;
-    color: blue;
-}
-
-.div label a:hover {
-    color: darkblue;
-}
-
-/* Ajustes para los botones dentro de los formularios */
-.div:last-child {
-    display: flex; /* Usa flexbox para alinear los botones */
-    justify-content: space-between; /* Separa los botones */
-    margin: 45px 0;
-    text-align: center;
-}
-
-.btn-change {
-    width: 50%;
-    height: 35px;
-    border: 1px, solid;
-    background-color: #D7DBDD;
-    border-radius: 20px;
-    margin: 0 auto;
-    display: block;
+    font-size: 0.875rem;
     margin-top: 10px;
 }
 
-#registro-usuario #registro-empresa h2{
-    text-align: center;
-    font: oblique bold 150% cursive;
+.div .politica-privacidad input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.div .politica-privacidad a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.div .politica-privacidad a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .registro {
+        width: 90%;
+        top: 20%;
+    }
 }

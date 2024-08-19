@@ -24,7 +24,7 @@ async function guardarEvento(req, res) {
             fecha_inicio,
             fecha_fin,
             id_compania,
-            evento_del_mes: false,  // Asegúrate de que este valor siempre se establezca
+            evento_del_mes: false,
         });
         
 
@@ -287,6 +287,41 @@ async function obtenerEventos(req, res) {
     }
 }
 
+
+async function marcarEventoDelMes(req, res) {
+    const eventId = req.params.id;
+    const userRole = req.session.user.role;
+
+    if (userRole !== 'admin') {
+        return res.status(403).send('Acceso denegado');
+    }
+
+    try {
+        // Desmarcar cualquier evento existente como "Evento del Mes"
+        await Evento.update({ evento_del_mes: false }, { where: { evento_del_mes: true } });
+
+        // Marcar el evento actual como "Evento del Mes"
+        const evento = await Evento.findByPk(eventId);
+        if (!evento) {
+            return res.status(404).send('Evento no encontrado');
+        }
+
+        await evento.update({ evento_del_mes: true });
+
+        // Obtener la información del evento marcado
+        const eventoMes = await obtenerEventoPorId(eventId);
+
+        // Enviar la información del evento actualizado al cliente
+        res.json({
+            message: 'Evento marcado como "Evento del Mes" exitosamente',
+            evento: eventoMes.data // Incluir los datos del evento del mes
+        });
+    } catch (error) {
+        console.error('Error al marcar el evento del mes:', error);
+        res.status(500).send('Hubo un error al marcar el evento del mes');
+    }
+}
+
 module.exports = {
     guardarEvento,
     eliminarEvento,
@@ -294,5 +329,6 @@ module.exports = {
     actualizarEvento,
     subirFoto,
     comprarEntrada,
-    obtenerEventos
+    obtenerEventos,
+    marcarEventoDelMes,
 };
